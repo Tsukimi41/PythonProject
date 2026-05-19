@@ -1,0 +1,28 @@
+from codrone_edu.drone import *
+import time
+drone = Drone()
+drone.pair()
+print("Paired!")
+drone.takeoff()
+print("In the air!")
+#drone.hover(5)
+#time.sleep(5)
+roll = 30
+pitch = 30
+drone.set_roll(roll)
+drone.move(4)
+drone.set_roll(0)
+drone.set_pitch(pitch)
+drone.move(4)
+drone.set_pitch(0)
+drone.set_roll(-roll)
+drone.move(4)
+drone.set_roll(0)
+drone.set_pitch(-pitch)
+drone.move(4)
+drone.set_pitch(0)
+#print("Hovering for 5 seconds!")
+print("Landing")
+drone.land()
+drone.close()
+print("Program complete")
