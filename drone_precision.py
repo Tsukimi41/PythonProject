@@ -15,7 +15,7 @@ LOG_DIR = Path(__file__).resolve().parent / "flight_logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 PID_PROFILE_PATH = LOG_DIR / "last_pid_profile.json"
 HISTORY_ANALYSIS_PATH = LOG_DIR / "last_history_analysis.json"
-FIXED_CONTROL_SIGNS = {"pitch": 1.0, "roll": -1.0, "throttle": 1.0, "yaw": 1.0}
+FIXED_CONTROL_SIGNS = {"pitch": 1.0, "roll": -1.0, "throttle": 1.0, "yaw": -1.0}
 DEFAULT_MAX_PITCH = 100
 DEFAULT_BRAKE_PITCH = 100
 DEFAULT_MAX_ROLL = 100
@@ -46,6 +46,24 @@ def _sign(value: float) -> float:
 
 def _wrap_angle_deg(angle_deg: float) -> float:
     return (angle_deg + 180.0) % 360.0 - 180.0
+
+
+def rotate_world_to_body(x_value: float, y_value: float, yaw_deg: float) -> tuple[float, float]:
+    yaw_rad = math.radians(yaw_deg)
+    cos_yaw = math.cos(yaw_rad)
+    sin_yaw = math.sin(yaw_rad)
+    forward_value = (x_value * cos_yaw) + (y_value * sin_yaw)
+    right_value = (-x_value * sin_yaw) + (y_value * cos_yaw)
+    return forward_value, right_value
+
+
+def rotate_body_to_world(forward_value: float, right_value: float, yaw_deg: float) -> tuple[float, float]:
+    yaw_rad = math.radians(yaw_deg)
+    cos_yaw = math.cos(yaw_rad)
+    sin_yaw = math.sin(yaw_rad)
+    x_value = (forward_value * cos_yaw) - (right_value * sin_yaw)
+    y_value = (forward_value * sin_yaw) + (right_value * cos_yaw)
+    return x_value, y_value
 
 
 def calculate_stopping_distance_mm(
@@ -131,13 +149,13 @@ def default_pid_profile() -> dict:
             "min_output_error": 30.0,
         },
         "roll": {
-            "kp": 0.165,
-            "ki": 0.00070,
+            "kp": 0.150,
+            "ki": 0.00055,
             "kd": 0.012,
             "kv": 0.120,
-            "output_limit": 52.0,
+            "output_limit": 42.0,
             "integral_limit": 500.0,
-            "min_output": 7.0,
+            "min_output": 6.0,
             "min_output_error": 28.0,
         },
         "throttle": {
@@ -151,11 +169,11 @@ def default_pid_profile() -> dict:
             "min_output_error": 18.0,
         },
         "yaw": {
-            "kp": 0.520,
+            "kp": 0.760,
             "ki": 0.00020,
             "kd": 0.030,
-            "kv": 0.050,
-            "output_limit": 18.0,
+            "kv": 0.070,
+            "output_limit": 28.0,
             "integral_limit": 60.0,
             "min_output": 0.0,
             "min_output_error": 0.0,
@@ -213,19 +231,18 @@ def load_pid_profile(target_distance_mm: float) -> dict:
 
     # Control-axis polarity is fixed for this hardware and should not drift by profile.
     profile["signs"] = dict(FIXED_CONTROL_SIGNS)
-    profile["throttle"]["min_output"] = 0.0
-
     # Old learned profiles can contain limits that permit severe wind-up. Keep
     # learned gains, but normalize safety-critical bounds on every load.
     profile["pitch"]["integral_limit"] = min(profile["pitch"]["integral_limit"], 600.0)
     profile["roll"]["integral_limit"] = min(profile["roll"]["integral_limit"], 500.0)
     profile["throttle"]["integral_limit"] = min(profile["throttle"]["integral_limit"], 450.0)
     profile["yaw"]["integral_limit"] = min(profile["yaw"]["integral_limit"], 60.0)
-    profile["pitch"]["output_limit"] = max(profile["pitch"]["output_limit"], 55.0)
-    profile["roll"]["kp"] = max(profile["roll"]["kp"], 0.165)
-    profile["roll"]["ki"] = max(profile["roll"]["ki"], 0.00070)
-    profile["roll"]["output_limit"] = max(profile["roll"]["output_limit"], 52.0)
-    profile["roll"]["min_output"] = max(profile["roll"]["min_output"], 7.0)
+    profile["pitch"]["kp"] = _clamp(profile["pitch"]["kp"], 0.100, 0.150)
+    profile["pitch"]["output_limit"] = _clamp(profile["pitch"]["output_limit"], 42.0, 50.0)
+    profile["roll"]["kp"] = _clamp(profile["roll"]["kp"], 0.145, 0.160)
+    profile["roll"]["ki"] = _clamp(profile["roll"]["ki"], 0.00045, 0.00070)
+    profile["roll"]["output_limit"] = _clamp(profile["roll"]["output_limit"], 40.0, 44.0)
+    profile["roll"]["min_output"] = _clamp(profile["roll"]["min_output"], 6.0, 8.0)
     profile["roll"]["min_output_error"] = max(profile["roll"].get("min_output_error", 0.0), 28.0)
     profile["throttle"]["kp"] = max(profile["throttle"]["kp"], 0.205)
     profile["throttle"]["ki"] = max(profile["throttle"]["ki"], 0.00520)
@@ -234,6 +251,9 @@ def load_pid_profile(target_distance_mm: float) -> dict:
     profile["throttle"]["min_output_error"] = max(profile["throttle"].get("min_output_error", 0.0), 18.0)
     profile["throttle"]["kd"] = min(profile["throttle"]["kd"], 0.025)
     profile["throttle"]["kv"] = min(profile["throttle"]["kv"], 0.18)
+    profile["yaw"]["kp"] = _clamp(profile["yaw"]["kp"], 0.70, 0.95)
+    profile["yaw"]["kv"] = _clamp(profile["yaw"]["kv"], 0.06, 0.12)
+    profile["yaw"]["output_limit"] = max(profile["yaw"]["output_limit"], 28.0)
 
     return profile
 
@@ -329,6 +349,10 @@ class ControlSample:
     stopping_distance_x_mm: float
     control_phase_y: str = "settle"
     control_phase_z: str = "settle"
+    body_error_x_mm: float = 0.0
+    body_error_y_mm: float = 0.0
+    body_velocity_x_mm_s: float = 0.0
+    body_velocity_y_mm_s: float = 0.0
     predicted_remaining_y_mm: float = 0.0
     predicted_remaining_z_mm: float = 0.0
     stopping_distance_y_mm: float = BRAKE_MARGIN_MM
@@ -704,7 +728,11 @@ def adjust_pid_profile(profile: dict, summary: FlightSummary | None) -> dict:
 
 
 class PrecisionDroneController:
-    def __init__(self, logger: logging.Logger | None = None, pid_profile: dict | None = None) -> None:
+    def __init__(
+        self,
+        logger: logging.Logger | None = None,
+        pid_profile: dict | None = None,
+    ) -> None:
         self.logger = logger or logging.getLogger("precision_drone")
         self.drone = _import_drone_class()()
         self.is_flying = False
@@ -1143,6 +1171,139 @@ class PrecisionDroneController:
         scale = max_vector_power / magnitude
         return int(round(pitch_cmd * scale)), int(round(roll_cmd * scale))
 
+    def _shape_settle_axis_command(
+        self,
+        *,
+        command: int,
+        sign: float,
+        error_mm: float,
+        velocity_mm_s: float,
+        output_limit: float,
+        min_drive: float,
+        min_brake: float,
+        position_interval_sec: float,
+        brake_accel_mm_s2: float,
+        close_error_mm: float,
+    ) -> int:
+        if sign == 0.0 or abs(error_mm) <= close_error_mm:
+            return command
+
+        axis_output = command / sign
+        target_direction = _sign(error_mm)
+        speed_toward_target = target_direction * velocity_mm_s
+        stopping_distance_mm = calculate_stopping_distance_mm(
+            speed_mm_s=max(speed_toward_target, 0.0),
+            brake_accel_mm_s2=brake_accel_mm_s2,
+            sensor_latency_sec=max(position_interval_sec, 0.12),
+            margin_mm=12.0,
+        )
+
+        # In settle mode, do not let D/velocity feedback reverse the command
+        # until the measured closing speed actually requires braking.
+        if axis_output * error_mm < 0.0 and (
+            speed_toward_target <= 0.0 or abs(error_mm) > stopping_distance_mm
+        ):
+            axis_output = target_direction * max(min_drive, abs(axis_output) * 0.5)
+
+        # Conversely, if the remaining distance is already shorter than the
+        # physical stopping estimate, brake even if the PID term is still
+        # asking to continue toward the target.
+        if (
+            speed_toward_target > 20.0
+            and abs(error_mm) <= stopping_distance_mm
+            and axis_output * error_mm > 0.0
+        ):
+            brake_output = -target_direction * max(min_brake, abs(axis_output) * 0.75)
+            axis_output = brake_output
+
+        return int(round(_signed_limit(axis_output, output_limit) * sign))
+
+    def _settle_velocity_axis_command(
+        self,
+        *,
+        command: int,
+        sign: float,
+        error_mm: float,
+        velocity_mm_s: float,
+        output_limit: float,
+        max_speed_mm_s: float,
+        min_speed_mm_s: float,
+        velocity_gain: float,
+        position_gain: float,
+        min_drive: float,
+        min_brake: float,
+        position_interval_sec: float,
+        brake_accel_mm_s2: float,
+        close_error_mm: float,
+        close_speed_mm_s: float,
+    ) -> int:
+        if sign == 0.0:
+            return command
+
+        distance_mm = abs(error_mm)
+        if distance_mm <= close_error_mm:
+            if abs(velocity_mm_s) <= close_speed_mm_s:
+                return 0
+            brake_output = -_sign(velocity_mm_s) * min(
+                output_limit,
+                max(min_brake, abs(velocity_mm_s) * velocity_gain),
+            )
+            return int(round(brake_output * sign))
+
+        target_direction = _sign(error_mm)
+        speed_toward_target = target_direction * velocity_mm_s
+        latency_sec = max(position_interval_sec, 0.12)
+        reachable_speed_mm_s = math.sqrt(
+            max(0.0, 2.0 * max(brake_accel_mm_s2, 1.0) * max(distance_mm - 8.0, 0.0))
+        )
+        desired_speed_mm_s = min(max_speed_mm_s, reachable_speed_mm_s * 0.82)
+        desired_speed_mm_s = max(min_speed_mm_s, desired_speed_mm_s)
+        desired_velocity_mm_s = target_direction * desired_speed_mm_s
+        velocity_error_mm_s = desired_velocity_mm_s - velocity_mm_s
+        axis_output = (velocity_gain * velocity_error_mm_s) + (position_gain * error_mm)
+
+        stopping_distance_mm = calculate_stopping_distance_mm(
+            speed_mm_s=max(speed_toward_target, 0.0),
+            brake_accel_mm_s2=brake_accel_mm_s2,
+            sensor_latency_sec=latency_sec,
+            margin_mm=12.0,
+        )
+        must_brake = speed_toward_target > desired_speed_mm_s + 8.0 or (
+            speed_toward_target > close_speed_mm_s and distance_mm <= stopping_distance_mm
+        )
+        if must_brake:
+            axis_output = -target_direction * max(min_brake, abs(axis_output))
+
+        if not must_brake and abs(axis_output) < min_drive:
+            axis_output = target_direction * min_drive
+
+        return int(round(_signed_limit(axis_output, output_limit) * sign))
+
+    @staticmethod
+    def _horizontal_drift_guard_scale(samples: list[ControlSample], current_error_norm_mm: float) -> float:
+        if len(samples) < 36:
+            return 1.0
+
+        recent = samples[-36:]
+        recent_norms = [math.hypot(sample.error_x_mm, sample.error_y_mm) for sample in recent]
+        best_recent = min(recent_norms)
+        mean_recent = fmean(recent_norms)
+        previous = samples[-72:-36] if len(samples) >= 72 else samples[: len(samples) - 36]
+        previous_mean = fmean(math.hypot(sample.error_x_mm, sample.error_y_mm) for sample in previous) if previous else mean_recent
+
+        growing_from_best = current_error_norm_mm - best_recent
+        growing_vs_previous = mean_recent - previous_mean
+        oscillating = (
+            FlightLogAnalyzer._count_sign_changes([sample.error_x_mm for sample in recent]) >= 3
+            or FlightLogAnalyzer._count_sign_changes([sample.error_y_mm for sample in recent]) >= 3
+        )
+
+        if growing_from_best > 120.0 or (oscillating and growing_vs_previous > 35.0):
+            return 0.35
+        if growing_from_best > 75.0 or (oscillating and growing_vs_previous > 18.0):
+            return 0.55
+        return 1.0
+
     def move_relative_mm(
         self,
         *,
@@ -1242,17 +1403,23 @@ class PrecisionDroneController:
             error_y = absolute_target_y - state.y_mm
             error_z = absolute_target_z - state.z_mm
             error_yaw = _wrap_angle_deg(absolute_target_yaw - state.yaw_deg)
+            body_error_x, body_error_y = rotate_world_to_body(error_x, error_y, state.yaw_deg)
+            body_velocity_x, body_velocity_y = rotate_world_to_body(
+                state.x_velocity_mm_s,
+                state.y_velocity_mm_s,
+                state.yaw_deg,
+            )
 
-            gain_scale_pitch = 1.12 if abs(error_x) > 300.0 else 1.0
-            gain_scale_roll = 1.08 if abs(error_y) > 120.0 else 1.0
+            gain_scale_pitch = 1.12 if abs(body_error_x) > 300.0 else 1.0
+            gain_scale_roll = 1.08 if abs(body_error_y) > 120.0 else 1.0
             gain_scale_throttle = 1.12 if abs(error_z) > 60.0 else 1.0
             if abs(error_z) < 18.0:
                 gain_scale_throttle *= 0.88
 
-            pitch_limit = self._command_limit(error_x, self.profile["pitch"]["output_limit"], 16.0, 140.0)
-            roll_limit = self._command_limit(error_y, self.profile["roll"]["output_limit"], 12.0, 90.0)
+            pitch_limit = self._command_limit(body_error_x, self.profile["pitch"]["output_limit"], 16.0, 140.0)
+            roll_limit = self._command_limit(body_error_y, self.profile["roll"]["output_limit"], 12.0, 90.0)
             throttle_limit = self._command_limit(error_z, self.profile["throttle"]["output_limit"], 10.0, 80.0)
-            yaw_limit = self._command_limit(error_yaw, self.profile["yaw"]["output_limit"], 6.0, 20.0)
+            yaw_limit = self._command_limit(error_yaw, max(self.profile["yaw"]["output_limit"], 28.0), 8.0, 25.0)
 
             if abs(error_z) < 18.0:
                 throttle_limit = min(throttle_limit, 10.0)
@@ -1263,33 +1430,33 @@ class PrecisionDroneController:
             pitch_cmd = self._axis_command(
                 pid=self.pitch_pid,
                 config=self.profile["pitch"],
-                error=error_x,
-                measurement=state.x_mm,
-                measurement_rate=state.x_velocity_mm_s,
+                error=body_error_x,
+                measurement=0.0,
+                measurement_rate=body_velocity_x,
                 dt=dt,
                 sign=self.pitch_sign,
                 output_limit=pitch_limit,
                 gain_scale=gain_scale_pitch,
                 allow_integral=(
                     sensor_healthy
-                    and 20.0 < abs(error_x) < 250.0
-                    and abs(state.x_velocity_mm_s) < 120.0
+                    and 20.0 < abs(body_error_x) < 250.0
+                    and abs(body_velocity_x) < 120.0
                 ),
             )
             roll_cmd = self._axis_command(
                 pid=self.roll_pid,
                 config=self.profile["roll"],
-                error=error_y,
-                measurement=state.y_mm,
-                measurement_rate=state.y_velocity_mm_s,
+                error=body_error_y,
+                measurement=0.0,
+                measurement_rate=body_velocity_y,
                 dt=dt,
                 sign=self.roll_sign,
                 output_limit=roll_limit,
                 gain_scale=gain_scale_roll,
                 allow_integral=(
                     sensor_healthy
-                    and 18.0 < abs(error_y) < 140.0
-                    and abs(state.y_velocity_mm_s) < 90.0
+                    and 18.0 < abs(body_error_y) < 140.0
+                    and abs(body_velocity_y) < 90.0
                 ),
             )
             throttle_cmd = self._axis_command(
@@ -1324,8 +1491,8 @@ class PrecisionDroneController:
             pitch_cmd, abort_x, speed_toward_target_x = self._apply_rapid_axis(
                 rapid=rapid_x,
                 pid=self.pitch_pid,
-                error_mm=error_x,
-                velocity_mm_s=state.x_velocity_mm_s,
+                error_mm=body_error_x,
+                velocity_mm_s=body_velocity_x,
                 pos_fresh=state.pos_fresh,
                 stale_duration_sec=state.stale_duration_sec,
                 elapsed_sec=elapsed,
@@ -1340,8 +1507,8 @@ class PrecisionDroneController:
             roll_cmd, abort_y, _speed_toward_target_y = self._apply_rapid_axis(
                 rapid=rapid_y,
                 pid=self.roll_pid,
-                error_mm=error_y,
-                velocity_mm_s=state.y_velocity_mm_s,
+                error_mm=body_error_y,
+                velocity_mm_s=body_velocity_y,
                 pos_fresh=state.pos_fresh,
                 stale_duration_sec=state.stale_duration_sec,
                 elapsed_sec=elapsed,
@@ -1374,11 +1541,126 @@ class PrecisionDroneController:
             if abort_after_sample:
                 termination_reason = "runaway"
 
+            if rapid_x.phase == "settle":
+                pitch_cmd = self._settle_velocity_axis_command(
+                    command=pitch_cmd,
+                    sign=self.pitch_sign,
+                    error_mm=body_error_x,
+                    velocity_mm_s=body_velocity_x,
+                    output_limit=pitch_limit,
+                    max_speed_mm_s=155.0,
+                    min_speed_mm_s=22.0,
+                    velocity_gain=0.145,
+                    position_gain=0.018,
+                    min_drive=6.0,
+                    min_brake=7.0,
+                    position_interval_sec=position_interval_sec,
+                    brake_accel_mm_s2=brake_accel_mm_s2,
+                    close_error_mm=10.0,
+                    close_speed_mm_s=18.0,
+                )
+            if rapid_y.phase == "settle":
+                roll_cmd = self._settle_velocity_axis_command(
+                    command=roll_cmd,
+                    sign=self.roll_sign,
+                    error_mm=body_error_y,
+                    velocity_mm_s=body_velocity_y,
+                    output_limit=roll_limit,
+                    max_speed_mm_s=130.0,
+                    min_speed_mm_s=24.0,
+                    velocity_gain=0.160,
+                    position_gain=0.022,
+                    min_drive=6.0,
+                    min_brake=7.0,
+                    position_interval_sec=position_interval_sec,
+                    brake_accel_mm_s2=brake_accel_mm_s2,
+                    close_error_mm=12.0,
+                    close_speed_mm_s=18.0,
+                )
+            if rapid_z.phase == "settle":
+                throttle_cmd = self._settle_velocity_axis_command(
+                    command=throttle_cmd,
+                    sign=self.throttle_sign,
+                    error_mm=error_z,
+                    velocity_mm_s=state.z_velocity_mm_s,
+                    output_limit=throttle_limit,
+                    max_speed_mm_s=75.0,
+                    min_speed_mm_s=18.0,
+                    velocity_gain=0.185,
+                    position_gain=0.026,
+                    min_drive=6.0,
+                    min_brake=6.0,
+                    position_interval_sec=position_interval_sec,
+                    brake_accel_mm_s2=brake_accel_mm_s2,
+                    close_error_mm=10.0,
+                    close_speed_mm_s=14.0,
+                )
+
             pitch_cmd, roll_cmd = self._scale_horizontal_commands(pitch_cmd, roll_cmd)
 
-            if abs(error_z) < 60.0 and (error_z * state.z_velocity_mm_s) > 220.0:
+            abs_error_yaw = abs(error_yaw)
+            if abs_error_yaw > 8.0:
+                yaw_priority_scale = _clamp(1.0 - ((abs_error_yaw - 8.0) / 24.0), 0.18, 1.0)
+                pitch_cmd = int(round(pitch_cmd * yaw_priority_scale))
+                roll_cmd = int(round(roll_cmd * yaw_priority_scale))
+            if abs_error_yaw > 22.0:
+                pitch_cmd = int(_signed_limit(pitch_cmd, 8.0))
+                roll_cmd = int(_signed_limit(roll_cmd, 8.0))
+
+            horizontal_error_norm = math.hypot(error_x, error_y)
+            drift_guard_scale = self._horizontal_drift_guard_scale(samples, horizontal_error_norm)
+            if drift_guard_scale < 1.0 and rapid_x.phase == "settle" and rapid_y.phase == "settle":
+                pitch_cmd = int(round(pitch_cmd * drift_guard_scale))
+                roll_cmd = int(round(roll_cmd * drift_guard_scale))
+                self.pitch_pid.integral *= 0.45
+                self.roll_pid.integral *= 0.45
+                self.logger.warning(
+                    "水平誤差の増幅を検知したため出力を抑制します err_norm=%.1f scale=%.2f",
+                    horizontal_error_norm,
+                    drift_guard_scale,
+                )
+
+            horizontal_power = math.hypot(pitch_cmd, roll_cmd)
+            if error_z > -15.0 and horizontal_power > 18.0 and rapid_z.phase == "settle":
+                tilt_compensation = int(round(min(7.0, (horizontal_power - 18.0) * 0.10)))
+                throttle_cmd = int(_signed_limit(throttle_cmd + tilt_compensation, throttle_limit))
+
+            z_speed_toward = _sign(error_z) * state.z_velocity_mm_s
+            z_settle_stop_mm = calculate_stopping_distance_mm(
+                speed_mm_s=max(z_speed_toward, 0.0),
+                brake_accel_mm_s2=brake_accel_mm_s2,
+                sensor_latency_sec=max(position_interval_sec, 0.12),
+                margin_mm=12.0,
+            )
+            if (
+                abs(error_z) < 60.0
+                and (error_z * state.z_velocity_mm_s) > 220.0
+                and abs(error_z) <= z_settle_stop_mm
+            ):
                 brake_cmd = -_sign(state.z_velocity_mm_s) * min(10.0, abs(state.z_velocity_mm_s) * 0.18)
                 throttle_cmd = int(round((throttle_cmd + brake_cmd) * 0.5))
+
+            altitude_guard_active = (
+                absolute_target_z > 250.0
+                and (
+                    (state.z_velocity_mm_s < -220.0 and state.z_mm < absolute_target_z - 120.0)
+                    or (state.z_mm < 380.0 and error_z > 180.0)
+                )
+            )
+            if altitude_guard_active:
+                self.pitch_pid.reset()
+                self.roll_pid.reset()
+                self.throttle_pid.reset()
+                pitch_cmd = 0
+                roll_cmd = 0
+                yaw_cmd = 0
+                throttle_cmd = DEFAULT_MAX_THROTTLE
+                self.logger.warning(
+                    "高度回復を優先します z=%.1f err=%.1f vz=%.1f",
+                    state.z_mm,
+                    error_z,
+                    state.z_velocity_mm_s,
+                )
 
             if abs(error_x) < 30.0:
                 self.pitch_pid.integral *= 0.82
@@ -1394,9 +1676,24 @@ class PrecisionDroneController:
                     pitch_cmd = int(_signed_limit(pitch_cmd, 12.0))
                 if rapid_y.phase not in {"accelerate", "brake"}:
                     roll_cmd = int(_signed_limit(roll_cmd, 10.0))
-                if rapid_z.phase not in {"accelerate", "brake"}:
+                if rapid_z.phase not in {"accelerate", "brake"} and not altitude_guard_active:
                     throttle_cmd = int(_signed_limit(throttle_cmd, 10.0))
                 yaw_cmd = int(_signed_limit(yaw_cmd, 5.0))
+
+            if altitude_guard_active and state.stale_duration_sec > 0.45:
+                termination_reason = "sensor_timeout"
+                abort_after_sample = True
+                self.logger.error("高度回復中に位置更新が停止したため安全停止します")
+
+            if absolute_target_z > 250.0 and state.z_mm < 60.0 and elapsed >= 1.0:
+                termination_reason = "altitude_fault"
+                abort_after_sample = True
+                self.logger.error("高度が危険域まで低下したため安全停止します z=%.1f", state.z_mm)
+
+            if abs(error_yaw) > 55.0 and elapsed >= 1.0:
+                termination_reason = "attitude_fault"
+                abort_after_sample = True
+                self.logger.error("姿勢/ヨーが大きく崩れたため安全停止します yaw_error=%.1f", error_yaw)
 
             sample = ControlSample(
                 step=step,
@@ -1440,6 +1737,10 @@ class PrecisionDroneController:
                 stopping_distance_x_mm=rapid_x.stopping_distance_mm,
                 control_phase_y=rapid_y.phase,
                 control_phase_z=rapid_z.phase,
+                body_error_x_mm=body_error_x,
+                body_error_y_mm=body_error_y,
+                body_velocity_x_mm_s=body_velocity_x,
+                body_velocity_y_mm_s=body_velocity_y,
                 predicted_remaining_y_mm=rapid_y.predicted_remaining_mm,
                 predicted_remaining_z_mm=rapid_z.predicted_remaining_mm,
                 stopping_distance_y_mm=rapid_y.stopping_distance_mm,
@@ -1506,7 +1807,7 @@ class PrecisionDroneController:
             else:
                 stable_since = None
 
-            if state.stale_duration_sec >= 1.20 and elapsed >= 1.0:
+            if state.stale_duration_sec >= 0.65 and elapsed >= 1.0:
                 termination_reason = "sensor_timeout"
                 self.logger.error("位置センサ更新が %.2fs 停止したため安全停止します", state.stale_duration_sec)
                 break

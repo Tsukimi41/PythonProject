@@ -2,11 +2,15 @@ import unittest
 import logging
 
 from drone_precision import (
+    FIXED_CONTROL_SIGNS,
+    ControlSample,
     PIDController,
     PrecisionDroneController,
     SensorSnapshot,
     calculate_stopping_distance_mm,
     default_pid_profile,
+    rotate_body_to_world,
+    rotate_world_to_body,
 )
 
 
@@ -56,6 +60,86 @@ class StateEstimatorTests(unittest.TestCase):
         self.assertAlmostEqual(fresh_state.x_velocity_mm_s, 40.0)
 
 
+class CoordinateTransformTests(unittest.TestCase):
+    def test_world_to_body_keeps_axes_when_yaw_is_zero(self) -> None:
+        forward, right = rotate_world_to_body(100.0, 50.0, 0.0)
+        self.assertAlmostEqual(forward, 100.0)
+        self.assertAlmostEqual(right, 50.0)
+
+    def test_world_to_body_rotates_error_by_current_yaw(self) -> None:
+        forward, right = rotate_world_to_body(100.0, 0.0, 90.0)
+        self.assertAlmostEqual(forward, 0.0, places=6)
+        self.assertAlmostEqual(right, -100.0, places=6)
+
+    def test_body_to_world_inverts_world_to_body(self) -> None:
+        forward, right = rotate_world_to_body(120.0, -35.0, 24.0)
+        x_value, y_value = rotate_body_to_world(forward, right, 24.0)
+        self.assertAlmostEqual(x_value, 120.0)
+        self.assertAlmostEqual(y_value, -35.0)
+
+
+class ConfigurationTests(unittest.TestCase):
+    def test_yaw_command_sign_matches_observed_codrone_direction(self) -> None:
+        self.assertEqual(FIXED_CONTROL_SIGNS["yaw"], -1.0)
+
+
+def control_sample(*, step: int, error_x_mm: float, error_y_mm: float) -> ControlSample:
+    return ControlSample(
+        step=step,
+        wall_time=float(step),
+        elapsed_sec=float(step),
+        dt_sec=0.1,
+        pos_fresh=True,
+        motion_fresh=True,
+        stale_cycles=0,
+        stale_duration_sec=0.0,
+        target_x_mm=0.0,
+        target_y_mm=0.0,
+        target_z_mm=0.0,
+        target_yaw_deg=0.0,
+        x_mm=0.0,
+        y_mm=0.0,
+        z_mm=800.0,
+        yaw_deg=0.0,
+        error_x_mm=error_x_mm,
+        error_y_mm=error_y_mm,
+        error_z_mm=0.0,
+        error_yaw_deg=0.0,
+        x_velocity_mm_s=0.0,
+        y_velocity_mm_s=0.0,
+        z_velocity_mm_s=0.0,
+        yaw_rate_deg_s=0.0,
+        pitch_cmd=0,
+        roll_cmd=0,
+        throttle_cmd=0,
+        yaw_cmd=0,
+        pitch_limit=0.0,
+        roll_limit=0.0,
+        throttle_limit=0.0,
+        yaw_limit=0.0,
+        pitch_integral=0.0,
+        roll_integral=0.0,
+        throttle_integral=0.0,
+        yaw_integral=0.0,
+        control_phase="settle",
+        predicted_remaining_x_mm=0.0,
+        stopping_distance_x_mm=0.0,
+    )
+
+
+class InternalSensorGuardTests(unittest.TestCase):
+    def test_horizontal_drift_guard_limits_growing_oscillation(self) -> None:
+        samples = []
+        for step in range(72):
+            magnitude = 40.0 + step * 2.0
+            signed = magnitude if step % 2 == 0 else -magnitude
+            samples.append(control_sample(step=step, error_x_mm=signed, error_y_mm=0.0))
+
+        scale = PrecisionDroneController._horizontal_drift_guard_scale(samples, 210.0)
+
+        self.assertLess(scale, 1.0)
+
+
 class PIDControllerTests(unittest.TestCase):
     def make_pid(self, *, kp: float, ki: float = 0.0) -> PIDController:
         return PIDController(
@@ -92,6 +176,82 @@ class PIDControllerTests(unittest.TestCase):
             min_output=0.0,
         )
         self.assertEqual(pid.integral, 0.0)
+
+
+class SettleCommandShapeTests(unittest.TestCase):
+    def test_premature_reverse_command_is_forced_back_toward_target(self) -> None:
+        controller = object.__new__(PrecisionDroneController)
+        shaped = controller._shape_settle_axis_command(
+            command=-1,
+            sign=1.0,
+            error_mm=54.0,
+            velocity_mm_s=44.0,
+            output_limit=40.0,
+            min_drive=6.0,
+            min_brake=6.0,
+            position_interval_sec=0.12,
+            brake_accel_mm_s2=90.0,
+            close_error_mm=10.0,
+        )
+        self.assertGreaterEqual(shaped, 6)
+
+    def test_close_fast_motion_is_braked(self) -> None:
+        controller = object.__new__(PrecisionDroneController)
+        shaped = controller._shape_settle_axis_command(
+            command=12,
+            sign=1.0,
+            error_mm=24.0,
+            velocity_mm_s=80.0,
+            output_limit=40.0,
+            min_drive=6.0,
+            min_brake=7.0,
+            position_interval_sec=0.12,
+            brake_accel_mm_s2=90.0,
+            close_error_mm=10.0,
+        )
+        self.assertLessEqual(shaped, -7)
+
+    def test_velocity_servo_drives_back_when_far_and_slow(self) -> None:
+        controller = object.__new__(PrecisionDroneController)
+        command = controller._settle_velocity_axis_command(
+            command=0,
+            sign=-1.0,
+            error_mm=70.0,
+            velocity_mm_s=0.0,
+            output_limit=42.0,
+            max_speed_mm_s=130.0,
+            min_speed_mm_s=24.0,
+            velocity_gain=0.160,
+            position_gain=0.022,
+            min_drive=6.0,
+            min_brake=7.0,
+            position_interval_sec=0.12,
+            brake_accel_mm_s2=90.0,
+            close_error_mm=12.0,
+            close_speed_mm_s=18.0,
+        )
+        self.assertLessEqual(command, -12)
+
+    def test_velocity_servo_brakes_when_close_and_fast(self) -> None:
+        controller = object.__new__(PrecisionDroneController)
+        command = controller._settle_velocity_axis_command(
+            command=0,
+            sign=1.0,
+            error_mm=20.0,
+            velocity_mm_s=80.0,
+            output_limit=42.0,
+            max_speed_mm_s=130.0,
+            min_speed_mm_s=24.0,
+            velocity_gain=0.160,
+            position_gain=0.022,
+            min_drive=6.0,
+            min_brake=7.0,
+            position_interval_sec=0.12,
+            brake_accel_mm_s2=90.0,
+            close_error_mm=12.0,
+            close_speed_mm_s=18.0,
+        )
+        self.assertLessEqual(command, -7)
 
 
 class _FakeLog:
