@@ -1,0 +1,8 @@
+{
+  "runs_analyzed": 8,
+  "median_final_error_x_mm": 11.352988425642252,
+  "median_final_error_y_mm": 103.24812084436417,
+  "median_final_error_z_mm": 12.905468543370546,
+  "median_duration_sec": 8.218370000016876,
+  "median_stale_ratio": 0.16666666666666666
+}

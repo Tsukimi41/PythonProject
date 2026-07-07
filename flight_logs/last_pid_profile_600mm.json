@@ -1,0 +1,48 @@
+{
+  "pitch": {
+    "kp": 0.16225057530258655,
+    "ki": 0.00039671858073600015,
+    "kd": 0.025979421644,
+    "kv": 0.07231366374399999,
+    "output_limit": 45.0,
+    "integral_limit": 600.0,
+    "min_output": 6.0,
+    "min_output_error": 30.0
+  },
+  "roll": {
+    "kp": 0.1377163156434124,
+    "ki": 0.000337652643,
+    "kd": 0.04055181045897812,
+    "kv": 0.134832,
+    "output_limit": 40.0,
+    "integral_limit": 500.0,
+    "min_output": 5.0,
+    "min_output_error": 25.0
+  },
+  "throttle": {
+    "kp": 0.17350773332256003,
+    "ki": 0.004688381250000001,
+    "kd": 0.025,
+    "kv": 0.18,
+    "output_limit": 32.0,
+    "integral_limit": 450.0,
+    "min_output": 0.0,
+    "min_output_error": 0.0
+  },
+  "yaw": {
+    "kp": 0.5,
+    "ki": 0.0,
+    "kd": 0.08,
+    "kv": 0.05,
+    "output_limit": 16.0,
+    "integral_limit": 60.0,
+    "min_output": 0.0,
+    "min_output_error": 0.0
+  },
+  "signs": {
+    "pitch": 1.0,
+    "roll": -1.0,
+    "throttle": 1.0,
+    "yaw": 1.0
+  }
+}
