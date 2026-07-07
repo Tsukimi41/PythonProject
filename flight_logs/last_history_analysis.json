@@ -1,8 +1,8 @@
 {
   "runs_analyzed": 8,
-  "median_final_error_x_mm": 11.352988425642252,
-  "median_final_error_y_mm": 103.24812084436417,
-  "median_final_error_z_mm": 12.905468543370546,
-  "median_duration_sec": 8.218370000016876,
-  "median_stale_ratio": 0.16666666666666666
+  "median_final_error_x_mm": 31.039225558439888,
+  "median_final_error_y_mm": 93.2639333109061,
+  "median_final_error_z_mm": 44.81351375579834,
+  "median_duration_sec": 11.559490050014574,
+  "median_stale_ratio": 0.34608285479901557
 }
