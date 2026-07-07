@@ -23,6 +23,7 @@ DEFAULT_BRAKE_ROLL = 100
 DEFAULT_MAX_THROTTLE = 80
 DEFAULT_BRAKE_THROTTLE = 80
 DEFAULT_BRAKE_ACCEL_MM_S2 = 90.0
+DEFAULT_TIMEOUT_SEC = 35.0
 BRAKE_MARGIN_MM = 35.0
 BRAKE_RELEASE_SPEED_MM_S = 25.0
 
@@ -130,24 +131,24 @@ def default_pid_profile() -> dict:
             "min_output_error": 30.0,
         },
         "roll": {
-            "kp": 0.140,
-            "ki": 0.00045,
+            "kp": 0.165,
+            "ki": 0.00070,
             "kd": 0.012,
             "kv": 0.120,
-            "output_limit": 42.0,
+            "output_limit": 52.0,
             "integral_limit": 500.0,
-            "min_output": 5.0,
-            "min_output_error": 25.0,
+            "min_output": 7.0,
+            "min_output_error": 28.0,
         },
         "throttle": {
-            "kp": 0.170,
-            "ki": 0.00420,
+            "kp": 0.205,
+            "ki": 0.00520,
             "kd": 0.014,
             "kv": 0.180,
-            "output_limit": 34.0,
+            "output_limit": 42.0,
             "integral_limit": 450.0,
-            "min_output": 0.0,
-            "min_output_error": 0.0,
+            "min_output": 5.0,
+            "min_output_error": 18.0,
         },
         "yaw": {
             "kp": 0.520,
@@ -220,6 +221,17 @@ def load_pid_profile(target_distance_mm: float) -> dict:
     profile["roll"]["integral_limit"] = min(profile["roll"]["integral_limit"], 500.0)
     profile["throttle"]["integral_limit"] = min(profile["throttle"]["integral_limit"], 450.0)
     profile["yaw"]["integral_limit"] = min(profile["yaw"]["integral_limit"], 60.0)
+    profile["pitch"]["output_limit"] = max(profile["pitch"]["output_limit"], 55.0)
+    profile["roll"]["kp"] = max(profile["roll"]["kp"], 0.165)
+    profile["roll"]["ki"] = max(profile["roll"]["ki"], 0.00070)
+    profile["roll"]["output_limit"] = max(profile["roll"]["output_limit"], 52.0)
+    profile["roll"]["min_output"] = max(profile["roll"]["min_output"], 7.0)
+    profile["roll"]["min_output_error"] = max(profile["roll"].get("min_output_error", 0.0), 28.0)
+    profile["throttle"]["kp"] = max(profile["throttle"]["kp"], 0.205)
+    profile["throttle"]["ki"] = max(profile["throttle"]["ki"], 0.00520)
+    profile["throttle"]["output_limit"] = max(profile["throttle"]["output_limit"], 42.0)
+    profile["throttle"]["min_output"] = max(profile["throttle"]["min_output"], 5.0)
+    profile["throttle"]["min_output_error"] = max(profile["throttle"].get("min_output_error", 0.0), 18.0)
     profile["throttle"]["kd"] = min(profile["throttle"]["kd"], 0.025)
     profile["throttle"]["kv"] = min(profile["throttle"]["kv"], 0.18)
 
@@ -370,7 +382,7 @@ class FlightCommand:
     target_y_mm: float = 0.0
     target_z_mm: float = 0.0
     target_yaw_deg: float = 0.0
-    timeout_sec: float = 20.0
+    timeout_sec: float = DEFAULT_TIMEOUT_SEC
     loop_period_sec: float = 0.06
     settle_time_sec: float = 0.5
     history_limit: int = 8
@@ -1138,7 +1150,7 @@ class PrecisionDroneController:
         target_y_mm: float = 0.0,
         target_z_mm: float = 0.0,
         target_yaw_deg: float = 0.0,
-        timeout_sec: float = 20.0,
+        timeout_sec: float = DEFAULT_TIMEOUT_SEC,
         loop_period_sec: float = 0.06,
         settle_time_sec: float = 0.5,
         max_pitch: int = DEFAULT_MAX_PITCH,
@@ -1233,19 +1245,19 @@ class PrecisionDroneController:
 
             gain_scale_pitch = 1.12 if abs(error_x) > 300.0 else 1.0
             gain_scale_roll = 1.08 if abs(error_y) > 120.0 else 1.0
-            gain_scale_throttle = 1.05 if abs(error_z) > 80.0 else 1.0
-            if abs(error_z) < 60.0:
-                gain_scale_throttle *= 0.82
+            gain_scale_throttle = 1.12 if abs(error_z) > 60.0 else 1.0
+            if abs(error_z) < 18.0:
+                gain_scale_throttle *= 0.88
 
             pitch_limit = self._command_limit(error_x, self.profile["pitch"]["output_limit"], 16.0, 140.0)
             roll_limit = self._command_limit(error_y, self.profile["roll"]["output_limit"], 12.0, 90.0)
             throttle_limit = self._command_limit(error_z, self.profile["throttle"]["output_limit"], 10.0, 80.0)
             yaw_limit = self._command_limit(error_yaw, self.profile["yaw"]["output_limit"], 6.0, 20.0)
 
-            if abs(error_z) < 45.0:
-                throttle_limit = min(throttle_limit, 12.0)
-            if abs(error_z) < 25.0:
-                throttle_limit = min(throttle_limit, 6.0)
+            if abs(error_z) < 18.0:
+                throttle_limit = min(throttle_limit, 10.0)
+            if abs(error_z) < 10.0:
+                throttle_limit = min(throttle_limit, 5.0)
 
             sensor_healthy = state.stale_duration_sec < 0.30
             pitch_cmd = self._axis_command(
@@ -1582,7 +1594,7 @@ def run_flight(
     lateral_distance_mm: float = 0.0,
     vertical_distance_mm: float = 0.0,
     yaw_deg: float = 0.0,
-    timeout_sec: float = 20.0,
+    timeout_sec: float = DEFAULT_TIMEOUT_SEC,
     loop_period_sec: float = 0.06,
     settle_time_sec: float = 0.5,
     history_limit: int = 8,
@@ -1686,7 +1698,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--y-mm", type=float, default=0.0, help="左右方向の目標移動量[mm]")
     parser.add_argument("--z-mm", type=float, default=0.0, help="上下方向の目標移動量[mm]")
     parser.add_argument("--yaw-deg", type=float, default=0.0, help="ヨー方向の目標回転量[deg]")
-    parser.add_argument("--timeout-sec", type=_positive_float, default=20.0, help="全体タイムアウト[sec]")
+    parser.add_argument("--timeout-sec", type=_positive_float, default=DEFAULT_TIMEOUT_SEC, help="全体タイムアウト[sec]")
     parser.add_argument("--loop-period-sec", type=_positive_float, default=0.06, help="制御周期[sec]")
     parser.add_argument("--settle-time-sec", type=_positive_float, default=0.5, help="整定判定に必要な連続安定時間[sec]")
     parser.add_argument("--history-limit", type=_positive_int, default=8, help="履歴解析に使う直近ログ数")
