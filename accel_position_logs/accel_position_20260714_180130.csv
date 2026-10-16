@@ -1,0 +1,1 @@
+step,elapsed_sec,dt_sec,raw_accel_x,raw_accel_y,raw_accel_z,bias_raw_x,bias_raw_y,bias_raw_z,ax_mm_s2,ay_mm_s2,filtered_ax_mm_s2,filtered_ay_mm_s2,x_mm,y_mm,vx_mm_s,vy_mm_s,target_x_mm,target_y_mm,error_x_mm,error_y_mm,pitch_cmd,roll_cmd,settled
