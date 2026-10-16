@@ -1,0 +1,19 @@
+{
+  "started_at": "2026-07-14 17:58:52",
+  "log_csv": "C:\\Users\\masaa\\PycharmProjects\\PythonProject\\accel_position_logs\\accel_position_20260714_175852.csv",
+  "summary_json": "C:\\Users\\masaa\\PycharmProjects\\PythonProject\\accel_position_logs\\accel_position_20260714_175852_summary.json",
+  "termination_reason": "timeout",
+  "target_x_cm": 30.0,
+  "target_y_cm": 0.0,
+  "estimated_x_cm": -150.29135867833398,
+  "estimated_y_cm": 9.734105530741449,
+  "final_error_x_cm": 180.29135867833398,
+  "final_error_y_cm": -9.734105530741449,
+  "final_speed_x_cm_s": -74.94452077975933,
+  "final_speed_y_cm_s": 2.808424825697015,
+  "sample_count": 49,
+  "duration_sec": 17.448272500012536,
+  "bias_raw_x": 1.3181818181818181,
+  "bias_raw_y": -1.1363636363636365,
+  "bias_raw_z": 97.31818181818181
+}
