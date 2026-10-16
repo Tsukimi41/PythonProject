@@ -1,0 +1,250 @@
+\contentsline {chapter}{最初に結論}{1}{chapter*.2}%
+\contentsline {chapter}{\numberline {第1章}0. 本報告書の目的、調査範囲、事実と推定の区別}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {第2章}1. 結論の要約}{3}{chapter.2}%
+\contentsline {chapter}{\numberline {第3章}2. プロジェクトの最終目標と、その背後にあるモチベーション}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}2.1 明示された最終目標}{5}{section.3.1}%
+\contentsline {section}{\numberline {3.2}2.2 座標ベース制御へ進んだ直接の理由}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}2.3 なぜ最初に上下方向を試したか}{6}{section.3.3}%
+\contentsline {chapter}{\numberline {第4章}3. Gitから見た全体像}{7}{chapter.4}%
+\contentsline {section}{\numberline {4.1}3.1 現在のGit状態}{7}{section.4.1}%
+\contentsline {section}{\numberline {4.2}3.2 Git管理方針の変化}{7}{section.4.2}%
+\contentsline {chapter}{\numberline {第5章}4. 全コミットの時系列詳細}{9}{chapter.5}%
+\contentsline {section}{\numberline {5.1}4.1 2026-05-19 16:41 — \texttt {90ddb8b} initial commit}{9}{section.5.1}%
+\contentsline {section}{\numberline {5.2}4.2 2026-05-19 17:05 — \texttt {1378ff4} チャイム、離陸＆着陸}{9}{section.5.2}%
+\contentsline {section}{\numberline {5.3}4.3 2026-05-19 17:15 — \texttt {c10d4d8} ホバリング}{9}{section.5.3}%
+\contentsline {section}{\numberline {5.4}4.4 2026-05-19 18:24 — \texttt {4ba456e} 前後左右、z軸回転、上下}{10}{section.5.4}%
+\contentsline {section}{\numberline {5.5}4.5 2026-06-02 16:23 — \texttt {09a1ad5} 課題4.1まで}{10}{section.5.5}%
+\contentsline {section}{\numberline {5.6}4.6 2026-06-02 16:29 — \texttt {b60bb33} 課題4.2}{11}{section.5.6}%
+\contentsline {section}{\numberline {5.7}4.7 2026-06-23 16:23 — \texttt {9114c3c} PIDでいろいろ}{11}{section.5.7}%
+\contentsline {section}{\numberline {5.8}4.8 2026-06-23 17:02 — \texttt {d697110} 共通制御基盤}{12}{section.5.8}%
+\contentsline {section}{\numberline {5.9}4.9 2026-06-23 17:51 — \texttt {76274be} 場面別ゲイン調整}{12}{section.5.9}%
+\contentsline {section}{\numberline {5.10}4.10 2026-07-07 17:12:07 — \texttt {75df208} 実験仕様と記録}{12}{section.5.10}%
+\contentsline {section}{\numberline {5.11}4.11 2026-07-07 17:12:13 — \texttt {c13d663} 多軸PID化}{13}{section.5.11}%
+\contentsline {section}{\numberline {5.12}4.12 2026-07-07 17:12:19 — \texttt {c144e34} ブレーキ確認}{13}{section.5.12}%
+\contentsline {section}{\numberline {5.13}4.13 2026-07-07 17:12:27 — \texttt {bf0d1ff} 実機ログとPIDプロファイル}{13}{section.5.13}%
+\contentsline {section}{\numberline {5.14}4.14 2026-07-07 17:12:36 — \texttt {700c91f} ワークスペース設定}{14}{section.5.14}%
+\contentsline {section}{\numberline {5.15}4.15 2026-07-07 17:12:58 — \texttt {b01dfef} PID回帰テスト}{14}{section.5.15}%
+\contentsline {section}{\numberline {5.16}4.16 2026-07-07 17:13:36 — \texttt {a506470} タイムアウトとゲイン調整}{14}{section.5.16}%
+\contentsline {section}{\numberline {5.17}4.17 2026-07-07 17:47 — \texttt {c001264} 追加ログ}{14}{section.5.17}%
+\contentsline {section}{\numberline {5.18}4.18 2026-07-07 18:21 — \texttt {f6232eb} 仕様書を書き直し、PIDの限界を認識}{14}{section.5.18}%
+\contentsline {section}{\numberline {5.19}4.19 2026-07-07 18:29:58 — \texttt {2314db9} PIDと回帰テスト更新}{15}{section.5.19}%
+\contentsline {section}{\numberline {5.20}4.20 2026-07-07 18:30:03 — \texttt {2f57132} 実験記録追記}{16}{section.5.20}%
+\contentsline {section}{\numberline {5.21}4.21 2026-07-07 18:30:09 — \texttt {a7e88bb} 実行ログと解析結果}{16}{section.5.21}%
+\contentsline {section}{\numberline {5.22}4.22 2026-07-07 18:38 — \texttt {10fc6f3} Git漏洩経路遮断}{16}{section.5.22}%
+\contentsline {section}{\numberline {5.23}4.23 2026-07-14 18:26 — \texttt {693f019} 加速度だけによる位置推定}{16}{section.5.23}%
+\contentsline {section}{\numberline {5.24}4.24 2026-07-14 18:49 — \texttt {996a5c3} 姿勢制御の堅牢化}{17}{section.5.24}%
+\contentsline {section}{\numberline {5.25}4.25 2026-07-21 17:09 — \texttt {011b1d1} カラーセンサ精度実験}{17}{section.5.25}%
+\contentsline {chapter}{\numberline {第6章}5. PID実験ログから分かったこと}{18}{chapter.6}%
+\contentsline {section}{\numberline {6.1}5.1 2026-06-23: 初期PIDの傾向}{18}{section.6.1}%
+\contentsline {section}{\numberline {6.2}5.2 2026-06-30: 基準位置、符号、staleの切り分け}{18}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}163702}{18}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}164659}{19}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}165510 / 165807}{19}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}170026}{19}{subsection.6.2.4}%
+\contentsline {subsection}{\numberline {6.2.5}170651}{19}{subsection.6.2.5}%
+\contentsline {subsection}{\numberline {6.2.6}171035}{20}{subsection.6.2.6}%
+\contentsline {subsection}{\numberline {6.2.7}172047 / 172711 / 174211}{20}{subsection.6.2.7}%
+\contentsline {section}{\numberline {6.3}5.3 2026-07-07: 多軸高速化の結果}{20}{section.6.3}%
+\contentsline {chapter}{\numberline {第7章}6. 現在の\texttt {drone\_precision.py}の制御方法}{22}{chapter.7}%
+\contentsline {section}{\numberline {7.1}6.1 固定符号}{22}{section.7.1}%
+\contentsline {section}{\numberline {7.2}6.2 基準位置取得}{22}{section.7.2}%
+\contentsline {section}{\numberline {7.3}6.3 状態推定}{22}{section.7.3}%
+\contentsline {section}{\numberline {7.4}6.4 PID本体}{22}{section.7.4}%
+\contentsline {section}{\numberline {7.5}6.5 世界座標と機体座標}{23}{section.7.5}%
+\contentsline {section}{\numberline {7.6}6.6 高速移動の状態機械}{23}{section.7.6}%
+\contentsline {section}{\numberline {7.7}6.7 近傍速度サーボ}{23}{section.7.7}%
+\contentsline {section}{\numberline {7.8}6.8 yaw優先}{23}{section.7.8}%
+\contentsline {section}{\numberline {7.9}6.9 水平ドリフトガード}{24}{section.7.9}%
+\contentsline {section}{\numberline {7.10}6.10 高度ガード}{24}{section.7.10}%
+\contentsline {section}{\numberline {7.11}6.11 安全終了理由}{24}{section.7.11}%
+\contentsline {chapter}{\numberline {第8章}7. optical flow sensorの評価と、その限界から生まれた新手法}{26}{chapter.8}%
+\contentsline {section}{\numberline {8.1}7.1 利用者の結論}{26}{section.8.1}%
+\contentsline {section}{\numberline {8.2}7.2 ログとコードが示す具体的な問題}{26}{section.8.2}%
+\contentsline {section}{\numberline {8.3}7.3 なぜ完全には捨てず、複数案を試したか}{26}{section.8.3}%
+\contentsline {chapter}{\numberline {第9章}8. 加速度だけによる位置推定実験}{27}{chapter.9}%
+\contentsline {section}{\numberline {9.1}8.1 \texttt {accel\_position\_control.py}}{27}{section.9.1}%
+\contentsline {section}{\numberline {9.2}8.2 実機ログ結果}{27}{section.9.2}%
+\contentsline {section}{\numberline {9.3}8.3 \texttt {simple\_accel\_xy.py}の未コミット改良}{28}{section.9.3}%
+\contentsline {section}{\numberline {9.4}8.4 2026-07-21 inertialログ}{29}{section.9.4}%
+\contentsline {chapter}{\numberline {第10章}9. 時間較正方式}{30}{chapter.10}%
+\contentsline {chapter}{\numberline {第11章}10. コマンド積算dead reckoning}{31}{chapter.11}%
+\contentsline {section}{\numberline {11.1}10.1 運動モデル}{31}{section.11.1}%
+\contentsline {section}{\numberline {11.2}10.2 目標制御}{31}{section.11.2}%
+\contentsline {section}{\numberline {11.3}10.3 実機ログ}{31}{section.11.3}%
+\contentsline {chapter}{\numberline {第12章}11. カラーセンサ実験}{33}{chapter.12}%
+\contentsline {section}{\numberline {12.1}11.1 ハードウェア}{33}{section.12.1}%
+\contentsline {section}{\numberline {12.2}11.2 実験方法}{33}{section.12.2}%
+\contentsline {section}{\numberline {12.3}11.3 結果}{33}{section.12.3}%
+\contentsline {section}{\numberline {12.4}11.4 運用上の結論}{33}{section.12.4}%
+\contentsline {chapter}{\numberline {第13章}12. 球を風で30cm動かす実験}{34}{chapter.13}%
+\contentsline {section}{\numberline {13.1}12.1 目的}{34}{section.13.1}%
+\contentsline {section}{\numberline {13.2}12.2 条件}{34}{section.13.2}%
+\contentsline {section}{\numberline {13.3}12.3 安全上の工夫}{34}{section.13.3}%
+\contentsline {section}{\numberline {13.4}12.4 調整方法}{34}{section.13.4}%
+\contentsline {section}{\numberline {13.5}12.5 現存ログの状態}{35}{section.13.5}%
+\contentsline {chapter}{\numberline {第14章}13. 離陸診断}{36}{chapter.14}%
+\contentsline {chapter}{\numberline {第15章}14. テストしたこと}{38}{chapter.15}%
+\contentsline {section}{\numberline {15.1}14.1 現在の自動テスト結果}{38}{section.15.1}%
+\contentsline {section}{\numberline {15.2}14.2 \texttt {test\_drone\_precision.py}}{38}{section.15.2}%
+\contentsline {subsection}{\numberline {15.2.1}停止距離}{38}{subsection.15.2.1}%
+\contentsline {subsection}{\numberline {15.2.2}状態推定}{38}{subsection.15.2.2}%
+\contentsline {subsection}{\numberline {15.2.3}座標変換}{38}{subsection.15.2.3}%
+\contentsline {subsection}{\numberline {15.2.4}固定符号}{38}{subsection.15.2.4}%
+\contentsline {subsection}{\numberline {15.2.5}PID}{38}{subsection.15.2.5}%
+\contentsline {subsection}{\numberline {15.2.6}settle指令}{39}{subsection.15.2.6}%
+\contentsline {subsection}{\numberline {15.2.7}高速状態}{39}{subsection.15.2.7}%
+\contentsline {subsection}{\numberline {15.2.8}ドリフトガード}{39}{subsection.15.2.8}%
+\contentsline {section}{\numberline {15.3}14.3 \texttt {test\_accel\_position\_control.py}}{39}{section.15.3}%
+\contentsline {section}{\numberline {15.4}14.4 \texttt {test\_time\_calibrated\_xy.py}}{39}{section.15.4}%
+\contentsline {section}{\numberline {15.5}14.5 テストが保証しないこと}{40}{section.15.5}%
+\contentsline {chapter}{\numberline {第16章}15. 実験方法上の工夫}{41}{chapter.16}%
+\contentsline {section}{\numberline {16.1}15.1 短距離で符号を確認}{41}{section.16.1}%
+\contentsline {section}{\numberline {16.2}15.2 一次原因を先に直す}{41}{section.16.2}%
+\contentsline {section}{\numberline {16.3}15.3 仮説を撤回する}{41}{section.16.3}%
+\contentsline {section}{\numberline {16.4}15.4 回数ではなく実時間}{41}{section.16.4}%
+\contentsline {section}{\numberline {16.5}15.5 異常ログを自動学習から除外}{41}{section.16.5}%
+\contentsline {section}{\numberline {16.6}15.6 全周期ログ}{41}{section.16.6}%
+\contentsline {section}{\numberline {16.7}15.7 一度に一変数}{42}{section.16.7}%
+\contentsline {section}{\numberline {16.8}15.8 人間の実測を正式なデータとして扱う}{42}{section.16.8}%
+\contentsline {section}{\numberline {16.9}15.9 安全処理を通常ロジックと同格に扱う}{42}{section.16.9}%
+\contentsline {chapter}{\numberline {第17章}16. ファイル別の役割}{43}{chapter.17}%
+\contentsline {section}{\numberline {17.1}16.1 現在の中核}{43}{section.17.1}%
+\contentsline {section}{\numberline {17.2}16.2 optical flow代替}{43}{section.17.2}%
+\contentsline {section}{\numberline {17.3}16.3 診断・個別実験}{43}{section.17.3}%
+\contentsline {section}{\numberline {17.4}16.4 初期飛行・手動操作}{43}{section.17.4}%
+\contentsline {section}{\numberline {17.5}16.5 非飛行・周辺API}{44}{section.17.5}%
+\contentsline {section}{\numberline {17.6}16.6 文書}{44}{section.17.6}%
+\contentsline {chapter}{\numberline {第18章}17. 当時の思想・考え方の変遷}{45}{chapter.18}%
+\contentsline {section}{\numberline {18.1}17.1 「動けばよい」から「説明できなければならない」へ}{45}{section.18.1}%
+\contentsline {section}{\numberline {18.2}17.2 「同じ命令」から「同じ結果」へ}{45}{section.18.2}%
+\contentsline {section}{\numberline {18.3}17.3 「PIDなら解ける」から「観測できるものしか制御できない」へ}{45}{section.18.3}%
+\contentsline {section}{\numberline {18.4}17.4 「平均性能」から「失敗時の安全」へ}{45}{section.18.4}%
+\contentsline {section}{\numberline {18.5}17.5 「単一正解」から「複数モデルの使い分け」へ}{45}{section.18.5}%
+\contentsline {section}{\numberline {18.6}17.6 「最速」の意味の具体化}{45}{section.18.6}%
+\contentsline {chapter}{\numberline {第19章}18. 未解決事項}{47}{chapter.19}%
+\contentsline {section}{\numberline {19.1}18.1 optical flow}{47}{section.19.1}%
+\contentsline {section}{\numberline {19.2}18.2 カラーセンサ}{47}{section.19.2}%
+\contentsline {section}{\numberline {19.3}18.3 上下制御}{47}{section.19.3}%
+\contentsline {section}{\numberline {19.4}18.4 加速度推定}{47}{section.19.4}%
+\contentsline {section}{\numberline {19.5}18.5 時間較正・dead reckoning}{47}{section.19.5}%
+\contentsline {section}{\numberline {19.6}18.6 球風実験}{48}{section.19.6}%
+\contentsline {section}{\numberline {19.7}18.7 ソフトウェア}{48}{section.19.7}%
+\contentsline {chapter}{\numberline {第20章}19. 現在地点の正確な評価}{49}{chapter.20}%
+\contentsline {section}{\numberline {20.1}達成したこと}{49}{section.20.1}%
+\contentsline {section}{\numberline {20.2}未達成}{49}{section.20.2}%
+\contentsline {section}{\numberline {20.3}現実的な結論}{49}{section.20.3}%
+\contentsline {chapter}{\numberline {第21章}20. 次に行うべき実験}{50}{chapter.21}%
+\contentsline {section}{\numberline {21.1}20.1 センサを同時記録する}{50}{section.21.1}%
+\contentsline {section}{\numberline {21.2}20.2 外部測定は評価専用に使う}{50}{section.21.2}%
+\contentsline {section}{\numberline {21.3}20.3 上昇・下降を別実験にする}{50}{section.21.3}%
+\contentsline {section}{\numberline {21.4}20.4 カラー焼き付きの切り分け}{50}{section.21.4}%
+\contentsline {section}{\numberline {21.5}20.5 代替推定の役割分担}{51}{section.21.5}%
+\contentsline {chapter}{\numberline {第22章}21. 最終総括}{52}{chapter.22}%
+\contentsline {chapter}{\numberline {第23章}22. 結論・事実・原因・対応策を対応づけた総合判定}{53}{chapter.23}%
+\contentsline {section}{\numberline {23.1}22.1 同じプログラムでも飛行結果の再現性が低い}{53}{section.23.1}%
+\contentsline {section}{\numberline {23.2}22.2 純粋なPIDだけでは最速・精密・堅牢を同時達成しにくい}{54}{section.23.2}%
+\contentsline {section}{\numberline {23.3}22.3 optical flowは最終目標に対する単独の信頼源にならない}{55}{section.23.3}%
+\contentsline {section}{\numberline {23.4}22.4 加速度二重積分だけでは長時間位置を維持できない}{56}{section.23.4}%
+\contentsline {section}{\numberline {23.5}22.5 カラーセンサは通常飛行高度の連続位置観測に適さない}{57}{section.23.5}%
+\contentsline {section}{\numberline {23.6}22.6 上昇と下降は対称ではない}{58}{section.23.6}%
+\contentsline {chapter}{\numberline {第24章}23. PID飛行ログ全42件の完全一覧}{60}{chapter.24}%
+\contentsline {section}{\numberline {24.1}23.1 表の読み方}{60}{section.24.1}%
+\contentsline {section}{\numberline {24.2}23.2 全ログを一件ずつ言語化した評価}{63}{section.24.2}%
+\contentsline {subsection}{\numberline {24.2.1}20260623\_164713}{63}{subsection.24.2.1}%
+\contentsline {subsection}{\numberline {24.2.2}20260623\_165545}{63}{subsection.24.2.2}%
+\contentsline {subsection}{\numberline {24.2.3}20260623\_170224}{63}{subsection.24.2.3}%
+\contentsline {subsection}{\numberline {24.2.4}20260623\_170643}{63}{subsection.24.2.4}%
+\contentsline {subsection}{\numberline {24.2.5}20260623\_171101}{63}{subsection.24.2.5}%
+\contentsline {subsection}{\numberline {24.2.6}20260623\_171450}{63}{subsection.24.2.6}%
+\contentsline {subsection}{\numberline {24.2.7}20260623\_172036}{63}{subsection.24.2.7}%
+\contentsline {subsection}{\numberline {24.2.8}20260623\_173526}{63}{subsection.24.2.8}%
+\contentsline {subsection}{\numberline {24.2.9}20260623\_173618}{63}{subsection.24.2.9}%
+\contentsline {subsection}{\numberline {24.2.10}20260623\_174318}{64}{subsection.24.2.10}%
+\contentsline {subsection}{\numberline {24.2.11}20260630\_163702}{64}{subsection.24.2.11}%
+\contentsline {subsection}{\numberline {24.2.12}20260630\_164659}{64}{subsection.24.2.12}%
+\contentsline {subsection}{\numberline {24.2.13}20260630\_165510}{64}{subsection.24.2.13}%
+\contentsline {subsection}{\numberline {24.2.14}20260630\_165714}{64}{subsection.24.2.14}%
+\contentsline {subsection}{\numberline {24.2.15}20260630\_165807}{64}{subsection.24.2.15}%
+\contentsline {subsection}{\numberline {24.2.16}20260630\_170026}{64}{subsection.24.2.16}%
+\contentsline {subsection}{\numberline {24.2.17}20260630\_170651}{64}{subsection.24.2.17}%
+\contentsline {subsection}{\numberline {24.2.18}20260630\_171035}{64}{subsection.24.2.18}%
+\contentsline {subsection}{\numberline {24.2.19}20260630\_172047}{65}{subsection.24.2.19}%
+\contentsline {subsection}{\numberline {24.2.20}20260630\_172711}{65}{subsection.24.2.20}%
+\contentsline {subsection}{\numberline {24.2.21}20260630\_174211}{65}{subsection.24.2.21}%
+\contentsline {subsection}{\numberline {24.2.22}20260707\_164639}{65}{subsection.24.2.22}%
+\contentsline {subsection}{\numberline {24.2.23}20260707\_164950}{65}{subsection.24.2.23}%
+\contentsline {subsection}{\numberline {24.2.24}20260707\_165019}{65}{subsection.24.2.24}%
+\contentsline {subsection}{\numberline {24.2.25}20260707\_165327}{65}{subsection.24.2.25}%
+\contentsline {subsection}{\numberline {24.2.26}20260707\_165345}{65}{subsection.24.2.26}%
+\contentsline {subsection}{\numberline {24.2.27}20260707\_165911}{65}{subsection.24.2.27}%
+\contentsline {subsection}{\numberline {24.2.28}20260707\_165932}{65}{subsection.24.2.28}%
+\contentsline {subsection}{\numberline {24.2.29}20260707\_170225}{66}{subsection.24.2.29}%
+\contentsline {subsection}{\numberline {24.2.30}20260707\_170244}{66}{subsection.24.2.30}%
+\contentsline {subsection}{\numberline {24.2.31}20260707\_170506}{66}{subsection.24.2.31}%
+\contentsline {subsection}{\numberline {24.2.32}20260707\_170526}{66}{subsection.24.2.32}%
+\contentsline {subsection}{\numberline {24.2.33}20260707\_170935}{66}{subsection.24.2.33}%
+\contentsline {subsection}{\numberline {24.2.34}20260707\_171019}{66}{subsection.24.2.34}%
+\contentsline {subsection}{\numberline {24.2.35}20260707\_171632}{66}{subsection.24.2.35}%
+\contentsline {subsection}{\numberline {24.2.36}20260707\_171724}{66}{subsection.24.2.36}%
+\contentsline {subsection}{\numberline {24.2.37}20260707\_172317}{66}{subsection.24.2.37}%
+\contentsline {subsection}{\numberline {24.2.38}20260707\_172418}{66}{subsection.24.2.38}%
+\contentsline {subsection}{\numberline {24.2.39}20260707\_173145}{67}{subsection.24.2.39}%
+\contentsline {subsection}{\numberline {24.2.40}20260707\_173239}{67}{subsection.24.2.40}%
+\contentsline {subsection}{\numberline {24.2.41}20260707\_173920}{67}{subsection.24.2.41}%
+\contentsline {subsection}{\numberline {24.2.42}20260707\_173949}{67}{subsection.24.2.42}%
+\contentsline {chapter}{\numberline {第25章}24. 全25コミットの変更量と、その意味}{68}{chapter.25}%
+\contentsline {chapter}{\numberline {第26章}25. 全35テストを一件ずつ説明する}{70}{chapter.26}%
+\contentsline {section}{\numberline {26.1}25.1 加速度位置制御12件}{70}{section.26.1}%
+\contentsline {section}{\numberline {26.2}25.2 \texttt {drone\_precision} 17件}{71}{section.26.2}%
+\contentsline {section}{\numberline {26.3}25.3 時間較正6件}{72}{section.26.3}%
+\contentsline {section}{\numberline {26.4}25.4 テスト結果の正しい解釈}{72}{section.26.4}%
+\contentsline {chapter}{\numberline {第27章}26. 用語と数式を省略せず説明する}{74}{chapter.27}%
+\contentsline {section}{\numberline {27.1}26.1 PID}{74}{section.27.1}%
+\contentsline {section}{\numberline {27.2}26.2 アンチワインドアップ}{74}{section.27.2}%
+\contentsline {section}{\numberline {27.3}26.3 stale}{74}{section.27.3}%
+\contentsline {section}{\numberline {27.4}26.4 runaway}{74}{section.27.4}%
+\contentsline {section}{\numberline {27.5}26.5 ZUPT}{74}{section.27.5}%
+\contentsline {section}{\numberline {27.6}26.6 dead reckoning}{74}{section.27.6}%
+\contentsline {section}{\numberline {27.7}26.7 世界座標と機体座標}{75}{section.27.7}%
+\contentsline {section}{\numberline {27.8}26.8 停止距離}{75}{section.27.8}%
+\contentsline {section}{\numberline {27.9}26.9 timeout}{75}{section.27.9}%
+\contentsline {section}{\numberline {27.10}26.10 settled}{75}{section.27.10}%
+\contentsline {chapter}{\numberline {第28章}27. 事実・推定・解釈の証拠台帳}{76}{chapter.28}%
+\contentsline {section}{\numberline {28.1}27.1 直接確認できる事実}{76}{section.28.1}%
+\contentsline {section}{\numberline {28.2}27.2 強い推定}{76}{section.28.2}%
+\contentsline {section}{\numberline {28.3}27.3 断定できない解釈}{76}{section.28.3}%
+\contentsline {chapter}{\numberline {第29章}28. 完全版としての最終結論}{77}{chapter.29}%
+\contentsline {chapter}{\numberline {第30章}29. PID以外の現存実験ログを一件ずつ確認した台帳}{78}{chapter.30}%
+\contentsline {section}{\numberline {30.1}29.1 球風実験7件}{78}{section.30.1}%
+\contentsline {subsection}{\numberline {30.1.1}\texttt {ball\_wind\_20260714\_173950.jsonl}}{78}{subsection.30.1.1}%
+\contentsline {subsection}{\numberline {30.1.2}\texttt {ball\_wind\_20260714\_174007.jsonl}}{78}{subsection.30.1.2}%
+\contentsline {subsection}{\numberline {30.1.3}\texttt {ball\_wind\_20260714\_175404.jsonl}}{78}{subsection.30.1.3}%
+\contentsline {subsection}{\numberline {30.1.4}\texttt {ball\_wind\_20260714\_175438.jsonl}}{78}{subsection.30.1.4}%
+\contentsline {subsection}{\numberline {30.1.5}\texttt {ball\_wind\_20260714\_175507.jsonl}}{79}{subsection.30.1.5}%
+\contentsline {subsection}{\numberline {30.1.6}\texttt {ball\_wind\_20260714\_175824.jsonl}}{79}{subsection.30.1.6}%
+\contentsline {subsection}{\numberline {30.1.7}\texttt {ball\_wind\_20260714\_180329.jsonl}}{79}{subsection.30.1.7}%
+\contentsline {section}{\numberline {30.2}29.2 初期加速度位置CSV 10件}{79}{section.30.2}%
+\contentsline {subsection}{\numberline {30.2.1}\texttt {accel\_position\_20260714\_174347.csv}}{79}{subsection.30.2.1}%
+\contentsline {subsection}{\numberline {30.2.2}\texttt {accel\_position\_20260714\_174436.csv}}{79}{subsection.30.2.2}%
+\contentsline {subsection}{\numberline {30.2.3}\texttt {accel\_position\_20260714\_174455.csv}}{80}{subsection.30.2.3}%
+\contentsline {subsection}{\numberline {30.2.4}\texttt {accel\_position\_20260714\_174527.csv}}{80}{subsection.30.2.4}%
+\contentsline {subsection}{\numberline {30.2.5}\texttt {accel\_position\_20260714\_174918.csv}}{80}{subsection.30.2.5}%
+\contentsline {subsection}{\numberline {30.2.6}\texttt {accel\_position\_20260714\_175055.csv}}{80}{subsection.30.2.6}%
+\contentsline {subsection}{\numberline {30.2.7}\texttt {accel\_position\_20260714\_175224.csv}}{80}{subsection.30.2.7}%
+\contentsline {subsection}{\numberline {30.2.8}\texttt {accel\_position\_20260714\_175559.csv}}{80}{subsection.30.2.8}%
+\contentsline {subsection}{\numberline {30.2.9}\texttt {accel\_position\_20260714\_175852.csv}}{80}{subsection.30.2.9}%
+\contentsline {subsection}{\numberline {30.2.10}\texttt {accel\_position\_20260714\_180130.csv}}{81}{subsection.30.2.10}%
+\contentsline {section}{\numberline {30.3}29.3 改良inertial XYログ8件}{81}{section.30.3}%
+\contentsline {subsection}{\numberline {30.3.1}\texttt {inertial\_xy\_20260721\_162442.csv}}{81}{subsection.30.3.1}%
+\contentsline {subsection}{\numberline {30.3.2}\texttt {inertial\_xy\_20260721\_162534.csv}}{81}{subsection.30.3.2}%
+\contentsline {subsection}{\numberline {30.3.3}\texttt {inertial\_xy\_20260721\_162638.csv}}{81}{subsection.30.3.3}%
+\contentsline {subsection}{\numberline {30.3.4}\texttt {inertial\_xy\_20260721\_162737.csv}}{81}{subsection.30.3.4}%
+\contentsline {subsection}{\numberline {30.3.5}\texttt {inertial\_xy\_20260721\_170652.csv}}{82}{subsection.30.3.5}%
+\contentsline {subsection}{\numberline {30.3.6}\texttt {inertial\_xy\_20260721\_171307.csv}}{82}{subsection.30.3.6}%
+\contentsline {subsection}{\numberline {30.3.7}\texttt {inertial\_xy\_20260721\_171423.csv}}{82}{subsection.30.3.7}%
+\contentsline {subsection}{\numberline {30.3.8}\texttt {inertial\_xy\_20260721\_171507.csv}}{82}{subsection.30.3.8}%
+\contentsline {section}{\numberline {30.4}29.4 command dead reckoningログ3件}{82}{section.30.4}%
+\contentsline {subsection}{\numberline {30.4.1}\texttt {command\_dead\_reckoning\_20260721\_172153.csv}}{82}{subsection.30.4.1}%
+\contentsline {subsection}{\numberline {30.4.2}\texttt {command\_dead\_reckoning\_20260721\_172837.csv}}{83}{subsection.30.4.2}%
+\contentsline {subsection}{\numberline {30.4.3}\texttt {command\_dead\_reckoning\_20260721\_172907.csv}}{83}{subsection.30.4.3}%
+\contentsline {chapter}{\numberline {第31章}30. 作業ツリーに残る未コミット状態の意味}{84}{chapter.31}%

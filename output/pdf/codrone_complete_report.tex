@@ -1,0 +1,2639 @@
+\documentclass[10pt,a4paper,openany]{ltjsbook}
+\usepackage[margin=21mm,headheight=24pt,headsep=8mm,footskip=12mm]{geometry}
+\usepackage{luatexja-fontspec}
+\setmainjfont[
+  Path=C:/texlive/2025/texmf-dist/fonts/opentype/public/haranoaji/,
+  BoldFont=HaranoAjiMincho-Bold.otf
+]{HaranoAjiMincho-Regular.otf}
+\setsansjfont[
+  Path=C:/texlive/2025/texmf-dist/fonts/opentype/public/haranoaji/,
+  BoldFont=HaranoAjiGothic-Bold.otf
+]{HaranoAjiGothic-Regular.otf}
+\setmonojfont[
+  Path=C:/texlive/2025/texmf-dist/fonts/opentype/public/haranoaji/,
+  BoldFont=HaranoAjiGothic-Bold.otf
+]{HaranoAjiGothic-Regular.otf}
+\setmainfont[
+  Path=C:/texlive/2025/texmf-dist/fonts/opentype/public/lm/,
+  BoldFont=lmroman10-bold.otf,
+  ItalicFont=lmroman10-italic.otf
+]{lmroman10-regular.otf}
+\setsansfont[
+  Path=C:/texlive/2025/texmf-dist/fonts/opentype/public/lm/,
+  BoldFont=lmsans10-bold.otf,
+  ItalicFont=lmsans10-oblique.otf
+]{lmsans10-regular.otf}
+\setmonofont[
+  Path=C:/texlive/2025/texmf-dist/fonts/opentype/public/lm/,
+  BoldFont=lmmono10-regular.otf,
+  ItalicFont=lmmono10-regular.otf,
+  BoldItalicFont=lmmono10-regular.otf
+]{lmmono10-regular.otf}
+\usepackage[table,dvipsnames]{xcolor}
+\definecolor{ReportNavy}{HTML}{17324D}
+\definecolor{ReportTeal}{HTML}{008C95}
+\definecolor{ReportAmber}{HTML}{E8913A}
+\definecolor{ReportInk}{HTML}{263747}
+\definecolor{ReportMuted}{HTML}{66788A}
+\definecolor{ReportLight}{HTML}{EDF4F6}
+\definecolor{ReportPale}{HTML}{F7FAFB}
+\definecolor{CodeBg}{HTML}{17242F}
+\definecolor{CodeText}{HTML}{E7EEF3}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\usepackage{eso-pic}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=ReportTeal,
+  urlcolor=ReportTeal,
+  citecolor=ReportTeal,
+  pdftitle={CoDrone EDU 制御・実験・Git変更 完全詳細報告書},
+  pdfauthor={PythonProject}
+}
+\urlstyle{same}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+\setstretch{1.10}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\renewcommand{\labelitemi}{\color{ReportTeal}\small\textbullet}
+\renewcommand{\labelitemii}{\color{ReportAmber}\scriptsize\textbullet}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize\color{CodeText},
+  backgroundcolor=\color{CodeBg},
+  frame=single,
+  rulecolor=\color{ReportTeal},
+  framesep=7pt,
+  xleftmargin=1.2em,
+  xrightmargin=0.4em,
+  breaklines=true,
+  breakatwhitespace=false,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize\color{ReportTeal}\bfseries CODRONE EDU CONTROL RESEARCH}
+\fancyhead[R]{\sffamily\footnotesize\color{ReportMuted}\nouppercase{\leftmark}}
+\fancyfoot[L]{\sffamily\scriptsize\color{ReportMuted}PythonProject / Technical Evidence Report}
+\fancyfoot[R]{\sffamily\small\color{ReportNavy}\bfseries\thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{ReportTeal}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0pt}
+
+\makeatletter
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{-15pt}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[ReportLight] (0,0.35) rectangle (\textwidth,-1.45);
+    \fill[ReportTeal] (0,0.35) rectangle (0.18,-1.45);
+  \end{tikzpicture}%
+  \vspace*{7pt}%
+  {\hspace*{0.28cm}\sffamily\color{ReportTeal}\small\bfseries CHAPTER \thechapter\par}%
+  \vspace{5pt}%
+  {\sffamily\color{ReportNavy}\huge\bfseries #1\par}%
+  \vspace{24pt}%
+}
+\renewcommand{\@makeschapterhead}[1]{%
+  \vspace*{-15pt}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[ReportLight] (0,0.35) rectangle (\textwidth,-1.45);
+    \fill[ReportAmber] (0,0.35) rectangle (0.18,-1.45);
+  \end{tikzpicture}%
+  \vspace*{7pt}%
+  {\hspace*{0.28cm}\sffamily\color{ReportAmber}\small\bfseries EXECUTIVE SECTION\par}%
+  \vspace{5pt}%
+  {\sffamily\color{ReportNavy}\huge\bfseries #1\par}%
+  \vspace{24pt}%
+}
+\renewcommand\section{\@startsection{section}{1}{0pt}%
+  {2.2ex plus .5ex minus .2ex}{1.0ex}%
+  {\sffamily\Large\bfseries\color{ReportNavy}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{0pt}%
+  {1.8ex plus .4ex minus .2ex}{0.7ex}%
+  {\sffamily\large\bfseries\color{ReportTeal}}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{0pt}%
+  {1.4ex plus .3ex minus .2ex}{0.5ex}%
+  {\sffamily\normalsize\bfseries\color{ReportInk}}}
+\makeatother
+
+\newcommand{\reportlabel}[1]{%
+  \par\vspace{0.55em}%
+  \noindent\colorbox{ReportTeal}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+      \sffamily\bfseries\color{white}#1%
+    }%
+  }\par\vspace{0.20em}%
+}
+\newcommand{\reportquote}[1]{%
+  \par\noindent
+  \begin{tikzpicture}
+    \node[anchor=north west,inner sep=10pt,outer sep=0pt,
+      fill=ReportLight,text width=\dimexpr\linewidth-24pt\relax,
+      draw=ReportTeal,line width=0.8pt] {\color{ReportInk}\itshape #1};
+  \end{tikzpicture}\par
+}
+
+\begin{document}
+\frontmatter
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[ReportNavy] (current page.south west) rectangle (current page.north east);
+  \fill[ReportTeal] ($(current page.north west)+(0,-2.0)$)
+    -- ($(current page.north east)+(0,-0.7)$)
+    -- (current page.north east)
+    -- (current page.north west) -- cycle;
+  \fill[ReportAmber] ($(current page.south west)+(0,1.65)$)
+    rectangle ($(current page.south east)+(0,1.78)$);
+  \draw[ReportTeal!55,line width=1.1pt]
+    ($(current page.center)+(-7.0,-4.1)$) circle (5.3);
+  \draw[ReportTeal!30,line width=0.7pt]
+    ($(current page.center)+(-7.0,-4.1)$) circle (4.5);
+\end{tikzpicture}
+\vspace*{3.4cm}
+{\sffamily\color{ReportTeal!30}\bfseries\large TECHNICAL EVIDENCE REPORT\par}
+\vspace{0.7cm}
+{\sffamily\color{white}\bfseries\fontsize{28}{34}\selectfont
+CoDrone EDU\\[0.25em]
+制御・実験・Git変更\\[0.25em]
+完全詳細報告書\par}
+\vspace{1.0cm}
+{\color{ReportTeal!55}\rule{0.70\textwidth}{1.2pt}\par}
+\vspace{0.8cm}
+{\sffamily\color{white!82}\large
+初期API実験から多軸ハイブリッド制御、\\
+センサ限界、代替測位、全ログ・全テストまで\par}
+\vfill
+\begin{minipage}{0.72\textwidth}
+\sffamily\color{white!75}
+\begin{tabular}{@{}ll@{}}
+\color{ReportAmber}\bfseries 対象期間 & 2026-05-19 -- 2026-07-21\\[0.35em]
+\color{ReportAmber}\bfseries 作成日 & 2026-07-27\\[0.35em]
+\color{ReportAmber}\bfseries Repository & PythonProject\\[0.35em]
+\color{ReportAmber}\bfseries HEAD & 011b1d17963a70d6f8baa49c19f6f1f870829aa6
+\end{tabular}
+\end{minipage}
+\vspace{1.3cm}
+\end{titlepage}
+
+\cleardoublepage
+\thispagestyle{empty}
+\vspace*{2cm}
+{\sffamily\color{ReportNavy}\Huge\bfseries Report Scope\par}
+\vspace{0.5cm}
+{\color{ReportTeal}\rule{\textwidth}{1.0pt}\par}
+\vspace{0.8cm}
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{>{\sffamily\bfseries\color{ReportTeal}}l >{\RaggedRight\arraybackslash}p{0.60\textwidth}}
+Git履歴 & 全25コミット\\
+PID飛行ログ & 全42件\\
+加速度・inertialログ & 全18件\\
+球風ログ & 全7件\\
+Dead reckoningログ & 全3件\\
+自動テスト & 全35件成功\\
+構文検証 & 全Pythonファイル成功
+\end{tabular}
+\end{center}
+\vfill
+{\small\color{ReportMuted}
+本書は、確認事実、強い推定、思想上の解釈を分離し、成功例だけでなく、
+runaway、timeout、欠損ログ、撤回された仮説も同じ重要度で記録する。}
+
+\cleardoublepage
+\tableofcontents
+\mainmatter
+\color{ReportInk}
+
+\chapter*{最初に結論}
+\addcontentsline{toc}{chapter}{最初に結論}
+\markboth{最初に結論}{最初に結論}
+本プロジェクトでは、CoDrone EDUを「同じ命令で同じように動かす」段階から、「現在位置・速度・姿勢・センサ鮮度を観測し、風やぶれがあっても指定座標へ戻し、異常時には安全停止する」段階へ発展させた。初期の固定出力・固定時間飛行、単軸PID、多軸PID、ログ解析、距離別高速制御を経て、最終的には純PIDだけに頼らず、状態機械、世界座標と機体座標の変換、yaw優先、最大加速、物理停止距離、最大制動、近傍速度サーボ、水平ドリフト抑制、高度回復、runaway・sensor timeout・attitude faultを組み合わせるハイブリッド制御へ到達した。\par
+一方、実機で「毎回、高速かつ高精度に指定量だけ移動する」という最終目標は未達成である。ソフトウェアの構造と安全性は大きく改善したが、主な制約は制御ゲインではなく位置観測である。optical flowは高いstale比率、古い値、床・照明・高度・傾斜依存、高速時の破綻を示した。加速度二重積分はゼロ張り付きと大ドリフトの両方を示した。時間較正とcommand dead reckoningはoptical flowに依存しないが、風や物理外乱を直接観測しない。カラーセンサは約2cmまで近づかなければ判定しにくく、約3秒同値を返し続ける焼き付きがある。\par
+したがって、現時点で採るべき方針は、どれか一つのセンサや一つのPIDを万能とみなすことではない。optical flowが健全な時は位置観測として使い、短い欠落はIMUとcommand modelで補間し、壁ToFや既知色マーカーを利用できる時だけ絶対補正し、推定不確実性が限界を越えたら停止する方式である。外部測位を最終制御へ使わないとしても、評価時には外部真値を取り、内部推定が本当に正しいかを検証する必要がある。\par
+Gitに残る全25コミット、現存するPIDログ全42件、加速度・inertialログ全18件、球風ログ全7件、command dead reckoningログ全3件、現在の35ユニットテストを確認した。自動テスト35件はすべて成功し、全Pythonファイルは構文チェックを通過した。ただし、これはコード上の数式・符号・安全条件の成功であって、実機位置精度の完成証明ではない。\par
+以下では、この結論に至った事実、原因、対応策、変更目的、背景、モチベーション、思想の変化、成功、失敗、撤回された仮説、未解決事項を省略せず記述する。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{0. 本報告書の目的、調査範囲、事実と推定の区別}
+本報告書は、このリポジトリでこれまで行われたCoDrone EDUに関する学習、基礎機能確認、飛行実験、PID制御、ログ解析、センサ評価、代替測位手法、安全対策、テスト、文書化、およびGit上の変更を、可能な限り漏れなく一つに統合したものである。\par
+調査対象は次のとおりである。\par
+\begin{itemize}
+\item Gitに残る全25コミット
+\item 各コミットのメッセージ、変更ファイル、追加・削除行、主要差分
+\item 現在の追跡対象ファイル
+\item 現在の未コミット変更および未追跡ファイル
+\item \texttt{flight\_logs} に現存するPID飛行ログ
+\item \texttt{accel\_position\_logs} の加速度積分実験ログ
+\item \texttt{ball\_wind\_logs} の球風移動実験ログ
+\item \texttt{command\_dead\_reckoning} のCSVログ
+\item \texttt{experiment\_logs} と \texttt{memo} の仕様、解析、実験記録
+\item 現在のユニットテストと全Pythonファイルの構文検証
+\item 利用者から今回明示された、カラーセンサ、飛行再現性、上下非対称性、optical flow sensorへの評価
+\end{itemize}
+記述は以下の3種類に分ける。\par
+\begin{enumerate}
+\item \textbf{確認事実}  
+コード、ログ、コミット、文書、または今回の利用者証言に直接書かれている内容。\par
+\item \textbf{強い推定}  
+変更の直前の失敗ログと直後のコード変更が明確に対応しており、当時の意図をかなり高い確度で復元できる内容。\par
+\item \textbf{解釈・思想の推定}  
+Gitは「何を変えたか」は示すが、人間の内面を完全には記録しない。そのため、動機や思想は根拠を併記し、断定しない。\par
+\end{enumerate}
+この区別は重要である。たとえば「optical flow sensorはカス」という評価は利用者の明示的な実機評価としてそのまま重く扱える。一方、「なぜその日にその実験を選んだか」の細部は、変更順序、ログ、文書から推定するしかない。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{1. 結論の要約}
+このプロジェクトの本質は、単なるドローンAPIの練習から始まり、次第に次の問題へ収束していった過程である。\par
+\reportquote{同じ命令を出しても毎回同じ場所へ行かず、風、機体差、姿勢、yaw、センサ遅延、optical flowの破綻によって結果が変わる小型ドローンを、内蔵センサだけで、指定座標へ、できるだけ速く、精密に、安全に移動させられるか。}
+開発思想は大きく5段階に変化した。\par
+\begin{enumerate}
+\item \textbf{APIと機体特性を一つずつ触って理解する段階}  
+離陸、着陸、ホバリング、LED、ブザー、前後左右、上下、yaw、各種センサを小さな独立スクリプトで試した。\par
+\item \textbf{時間・固定出力による開ループ制御の段階}  
+一定出力を一定時間与え、図形飛行や手動操作を行った。しかし、再現性と外乱耐性が低い。\par
+\item \textbf{位置センサを使う閉ループPIDの段階}  
+位置誤差をpitch/roll/throttleへ戻し、指定距離へ収束させようとした。ログ、自動調整、整定判定、安全停止も追加した。\par
+\item \textbf{純PIDの限界を認識し、ハイブリッド制御へ移る段階}  
+世界座標と機体座標の変換、yaw優先、速度サーボ、制動距離、bang-bang型の最大加速・最大制動、stale時間判定、runaway、高度回復、ドリフト抑制を組み合わせた。\par
+\item \textbf{optical flow依存を外す複数の代替案を並行検討する段階}  
+加速度二重積分、姿勢角由来の加速度、ZUPT、時間較正、コマンド積算型dead reckoning、壁ToF補正、低高度カラー・マーカー補正を試した。\par
+\end{enumerate}
+最終的に得られた最も重要な知見は次のとおりである。\par
+\begin{itemize}
+\item 飛行中のぶれが大きく、同じプログラムでも再現性が低い。
+\item 風や物理的外乱があるため、時間だけで動かす開ループ制御では目標位置を保証できない。
+\item optical flow由来位置は更新停止、stale、高速移動中の破綻、姿勢・床・照明依存が大きく、主たる弱点になった。
+\item 位置センサが観測を失った後、内蔵センサだけで真の絶対位置を厳密に復元することはできない。
+\item 上昇と下降の応答は対称ではない。上昇は得意だが下降は苦手で、同じ発想・同じゲインを上下に対称適用すべきではない。
+\item yawがずれると、世界座標のx/y誤差と機体のpitch/roll方向がずれ、円運動や発散が起こる。
+\item センサ更新停止は「制御ループ何回分止まったか」ではなく「実時間で何秒止まったか」で扱う方が適切である。
+\item 最速性を求める場合、純PIDだけで全距離を走るより、遠方では最大加速、停止距離内では最大制動、近傍では速度サーボという状態機械が合理的である。
+\item カラーセンサは約2cm程度の低高度でなければ色判定が難しく、実運用では着地後判定に近い。
+\item カラーセンサは約3秒同じ値を返し続ける焼き付き・フリーズを頻発した。取得周期をsleepで落としても体感頻度が変わらず、単純なポーリング過多説は支持されなかった。
+\item 加速度二重積分は、量子化、バイアス、ノイズ、符号、姿勢変化に極端に弱い。ログでは推定値がゼロに張り付く場合と大きくドリフトする場合の両方が確認された。
+\item コマンド積算型dead reckoningは自己整合的な推定値を作れるが、外乱を直接観測しない。そのため、統計的停止判定が安定していても真値保証にはならない。
+\item 自動テストは現在35件すべて成功しているが、テストが保証するのは数式、符号、状態遷移などのソフトウェア上の不変条件であり、実機の位置精度ではない。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{2. プロジェクトの最終目標と、その背後にあるモチベーション}
+\section{2.1 明示された最終目標}
+仕様書群から読み取れる目標は明確である。\par
+\begin{itemize}
+\item \texttt{x}, \texttt{y}, \texttt{z}, \texttt{yaw} の相対指令を与える。
+\item 指定量だけ移動し、目標位置で停止する。
+\item 風、電波干渉、センサ誤差、軽い物理的妨害があっても再収束する。
+\item 可能な範囲で最高速に加速し、目標直前で急制動する。
+\item 最終位置では低速で精密に合わせる。
+\item センサ異常、低高度、姿勢崩れ、発散時には安全停止する。
+\item 変更理由と飛行結果をログとテストから追跡できるようにする。
+\end{itemize}
+優先順位は、文書上では次の順で整理されている。\par
+\begin{enumerate}
+\item 最速性
+\item 精密性
+\item 堅牢性
+\item 保守性
+\end{enumerate}
+ただし、実装上は安全がこれらの前提になっている。最大出力を使う設計と、runaway・高度・姿勢・センサtimeoutのガードが同時に実装されているのは、「速さを求めるからこそ、異常時に即座に止める必要がある」という思想の表れである。\par
+\section{2.2 座標ベース制御へ進んだ直接の理由}
+利用者の明示説明では、飛行中にあらゆる方向へのぶれが激しく、同じプログラムでも結果の再現性が低かった。扇風機の風が進行方向にある、途中で風を受ける、といった外的要因があっても、行きたい方向へ直進させたいというのがPIDと座標ベース制御の直接のモチベーションである。\par
+これは時間制御との決定的な違いである。\par
+\begin{itemize}
+\item 時間制御: 「この出力を1秒出せば、だいたいこの距離進む」という前提。
+\item 座標閉ループ制御: 「現在どこにいるかを読み、目標との差が残る限り補正する」という前提。
+\end{itemize}
+前者は無風・同一バッテリー・同一床・同一姿勢に依存する。後者は観測が正しい限り外乱後も戻れる。しかし、このプロジェクトでは後に「観測そのものが信用できない」という第二の問題へ到達した。\par
+\section{2.3 なぜ最初に上下方向を試したか}
+利用者証言では、上下運動が見た目で最も分かりやすいため、最初のPID実験対象に選ばれた。その結果、上昇と下降のしやすさが大きく異なることが分かった。\par
+\begin{itemize}
+\item 上昇: 推力を増せば比較的素直に反応する。
+\item 下降: 推力を落とすだけでは応答が遅い、機体が不安定になりやすい、地面付近の気流や高度センサ遅延の影響を受ける可能性がある。
+\end{itemize}
+この非対称性は、後の\texttt{throttle}制御における近傍ゲイン弱化、速度ブレーキ、高度回復ガード、Z軸専用の速度上限へつながっていると解釈できる。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{3. Gitから見た全体像}
+\section{3.1 現在のGit状態}
+報告書作成時点で以下の状態だった。\par
+\begin{itemize}
+\item ブランチ: \texttt{master}
+\item \texttt{origin/master} より1コミット先行
+\item ローカルHEAD: \texttt{011b1d1}
+\item リモートHEAD: \texttt{996a5c3}
+\item 追跡済み変更:
+\begin{itemize}
+\item \texttt{experiment\_logs/README.md}
+\item \texttt{simple\_accel\_xy.py}
+\end{itemize}
+\item 未追跡の主要コード:
+\begin{itemize}
+\item \texttt{accel\_position\_control.py}
+\item \texttt{ball\_wind\_experiment.py}
+\item \texttt{codrone\_takeoff\_diagnose.py}
+\item \texttt{command\_dead\_reckoning.py}
+\item \texttt{time\_calibrated\_xy.py}
+\item \texttt{test\_accel\_position\_control.py}
+\item \texttt{test\_time\_calibrated\_xy.py}
+\end{itemize}
+\item 未追跡の主要ログ:
+\begin{itemize}
+\item \texttt{accel\_position\_logs/}
+\item \texttt{ball\_wind\_logs/}
+\item \texttt{experiment\_logs/2026-07-14\_球風移動実験.md}
+\end{itemize}
+\end{itemize}
+つまり、Gitの最新コミットはカラーセンサ実験だが、作業ツリーにはその先の大規模な代替測位・球風・離陸診断・時間較正実験がある。現在の研究状態は「コミット済みの完成状態」ではなく、複数案を比較中の研究ノートに近い。\par
+\section{3.2 Git管理方針の変化}
+初期には \texttt{.idea} と実機ログがGitへ入っていた。2026-07-07の\texttt{10fc6f3}で、次がまとめてGit管理から外された。\par
+\begin{itemize}
+\item IDE固有状態 \texttt{.idea/}
+\item Pythonキャッシュ
+\item 仮想環境
+\item 秘密情報や鍵になり得るファイル
+\item ローカル実行ログ
+\item \texttt{flight\_logs/}
+\end{itemize}
+コミットメッセージの「漏洩経路を遮断」は、単なる整理ではなく、個人環境、秘密情報、巨大な実行生成物を誤って公開しないための防御である。同時に、約17,916行相当のログが追跡対象から削除された。ログ自体は作業ディレクトリに残っており、解析には使えるが、Git履歴の軽量化と情報管理を優先した判断である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{4. 全コミットの時系列詳細}
+\section{4.1 2026-05-19 16:41 — \texttt{90ddb8b} initial commit}
+PyCharmの初期テンプレートとIDE設定を登録した。まだドローン制御はない。\par
+読み取れる意味:\par
+\begin{itemize}
+\item 研究・課題のためのPythonプロジェクトを作った出発点。
+\item この時点では制御思想は未形成。
+\item \texttt{.idea}まで登録しており、Git運用は学習初期の状態だった。
+\end{itemize}
+\section{4.2 2026-05-19 17:05 — \texttt{1378ff4} チャイム、離陸＆着陸}
+最初の実機接続段階である。\par
+\begin{itemize}
+\item \texttt{Drone()}生成
+\item \texttt{pair()}
+\item 離陸
+\item 着陸
+\item LED
+\item Westminster Chimesのブザー演奏
+\item \texttt{close()}
+\end{itemize}
+モチベーションの推定:\par
+\begin{itemize}
+\item まず通信、アクチュエータ、飛行APIが動くことを小さく確認する。
+\item 音とLEDは飛行制御には直接不要だが、機体との通信成功を人間が即座に確認できる。
+\item 初期段階では「精密制御」より「APIを一通り動かす」ことが主目的。
+\end{itemize}
+\section{4.3 2026-05-19 17:15 — \texttt{c10d4d8} ホバリング}
+離陸と着陸の間にホバリングを追加した。\par
+意味:\par
+\begin{itemize}
+\item 離陸直後にすぐ次動作へ進むのではなく、安定時間を置く発想が現れた。
+\item 後の基準位置取得、センサ校正、post-takeoff waitの原型。
+\end{itemize}
+\section{4.4 2026-05-19 18:24 — \texttt{4ba456e} 前後左右、z軸回転、上下}
+基本6自由度の操作確認へ進んだ。\par
+\begin{itemize}
+\item pitchによる前後
+\item rollによる左右
+\item yawによる回転
+\item throttleによる上下
+\item \texttt{xy-axis.py}
+\item \texttt{z-axis.py}
+\end{itemize}
+当時の方式は固定出力・固定時間の完全な開ループ制御だった。\texttt{xy-axis.py}ではroll 30を4秒、pitch 30を4秒など、順番に四方向へ動かす。\texttt{z-axis.py}では強い上下指令を繰り返す意図が見えるが、\texttt{for i in 10}はPythonとして実行時エラーになるため、実験用の粗い試作だったと考えられる。\par
+\section{4.5 2026-06-02 16:23 — \texttt{09a1ad5} 課題4.1まで}
+多数の小スクリプトが一括追加された。これはセンサと周辺機能を一つずつ分離して試すフェーズである。\par
+\begin{itemize}
+\item \texttt{30sec.py}: 30秒飛行。\texttt{move()}処理時間、時刻取得、Pythonループによる時間誤差への注意。
+\item \texttt{3\_1\_sine.py}: throttleを交互に切り替える上下波形的な飛行。
+\item \texttt{Gyro\_sensor.py}: x/y/z角度の連続読取り。
+\item \texttt{barometer.py}: 気圧の連続読取りと高度別比較案。
+\item \texttt{battery.py}: 飛行前後のバッテリー比較。
+\item \texttt{buzzer.py}: ブザー。
+\item \texttt{doremifasollasido.py}: 音階。
+\item \texttt{flight\_time.py}: 離陸から着陸までの経過時間。
+\item \texttt{front\_range.py}: 前方ToF。コメント上の実測範囲は約3〜210cm。
+\item \texttt{function.py}: 正方形飛行を関数化。
+\item \texttt{height.py}: 高度・下方距離。コメント上の限界は約150cm。
+\item \texttt{pentagon.py}: pitchとyawによる五角形飛行。
+\item \texttt{practice\_random.py}: ランダムLED。
+\item \texttt{random\_noise.py}: ランダム音。
+\item \texttt{sensor\_1.py}: 複合センサ確認の入口。
+\item \texttt{shine.py}: LEDグラデーション。
+\item \texttt{temperature.py}: 温度連続取得。
+\item \texttt{time-based\_flight.py}: 指定秒数だけ\texttt{move()}する関数。
+\item \texttt{user\_input.py}: 入力回数に応じた回転。
+\end{itemize}
+このコミットの工夫:\par
+\begin{itemize}
+\item 一つのスクリプトに全機能を詰めず、機能ごとに分離した。
+\item 後の不具合切り分けに使える最小再現コード群になっている。
+\item 前方距離と高さについて実測限界をコメントに残した。
+\item 時間制御の誤差要因を早い段階で認識していた。
+\end{itemize}
+\section{4.6 2026-06-02 16:29 — \texttt{b60bb33} 課題4.2}
+\texttt{user\_input.py}を実装し、ユーザ指定回数だけyaw回転する操作を追加した。\par
+ここではまだ「回転数」を実測角度で閉ループ制御せず、固定時間のyaw操作を回数分行う。ユーザ指令を制御パラメータへ変換する最初の段階である。\par
+\section{4.7 2026-06-23 16:23 — \texttt{9114c3c} PIDでいろいろ}
+プロジェクトの転換点である。\par
+追加・変更:\par
+\begin{itemize}
+\item \texttt{z-pid.py}: 高度80cmをP/I/Dで維持
+\item \texttt{move.py}: x/y位置をPID制御し、PCキーボードで目標座標を変更
+\item \texttt{keyboard\_input.py}: 8方向＋上下＋yawの手動操作
+\item \texttt{main.py}, \texttt{pid\_test1.py}: 前進距離をPIDで制御する大きな実装
+\item \texttt{brake.py}: 当初空ファイル
+\end{itemize}
+初期PIDの工夫:\par
+\begin{itemize}
+\item \texttt{dt}を実測。
+\item 積分値を制限してワインドアップを防止。
+\item 出力を-100〜100に制限。
+\item タイムアウト。
+\item 目標誤差内に一定時間留まるまで完了としない整定判定。
+\item 例外やCtrl+C後にも着陸する\texttt{finally}。
+\item バッテリー残量による離陸拒否。
+\item xだけでなくy/zもログ表示して副作用を観察。
+\end{itemize}
+当時の思想:\par
+\begin{itemize}
+\item 「一定時間動かす」のではなく、「誤差を見て戻す」。
+\item 軽量機はオーバーシュートしやすいため、積分制限と出力制限が必須。
+\item 一瞬許容範囲へ入っただけでは到達扱いにしない。
+\item 手動操作とPID操作を併置し、符号と機体応答を現場で確認する。
+\end{itemize}
+\section{4.8 2026-06-23 17:02 — \texttt{d697110} 共通制御基盤}
+\texttt{main.py}と\texttt{pid\_test1.py}に重複していた制御を\texttt{drone\_precision.py}へ集約した。\par
+追加された主要概念:\par
+\begin{itemize}
+\item 共通PID制御器
+\item 逐次JSONLログ
+\item テキストログ
+\item 1飛行のsummary
+\item 過去ログの集計
+\item 前回結果に基づく軽い自動チューニング
+\item 距離別プロファイル
+\item CLI入口の一本化
+\end{itemize}
+モチベーション:\par
+\begin{itemize}
+\item 同じロジックが複数ファイルに分岐すると修正漏れが起きる。
+\item 実機は再現性が低いため、「見た目」だけでなく全周期の数値を残す必要がある。
+\item 一回の結果に過剰反応せず、過去結果と比較したい。
+\item ゲイン調整をコード編集ではなくデータとして管理したい。
+\end{itemize}
+\section{4.9 2026-06-23 17:51 — \texttt{76274be} 場面別ゲイン調整}
+roll、throttle、pitchを一律に扱わず、状況別・軸別に調整する設計へ進んだ。\par
+強い推定:\par
+\begin{itemize}
+\item 上下・前後・左右で応答が異なるため、単一PIDパラメータでは不十分だった。
+\item 距離、目標近傍、速度、出力飽和に応じたゲイン・上限変更が必要になった。
+\item 利用者が述べた「上昇は得意、下降は苦手」という非対称性とも一致する。
+\end{itemize}
+\section{4.10 2026-07-07 17:12:07 — \texttt{75df208} 実験仕様と記録}
+実験記録をMarkdownで体系化した。\par
+\begin{itemize}
+\item 2026-06-30変更詳細
+\item 2026-07-07多軸最速PID
+\item 実験履歴サマリー
+\item 解析方法
+\item \texttt{experiment\_logs/README.md}
+\item 技術仕様
+\end{itemize}
+重要な思想:\par
+\begin{itemize}
+\item 実験はコードだけでは再現できない。条件、期待、結果、解釈、次回変更を残す。
+\item 変更→実機飛行→ログ要約→次回仮説という循環を明文化。
+\item 評価軸を\texttt{x/y/z/yaw/時間/オーバーシュート/センサ鮮度}に固定。
+\item 成功例だけでなく誤判断と撤回も記録。
+\end{itemize}
+\section{4.11 2026-07-07 17:12:13 — \texttt{c13d663} 多軸PID化}
+\texttt{drone\_precision.py}は約1,358行追加、552行削除という大規模再設計を受けた。\par
+主な変更:\par
+\begin{itemize}
+\item x/y/z/yawを同時に制御。
+\item 軸ごとのPID。
+\item 距離別最大出力。
+\item stale判定。
+\item 高速移動フェーズ。
+\item 全軸ログ。
+\item CLIで複数軸を指定。
+\item 終了コードを外部へ返す。
+\end{itemize}
+モチベーション:\par
+\begin{itemize}
+\item xだけ合っても、yへ流れ、高度がずれ、yawが回れば総合的には失敗。
+\item 直列に一軸ずつ直すより、全軸を毎周期監視・補正したい。
+\item 「最速」を目指すなら、補助軸の崩れで主軸を何度もやり直す時間を減らす必要がある。
+\end{itemize}
+\section{4.12 2026-07-07 17:12:19 — \texttt{c144e34} ブレーキ確認}
+\texttt{brake.py}へpair/land/closeの短い確認コードを追加した。\par
+ただし実装は別々の\texttt{Drone()}インスタンスに対して\texttt{pair()}、\texttt{land()}、\texttt{close()}しており、通常意図する同一接続の安全停止確認としては不自然である。実験的な緊急着陸確認コード、または急いで作った最小スクリプトと考えられる。\par
+\section{4.13 2026-07-07 17:12:27 — \texttt{bf0d1ff} 実機ログとPIDプロファイル}
+2026-06-23、06-30、07-07の大量の飛行ログ、距離別PIDプロファイル、最新ログ、履歴解析をGitへ登録した。\par
+意味:\par
+\begin{itemize}
+\item 実機結果をコードと同じ重要度の成果物として扱った。
+\item 100mm、300mm、600mm、2000mmで別プロファイルを持たせた。
+\item 距離によって必要な加速・制動・精密停止が違うという認識。
+\end{itemize}
+\section{4.14 2026-07-07 17:12:36 — \texttt{700c91f} ワークスペース設定}
+IDE設定更新。制御そのものではないが、当時は\texttt{.idea}を共有対象にしていた。\par
+\section{4.15 2026-07-07 17:12:58 — \texttt{b01dfef} PID回帰テスト}
+278行の\texttt{test\_drone\_precision.py}を追加した。\par
+初期のテスト思想:\par
+\begin{itemize}
+\item 実機を毎回飛ばさなくても、停止距離、速度計算、PID飽和、積分、状態遷移を検証。
+\item 実機ログで見つけたバグを、同じ形で再発しないようテストへ固定。
+\item ハードウェア依存部をfake droneで置き換える。
+\end{itemize}
+\section{4.16 2026-07-07 17:13:36 — \texttt{a506470} タイムアウトとゲイン調整}
+実機実験の安全性と収束性に合わせてタイムアウト・制御ゲインを変更した。\par
+この種の変更から読み取れる思想:\par
+\begin{itemize}
+\item 理論値より実機ログを優先する。
+\item 早すぎる停止は到達途中を失敗にする一方、長すぎるtimeoutは暴走リスクを増やす。
+\item ゲインだけでなく、観測更新周期と試験距離を合わせる必要がある。
+\end{itemize}
+\section{4.17 2026-07-07 17:47 — \texttt{c001264} 追加ログ}
+7回分の実機ログを追加した。ログではrunaway終了が多数確認される。\par
+重要な点:\par
+\begin{itemize}
+\item 失敗を削除せず保存した。
+\item 「制御が動いた」ことではなく、どの終了理由でどの誤差が残ったかを評価した。
+\item 短時間で複数条件を試し、runawayガードが実際に作動することを確認した。
+\end{itemize}
+\section{4.18 2026-07-07 18:21 — \texttt{f6232eb} 仕様書を書き直し、PIDの限界を認識}
+コミットメッセージ自体が思想転換を明示する。\par
+追加文書:\par
+\begin{itemize}
+\item 要件定義
+\item 制御仕様
+\item 実装手順
+\end{itemize}
+結論:\par
+\begin{itemize}
+\item 純粋なPIDは最終方式ではない。
+\item 状態機械
+\item センサ信頼度判定
+\item yaw付き世界座標→機体座標変換
+\item 距離別bang-bang加速・制動
+\item 残距離ベース速度サーボ
+\item 水平ドリフト抑制
+\item 高度回復
+\item 低速最終補正
+\end{itemize}
+思想的には、「PID係数をさらに追い込めばすべて解決する」という前提を捨て、「観測、座標系、物理的停止距離、フェーズ、異常状態を明示的にモデル化する」方向へ進んだ。\par
+\section{4.19 2026-07-07 18:29:58 — \texttt{2314db9} PIDと回帰テスト更新}
+制御本体339行追加、38行削除、テスト160行追加。\par
+主要な改善:\par
+\begin{itemize}
+\item 世界座標誤差をyawで機体座標誤差へ変換。
+\item body速度も同様に変換。
+\item yaw誤差が大きいと水平出力を縮小。
+\item yawがさらに大きければ水平出力を8へ制限。
+\item 水平誤差増幅・振動を検出して出力を0.55または0.35倍へ。
+\item pitch/roll積分を0.45倍へ減衰。
+\item 近傍速度サーボ。
+\item 停止距離に入ったらPID出力よりブレーキを優先。
+\item 水平移動による傾斜を見込んだthrottle補償。
+\item 高度急落時は水平・yawを捨て、throttle 80で回復。
+\item \texttt{sensor\_timeout}, \texttt{altitude\_fault}, \texttt{attitude\_fault}。
+\item センサtimeoutを1.20秒から0.65秒へ厳格化。
+\end{itemize}
+追加テスト:\par
+\begin{itemize}
+\item 座標変換の可逆性。
+\item yaw符号。
+\item 水平ドリフトガード。
+\item 遠く低速なら目標方向へ駆動。
+\item 近く高速なら逆向きに制動。
+\item 早すぎる逆指令を目標方向へ戻す。
+\end{itemize}
+\section{4.20 2026-07-07 18:30:03 — \texttt{2f57132} 実験記録追記}
+コード変更とログ解析結果を実験記録へ反映した。研究の知識をコードだけに閉じ込めないためのコミットである。\par
+\section{4.21 2026-07-07 18:30:09 — \texttt{a7e88bb} 実行ログと解析結果}
+履歴解析と最新実行ログを更新。変更直後の実機結果を保存した。\par
+\section{4.22 2026-07-07 18:38 — \texttt{10fc6f3} Git漏洩経路遮断}
+\texttt{.gitignore}を追加し、IDE、仮想環境、秘密情報、証明書、ログ、DB、\texttt{flight\_logs}を除外した。\par
+思想:\par
+\begin{itemize}
+\item 実験速度だけでなくリポジトリ衛生と安全を重視。
+\item ローカル生成物とソースコードを分離。
+\item 公開リポジトリに個人環境や秘密情報を載せない。
+\end{itemize}
+\section{4.23 2026-07-14 18:26 — \texttt{693f019} 加速度だけによる位置推定}
+\texttt{simple\_accel\_xy.py}を追加。optical flow位置APIに依存しない試みである。\par
+基本方式:\par
+\begin{itemize}
+\item 離陸前後の加速度バイアス校正。
+\item raw加速度をcm/s²へ換算。
+\item deadband。
+\item low-pass filter。
+\item yawで機体座標加速度を世界座標へ回転。
+\item 加速度を速度へ積分。
+\item 速度を位置へ積分。
+\item 速度リークでドリフトを抑制。
+\item ZUPTで静止時速度をゼロへ。
+\item 位置誤差と速度からpitch/rollを生成。
+\item CSVへraw値、推定値、指令を保存。
+\end{itemize}
+モチベーション:\par
+\begin{itemize}
+\item optical flowが信用できないなら、IMUだけで相対位置を作れないか。
+\item 外部測位を使わず、内蔵センサのみという制約を守る。
+\item 生加速度から位置までの推定過程をすべてログ化して、どこで破綻するかを見たい。
+\end{itemize}
+\section{4.24 2026-07-14 18:49 — \texttt{996a5c3} 姿勢制御の堅牢化}
+\texttt{simple\_accel\_xy.py}を大幅更新した。\par
+主な改善:\par
+\begin{itemize}
+\item yaw保持。
+\item 世界座標と機体座標の変換。
+\item ZUPT条件の追加。
+\item 加速度deadbandとLPF。
+\item 速度リーク。
+\item 出力・許容誤差・符号を設定化。
+\item CSVログ拡充。
+\item 例外時もゼロ指令、着陸、close。
+\end{itemize}
+これは「加速度積分だけ」では足りず、姿勢が変わると加速度の軸も回転するため、yawと機体座標を同時に扱う必要があると分かった結果である。\par
+\section{4.25 2026-07-21 17:09 — \texttt{011b1d1} カラーセンサ精度実験}
+\texttt{sensor\_1.py}をカラーセンサ連続取得へ変更し、0.1秒周期で2つのRGBセンサ値を表示した。\par
+コミットメッセージに実験結論が詳細に保存されている。\par
+\begin{itemize}
+\item 色判定可能な高さは約2cm程度。
+\item 色タスクでは実質的に着地後判定になる可能性が高い。
+\item 約3秒間、同じ値を返し続けるフリーズ・焼き付きが頻発。
+\item 本来はシームレスに値が更新されるべき。
+\item 取得速度が原因という仮説を立て、sleepで周期を落とした。
+\item 体感では発生頻度が変わらず、取得速度だけでは説明できなかった。
+\item 原因は未解決。
+\end{itemize}
+このコミットは、短いコード変更以上に、ハードウェア制約と否定された仮説をコミットメッセージへ残した点に価値がある。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{5. PID実験ログから分かったこと}
+\section{5.1 2026-06-23: 初期PIDの傾向}
+主なログ:\par
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\renewcommand{\arraystretch}{1.28}
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.180\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth}}
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 実行 & \color{white}\bfseries 時間[s] & \color{white}\bfseries 最終x誤差[mm] & \color{white}\bfseries y誤差[mm] & \color{white}\bfseries z誤差[mm] & \color{white}\bfseries 特徴 \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 実行 & \color{white}\bfseries 時間[s] & \color{white}\bfseries 最終x誤差[mm] & \color{white}\bfseries y誤差[mm] & \color{white}\bfseries z誤差[mm] & \color{white}\bfseries 特徴 \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{\color{ReportMuted}\footnotesize 次ページへ続く} \\
+\endfoot
+\bottomrule
+\endlastfoot
+164713 & 19.98 & 72.3 & 27.8 & 22.3 & timeout近くまで使用 \\
+\rowcolor{ReportLight}
+170224 & 19.95 & 81.3 & -99.6 & 26.3 & yが悪化 \\
+170643 & 19.99 & -13.8 & -3274.7 & 10.6 & yが壊滅的に発散 \\
+\rowcolor{ReportLight}
+171101 & 20.00 & 87.0 & -1008.8 & 13.2 & yが大きく発散 \\
+171450 & 14.96 & 50.1 & 106.3 & -17.7 & やや短時間 \\
+\rowcolor{ReportLight}
+172036 & 19.95 & 31.7 & 89.4 & -12.4 & x改善、y残差 \\
+173526 & 19.99 & -86.7 & 3.1 & -20.7 & xオーバーシュート \\
+\rowcolor{ReportLight}
+173618 & 19.96 & 26.6 & -41.7 & -26.3 & 比較的均衡 \\
+174318 & 13.29 & -3.9 & -18.0 & -2.9 & 初期群の最良 \\
+\end{longtable}
+\end{center}
+結論:\par
+\begin{itemize}
+\item xは数mmまで合う回がある。
+\item しかし同じ系統の制御でも結果が大きくばらつく。
+\item yは最も不安定で、数m級に壊れる。
+\item zはyより良いが数cm残る。
+\item 多くが約20秒を使い、最速目標には遠い。
+\item 単発の最良値だけで成功と判断してはいけない。
+\end{itemize}
+\section{5.2 2026-06-30: 基準位置、符号、staleの切り分け}
+\subsection{163702}
+\begin{itemize}
+\item 時間: 1.88秒
+\item x誤差: 1967.1mm
+\item z誤差: -759.7mm
+\item stale比率: 0.6774
+\end{itemize}
+原因:\par
+\begin{itemize}
+\item 古い位置を開始基準に採用。
+\item 高度0mmを基準と誤認。
+\item 実高度約800mmが入ると強い下降指令。
+\item stale停止が早すぎた。
+\end{itemize}
+対策:\par
+\begin{itemize}
+\item 離陸後の新鮮な複数サンプルから基準を取得。
+\end{itemize}
+\subsection{164659}
+\begin{itemize}
+\item x誤差: 2424.4mm
+\item stale比率: 0.7024
+\end{itemize}
+基準位置は改善したが、xが目標と逆へ進んだ。ここでpitch符号疑いが強まった。\par
+\subsection{165510 / 165807}
+\begin{itemize}
+\item 300mm目標に対し、x誤差1370.1mm / 659.4mm
+\item どちらも負方向へ進行
+\item stale比率0.76 / 0.72
+\end{itemize}
+一度は\texttt{pitch\_sign=-1}が誤りと判断された。\par
+\subsection{170026}
+\begin{itemize}
+\item 100mm目標
+\item x誤差45.5mm
+\item y誤差1.2mm
+\item stale比率0.8056
+\end{itemize}
+この回だけを見ると目標方向へ進んだため、「符号よりstaleが主因」という仮説へ一時的に変更した。\par
+ここで重要なのは、当時の判断が後に撤回されたことである。実験記録はその撤回を隠していない。\par
+\subsection{170651}
+\begin{itemize}
+\item x誤差2415.3mm
+\item stale比率0.037
+\item x速度ピーク951.5mm/s
+\end{itemize}
+位置更新は十分あるのに2m以上逆走した。このログにより「staleが主因」という直前の仮説は否定され、\texttt{pitch\_sign=-1}の誤りが確定的になった。\par
+対策:\par
+\begin{itemize}
+\item 符号を学習プロファイルから外して固定。
+\item 短距離初動の出力を抑制。
+\item 連続逆走でrunaway停止。
+\end{itemize}
+\subsection{171035}
+\begin{itemize}
+\item x誤差64.2mm
+\item y誤差-44.6mm
+\item z誤差26.6mm
+\item z速度ピーク79.0mm/s
+\end{itemize}
+逆走は止まったが上下振動が目立った。\par
+原因仮説:\par
+\begin{itemize}
+\item \texttt{throttle.min\_output=4}が目標近傍でも上下指令を強制。
+\item 自動調整でkp/kiが増えすぎた。
+\item 高度センサ遅延に対し制御が攻めすぎ。
+\end{itemize}
+対策:\par
+\begin{itemize}
+\item throttle最小出力を0へ。
+\item 60mm以内でゲイン低下。
+\item 45mm、25mmで出力上限段階低下。
+\item 速度ブレーキ。
+\item 20mm以内で積分減衰。
+\item 12mm以内かつ低速でthrottle 0。
+\item 高速上下振動時はkp/kiを下げ、kv/kdを上げる自動調整へ。
+\end{itemize}
+\subsection{172047 / 172711 / 174211}
+\begin{itemize}
+\item 172047: x誤差27.1mm、z誤差51.9mm
+\item 172711: x誤差1065.9mm、stale 0.73
+\item 174211: 18.13秒でrunaway、x誤差72.8mm
+\end{itemize}
+この時期は、stale中の速度保持、停止距離予測、高速区間と精密区間で異なるrunaway閾値、異常終了を自動学習へ使わない処理へ発展した。\par
+\section{5.3 2026-07-07: 多軸高速化の結果}
+初期の11回程度は0.66〜4.27秒でrunaway終了した。安全ガードは機能したが、制御性能としては不合格である。\par
+後半はtimeoutまで飛行するようになった。\par
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\renewcommand{\arraystretch}{1.28}
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.180\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.130\linewidth}}
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 実行 & \color{white}\bfseries 終了 & \color{white}\bfseries 時間[s] & \color{white}\bfseries x誤差 & \color{white}\bfseries y誤差 & \color{white}\bfseries z誤差 \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 実行 & \color{white}\bfseries 終了 & \color{white}\bfseries 時間[s] & \color{white}\bfseries x誤差 & \color{white}\bfseries y誤差 & \color{white}\bfseries z誤差 \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{\color{ReportMuted}\footnotesize 次ページへ続く} \\
+\endfoot
+\bottomrule
+\endlastfoot
+170935 & timeout & 19.95 & -33.6 & 61.0 & 62.8 \\
+\rowcolor{ReportLight}
+171019 & timeout & 19.97 & -16.7 & 47.2 & 46.4 \\
+171632 & timeout & 34.95 & -57.5 & -60.7 & 62.1 \\
+\rowcolor{ReportLight}
+171724 & timeout & 34.99 & 66.7 & -71.2 & 54.0 \\
+172317 & timeout & 34.94 & 43.4 & -76.0 & 798.4 \\
+\rowcolor{ReportLight}
+172418 & timeout & 34.93 & -4.7 & 69.5 & 30.0 \\
+173145 & timeout & 34.94 & 18.3 & -81.4 & -20.4 \\
+\rowcolor{ReportLight}
+173239 & timeout & 34.97 & 127.9 & -1.2 & 7.5 \\
+173920 & attitude\_fault & 1.08 & 191.2 & 98.2 & 35.1 \\
+\rowcolor{ReportLight}
+173949 & timeout & 34.93 & 109.0 & -82.6 & -3.1 \\
+\end{longtable}
+\end{center}
+読み取れること:\par
+\begin{itemize}
+\item runaway即停止から、長時間制御継続へは改善した。
+\item ただし「長く飛べる」と「収束する」は別。
+\item xだけ良い回でもyまたはzが残る。
+\item 172317ではzが約798mm崩れ、高度安全性が重大。
+\item 173920ではyaw/姿勢異常を検出して1.08秒で停止。
+\item 最速目標に対し35秒timeoutは長すぎる。
+\item これが純PIDの限界認識と状態機械化を裏付ける。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{6. 現在の\texttt{drone\_precision.py}の制御方法}
+\section{6.1 固定符号}
+実機結果から、次を安全・機体固有の固定値として扱う。\par
+\begin{lstlisting}[language=python]
+pitch = +1
+roll = -1
+throttle = +1
+yaw = -1
+\end{lstlisting}
+符号を自動チューニング対象にしない理由は、誤学習した符号が2m級の逆走を起こしたためである。\par
+\section{6.2 基準位置取得}
+離陸直後の単一サンプルを使わず、複数の新鮮なサンプルを取得する。高度が十分あるか、位置が実際に変化したかも見る。\par
+目的:\par
+\begin{itemize}
+\item 離陸前の0値や古いキャッシュを基準にしない。
+\item 高度0mm誤認による急下降を防ぐ。
+\end{itemize}
+\section{6.3 状態推定}
+\begin{itemize}
+\item 位置パケットが新鮮なときだけ速度更新。
+\item 速度計算の\texttt{dt}は制御周期ではなく、新鮮な位置パケット間隔。
+\item stale中は最後の有効速度を保持または減衰。
+\item \texttt{stale\_cycles}だけでなく\texttt{stale\_duration\_sec}を記録。
+\end{itemize}
+この変更は、位置センサ更新周期が制御ループ周期より遅い状況で、同じ値が返るたびに「異常回数」を増やす誤判定を防ぐ。\par
+\section{6.4 PID本体}
+\begin{itemize}
+\item P: 現在誤差
+\item I: 持続外乱や定常偏差
+\item D: 誤差変化
+\item \texttt{kv}: 観測速度への減衰
+\item 出力飽和中は積分を増やさないアンチワインドアップ
+\item 近傍ではminimum outputを無効化
+\item staleや大姿勢誤差時は積分停止・減衰
+\end{itemize}
+\section{6.5 世界座標と機体座標}
+位置センサのx/yは離陸時基準の世界座標、pitch/rollは現在向いている機体座標である。yawが0でなければそのまま対応しない。\par
+変換:\par
+\begin{lstlisting}
+body_x = world_x cos(yaw) + world_y sin(yaw)
+body_y = -world_x sin(yaw) + world_y cos(yaw)
+\end{lstlisting}
+これを誤差と速度の両方へ適用する。\par
+\section{6.6 高速移動の状態機械}
+各軸は概ね次の状態を持つ。\par
+\begin{enumerate}
+\item \texttt{acquire}
+\item \texttt{accelerate}
+\item \texttt{brake}
+\item \texttt{settle}
+\end{enumerate}
+x/yは500mm以上、zは300mm以上で高速フェーズを許可する。短距離で最大加速すると、センサ遅延中に停止距離を使い切るためである。\par
+停止距離:\par
+\begin{lstlisting}
+v² / (2a) + v × sensor_latency + margin
+\end{lstlisting}
+stale中は、最後の有効速度とstale経過時間から残距離を予測する。\par
+\section{6.7 近傍速度サーボ}
+残距離から、今から止まれる速度を計算する。\par
+\begin{lstlisting}
+reachable_speed = sqrt(2 × brake_accel × remaining_distance)
+desired_speed = min(max_speed, reachable_speed × 係数)
+\end{lstlisting}
+その目標速度と現在速度の差、および位置誤差から指令を作る。目標近くで速すぎれば、PIDがまだ前進を要求していてもブレーキを優先する。\par
+\section{6.8 yaw優先}
+\begin{itemize}
+\item yaw誤差8度超: 水平出力を段階的に縮小。
+\item 22度超: pitch/rollを最大8へ。
+\item 55度超: \texttt{attitude\_fault}。
+\end{itemize}
+目的:\par
+\begin{itemize}
+\item 向きがずれたまま強く前進すると、世界座標上では斜めまたは円運動になる。
+\item まず方位を戻し、その後に水平移動する。
+\end{itemize}
+\section{6.9 水平ドリフトガード}
+直近履歴から以下を検出する。\par
+\begin{itemize}
+\item 最近の最良誤差より大幅に悪化。
+\item x/yの符号反転が多い。
+\item 直前区間より平均誤差が増加。
+\end{itemize}
+対策:\par
+\begin{itemize}
+\item pitch/rollを0.55または0.35倍。
+\item pitch/roll積分を0.45倍。
+\end{itemize}
+\section{6.10 高度ガード}
+目標高度が十分高いのに急落した場合:\par
+\begin{lstlisting}
+pitch = 0
+roll = 0
+yaw = 0
+throttle = 80
+\end{lstlisting}
+水平移動を捨てて高度回復を優先する。これは、傾斜中に下方optical flow/ToFがさらに壊れ、床へ近づく悪循環を断つためである。\par
+\section{6.11 安全終了理由}
+\begin{itemize}
+\item \texttt{settled}: 誤差と速度が規定時間内に収まった。
+\item \texttt{timeout}: 時間切れ。
+\item \texttt{runaway}: 最良到達点から連続して離脱。
+\item \texttt{sensor\_timeout}: 位置更新が0.65秒以上停止。
+\item \texttt{altitude\_fault}: 危険高度。
+\item \texttt{attitude\_fault}: yaw/姿勢の大崩れ。
+\item 例外・ユーザ中断。
+\end{itemize}
+異常終了ログは自動チューニングへ使わない。壊れた飛行を「性能データ」として学習すると、誤ったゲインや符号を強化するためである。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{7. optical flow sensorの評価と、その限界から生まれた新手法}
+\section{7.1 利用者の結論}
+利用者の表現は「optical flow sensorはカス」である。技術的に言い換えると、このプロジェクトが求める「外乱下でも厳密・高速・再現可能な相対位置制御」の主要観測器としては、信頼性が不足しているという評価である。\par
+\section{7.2 ログとコードが示す具体的な問題}
+\begin{itemize}
+\item 同じ位置が長く返る。
+\item stale比率が70〜80\%に達する回。
+\item 高速移動・傾斜時に更新が粗い。
+\item 古い値が離陸後の基準として採用される。
+\item 更新が戻った瞬間に大きな速度として計算される。
+\item 床模様、照明、高度、傾きに依存。
+\item yawがずれると座標と指令方向が一致しない。
+\item センサが滑った後、真の絶対位置を復元できない。
+\end{itemize}
+\section{7.3 なぜ完全には捨てず、複数案を試したか}
+optical flowは問題が多いが、加速度だけの位置推定も累積誤差が大きい。そこで、単一センサに賭けるのではなく、次の代替・補完手法が作られた。\par
+\begin{enumerate}
+\item IMU加速度二重積分
+\item 姿勢角から重力成分相当の水平加速度を推定
+\item IMUと姿勢由来加速度のblend
+\item ZUPT
+\item 時間較正
+\item コマンド積算dead reckoning
+\item 壁ToFによる絶対補正
+\item 低高度カラー・マーカーによる位置スナップ
+\end{enumerate}
+これは「センサAが悪いからセンサBへ単純置換」ではなく、各観測の弱点を別の情報で部分補正する思想である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{8. 加速度だけによる位置推定実験}
+\section{8.1 \texttt{accel\_position\_control.py}}
+より構造化された加速度専用制御器である。\par
+推定処理:\par
+\begin{itemize}
+\item 1 raw単位を100mm/s²として換算。
+\item 静止平均でx/y/zバイアスを求める。
+\item LPF係数0.35。
+\item deadband 140mm/s²。
+\item \texttt{dt}最大0.20秒。
+\item 速度リーク0.12/s。
+\item 台形積分で位置。
+\end{itemize}
+制御:\par
+\begin{itemize}
+\item \texttt{kp=0.095 command/mm}
+\item \texttt{kv=0.018 command/(mm/s)}
+\item pitch/roll上限35
+\item 遠方の最小移動出力24
+\item 位置許容8cm
+\item 速度許容22cm/s
+\item 0.55秒連続で両条件を満たすとsettled
+\end{itemize}
+工夫:\par
+\begin{itemize}
+\item センサ読取りをProtocolで抽象化し、fake readerでテスト。
+\item 加速度符号と指令符号を別設定。
+\item 距離に応じてtimeoutを自動延長。
+\item 離陸成功を高度だけで判定しない。
+\item flight stateとmovement stateが飛行中なら、高度0でも警告付きで続行。
+\item state/sensor error bitmaskをデコード。
+\item CSVとsummary JSONを分離。
+\end{itemize}
+\section{8.2 実機ログ結果}
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\renewcommand{\arraystretch}{1.28}
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.180\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth}}
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 実行 & \color{white}\bfseries 目標x[cm] & \color{white}\bfseries 推定x[cm] & \color{white}\bfseries 最終x誤差[cm] & \color{white}\bfseries 終了 \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 実行 & \color{white}\bfseries 目標x[cm] & \color{white}\bfseries 推定x[cm] & \color{white}\bfseries 最終x誤差[cm] & \color{white}\bfseries 終了 \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{\color{ReportMuted}\footnotesize 次ページへ続く} \\
+\endfoot
+\bottomrule
+\endlastfoot
+174347 & 30 & -15.68 & 45.68 & timeout \\
+\rowcolor{ReportLight}
+174527 & 60 & 0.00 & 60.00 & timeout \\
+174918 & 30 & 0.00 & 30.00 & timeout \\
+\rowcolor{ReportLight}
+175852 & 30 & -150.29 & 180.29 & timeout \\
+\end{longtable}
+\end{center}
+重要な観測:\par
+\begin{itemize}
+\item raw x/yが0に量子化され続けると、実機が動いても推定位置は0に張り付く。
+\item deadbandが大きいと微小な実加速度まで消える。
+\item 一方、deadbandを抜けたバイアス誤差は二重積分で急速に増幅。
+\item 175852では推定速度が約-74.9cm/s、推定xが-150cmまで発散。
+\item すべてtimeoutで、実用的な位置閉ループには未到達。
+\end{itemize}
+\section{8.3 \texttt{simple\_accel\_xy.py}の未コミット改良}
+コミット後、さらに次が追加された。\par
+\begin{itemize}
+\item 校正1.5→2.0秒。
+\item 最大出力35→24。
+\item 最小出力18→6。
+\item 許容誤差8→5cm。
+\item 18cm以内の最終低速域。
+\item 最終最大出力10。
+\item 通常最大速度28cm/s、最終10cm/s。
+\item 速度リーク0.75/sへ強化。
+\item raw IMUだけでなく姿勢角由来加速度。
+\item \texttt{sin(pitch差) × 980cm/s²}
+\item \texttt{-sin(roll差) × 980cm/s²}
+\item IMU/姿勢/blendの選択。
+\item 位置→目標速度→速度誤差→出力という二重ループ。
+\item yaw保持。
+\item IMU値、姿勢由来値、採用値をすべてCSVへ。
+\end{itemize}
+この変更の動機はログから強く推定できる。raw加速度が0へ量子化されるため、機体の傾きから水平加速度を推定しようとした。ただし、姿勢角は「機体が傾いている」ことを示すだけで、実際の速度や風による移動を直接観測しない。さらに機体制御器が推力を変えるため、単純な\texttt{g sin θ}だけでは実加速度と一致しない。\par
+\section{8.4 2026-07-21 inertialログ}
+初期ログでは30cm目標に対し、推定xが約22.9cmでZUPTに入る回もある一方、45.8cmへオーバーシュートしyが-24.8cmになる回もある。\par
+未コミット改良後のログでは:\par
+\begin{itemize}
+\item 姿勢角が整数・粗い値で、姿勢由来加速度が0になる区間が多い。
+\item yawが-14度、149度、160度まで変化した記録がある。
+\item yaw保持指令上限12でも大きな方位ずれを戻し切れない場合がある。
+\item 推定位置が0に留まったまま目標速度だけが出続ける回がある。
+\end{itemize}
+結論:\par
+\begin{itemize}
+\item 加速度のみはoptical flow停止時の短時間補間には使える可能性がある。
+\item 長時間の独立位置推定にはドリフトと量子化が大きすぎる。
+\item 姿勢由来加速度はrawゼロ張り付きへの回避策だが、絶対位置観測ではない。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{9. 時間較正方式}
+\texttt{time\_calibrated\_xy.py}は、位置センサも加速度積分も使わず、「方向別に実測した速度×時間」で距離を作る。\par
+既定値:\par
+\begin{itemize}
+\item forward: power +22、24cm/s
+\item back: power -22、22cm/s
+\item left: roll -22、22cm/s
+\item right: roll +22、22cm/s
+\item 最小セグメント0.15秒
+\item 最大セグメント2.0秒
+\item セグメント間settle 0.25秒
+\item 手動下降throttle -12、1.2秒
+\end{itemize}
+工夫:\par
+\begin{itemize}
+\item 前後左右を別々に較正し、非対称性を認める。
+\item 実測距離/時間から方向別速度を更新。
+\item 長距離を2秒以下のセグメントへ分割。
+\item 通常飛行trimと着陸時trimを分離。
+\item dry-runで計画だけ確認。
+\item optical flow位置APIを呼ばないことをCLI説明に明記。
+\item 較正、trim、着陸設定を一つのJSONに保存。
+\end{itemize}
+長所:\par
+\begin{itemize}
+\item optical flowのstaleに影響されない。
+\item 実装が単純。
+\item 短い定型移動なら再現性を実測較正できる。
+\end{itemize}
+限界:\par
+\begin{itemize}
+\item 風、バッテリー、床、機体姿勢、個体差を閉ループ補正できない。
+\item 外乱が入っても予定時間だけ動き続ける。
+\item したがって、扇風機外乱に抗して直進するという最終モチベーションには単独では応えられない。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{10. コマンド積算dead reckoning}
+\texttt{command\_dead\_reckoning.py}はoptical flowを一切読まず、出したpitch/rollと経過時間から移動量を積算する。\par
+\section{10.1 運動モデル}
+\begin{itemize}
+\item forward: 有効pitch 1あたり1.30cm/s
+\item left: 有効roll 1あたり-1.15cm/s
+\item command deadband 4
+\item \texttt{dt}上限0.15秒
+\end{itemize}
+指令値からdeadbandを引いた有効出力に速度係数を掛け、yawで世界座標へ回転する。\par
+\section{10.2 目標制御}
+\begin{itemize}
+\item 最大出力24
+\item 最小出力7
+\item slow radius 35cm
+\item 1cm誤差あたり0.75 command
+\item stop radius 6cm
+\item 直近1秒窓
+\item 標準偏差上限2.5cm
+\item 95\%相当の上側信頼限界
+\end{itemize}
+停止条件は、単一時点の推定誤差ではなく、直近窓の平均、標準偏差、標準誤差から上側信頼限界を作り、それがstop radius内かつばらつきが小さいこと。\par
+工夫:\par
+\begin{itemize}
+\item 「一瞬近づいた」を到達としない。
+\item 推定誤差の安定性を統計的に見る。
+\item 世界座標目標を現在yawで機体座標へ変換。
+\item yaw保持指令を±15へ制限。
+\item 壁位置が既知ならfront ToFでx/yをblend補正。
+\item 色マーカーが既知なら低高度時だけx/yをスナップ。
+\end{itemize}
+\section{10.3 実機ログ}
+80cm目標の2回:\par
+\begin{itemize}
+\item 172837: 推定x 75.15cm、誤差4.87cm、平均4.92cm、標準偏差0.16cm、上側4.98cm
+\item 172907: 推定x 75.16cm、誤差4.85cm、平均4.90cm、標準偏差0.16cm、上側4.97cm
+\end{itemize}
+ログ上は非常に再現的に見える。しかし、これは「コマンドモデルの内部推定が再現した」ことを示すだけで、外部実測の真値とは限らない。モデルが常に同じだけ過大・過小評価すれば、統計的には安定していても実位置はずれる。\par
+この方式の思想的価値:\par
+\begin{itemize}
+\item 信用できないセンサ値を無理に使わない。
+\item ただし、観測のない推定は真値保証ではないことを認める。
+\item 壁や色マーカーという疎な絶対基準が得られた瞬間だけ補正する。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{11. カラーセンサ実験}
+\section{11.1 ハードウェア}
+CoDrone EDU底面には2つのRGBカラーセンサがある。\texttt{get\_colors(kind="rgb")}で両方を取得した。\par
+\section{11.2 実験方法}
+\begin{itemize}
+\item 連続ループでカラー値を取得。
+\item 各取得に連番を付ける。
+\item 0.1秒sleep。
+\item sleepの有無・取得速度低下によるフリーズ頻度変化を体感比較。
+\end{itemize}
+\section{11.3 結果}
+\begin{itemize}
+\item 約2cm程度まで床へ近づかなければ色判定が困難。
+\item 通常飛行高度では床色の安定判定に使いにくい。
+\item 実運用では着地後、または着地直前の低高度判定。
+\item 約3秒、同じ値を返し続ける焼き付きが頻発。
+\item 取得速度を落としても体感頻度はほぼ同じ。
+\item 原因未解明。
+\end{itemize}
+\section{11.4 運用上の結論}
+\begin{itemize}
+\item 連続位置センサとして使わない。
+\item 既知の色マーカーへ低高度で接近したときの疎な位置補正には使える可能性。
+\item 同一値が一定時間続いた場合、それが「床色が一定」なのか「センサがフリーズ」なのか区別する鮮度判定が必要。
+\item 2つのセンサが同時に同一値で停止するか、片方だけ止まるかを追加ログすると原因切り分けに有効。
+\item 時刻付きraw RGB、左右センサ別、変化量、連続同値時間を保存すべき。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{12. 球を風で30cm動かす実験}
+\section{12.1 目的}
+前方10cmに置いた直径約7cmの穴あきプラスチック製pickleballを、接触せず、ドローンの風で30cm移動させる。\par
+\section{12.2 条件}
+\begin{itemize}
+\item 床: グレーのフローリング
+\item 配置基準: 離陸前、機体先端から球の手前端まで10cm
+\item バッテリー最低40\%
+\item 安全高度25cm
+\item 初期pitch 10
+\item throttle 0
+\item 風パルス0.50秒
+\item 1回
+\item 前後hover 2.0秒 / 1.0秒
+\item sample周期0.1秒
+\end{itemize}
+\section{12.3 安全上の工夫}
+\begin{itemize}
+\item 離陸前だけfront ToFで球が6〜18cm相当に見えるか確認。
+\item 900cm相当なら未検出として中止。
+\item 球が近すぎ・遠すぎでも中止。
+\item 離陸後は床上の球がfrontセンサ視野から外れるため、front rangeを安全判定に使わない。
+\item 高度25cm未満、または高度取得不能で中止。
+\item 各パルス後に全指令を0。
+\item 例外や中断でも停止・着陸・close。
+\end{itemize}
+\section{12.4 調整方法}
+一度に主変数を一つだけ変更する。\par
+\begin{enumerate}
+\item \texttt{blow\_duration\_sec}
+\item \texttt{blow\_pitch\_power}
+\item \texttt{blow\_repeats}
+\item \texttt{target\_front\_clearance\_cm}
+\end{enumerate}
+30cm未満ならまず時間を+0.15秒、超過なら-0.10秒。時間が長すぎても不足ならpitch +2。短時間でも超過ならpitch -2。\par
+考え方:\par
+\begin{itemize}
+\item 時間は姿勢への影響が比較的小さく、最も線形に調整しやすい。
+\item pitchは効くが、機体自身が球へ近づく危険がある。
+\item 強い一発より弱い複数パルスで摩擦ばらつきを平均化できる可能性。
+\item 1回で結論を出さず、最低3回、最終的に5回中4回が27〜33cmを採用条件とする。
+\end{itemize}
+\section{12.5 現存ログの状態}
+7つのJSONLがある。後半4ログは風パルスとsummaryまで存在するが、\texttt{actual\_ball\_move\_cm}はすべて未入力である。\par
+したがって:\par
+\begin{itemize}
+\item コードと安全運用の試験は行われた。
+\item しかし球の実測移動量が記録されていない。
+\item 現時点ではどのpitch/時間が30cmに適切か評価できない。
+\item 自動提案も「実測値を記録してから判断」で止まっている。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{13. 離陸診断}
+\texttt{codrone\_takeoff\_diagnose.py}は、takeoffが成功したかを高さだけで判断せず、内部状態を時系列保存する。\par
+取得:\par
+\begin{itemize}
+\item battery
+\item state data
+\item error data
+\item count data
+\item height
+\item bottom range
+\item accel x/y/z
+\end{itemize}
+デコード:\par
+\begin{itemize}
+\item LowBattery
+\item Propeller/Motor failure
+\item Vibration
+\item Attitude not stable
+\item Motion sensor no answer / wrong / not calibrated
+\item Pressure sensor error
+\item Ground range error
+\item Flow no answer / wrong / ground image recognition failure
+\item flight state
+\end{itemize}
+手順:\par
+\begin{enumerate}
+\item pair後
+\item move値reset後
+\item takeoff直後
+\item 0.5秒周期のhold中
+\item JSON保存
+\item land/close
+\end{enumerate}
+モチベーション:\par
+\begin{itemize}
+\item 高度センサが0でも飛行状態はFlight/Hoveringの場合がある。
+\item 「離陸できなかった」を一つのAPI戻り値だけで判断せず、状態・エラー・カウンタ・実高度を組み合わせたい。
+\item optical flowや下方ToF自体が壊れているとき、高度0をそのまま離陸失敗扱いすると誤診する。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{14. テストしたこと}
+\section{14.1 現在の自動テスト結果}
+2026-07-27に以下を実行した。\par
+\begin{lstlisting}
+python -m unittest -v
+\end{lstlisting}
+結果:\par
+\begin{itemize}
+\item 35テスト
+\item すべて成功
+\item 実行時間約0.57秒
+\end{itemize}
+また、プロジェクト内の全Pythonファイルを\texttt{py\_compile}し、構文エラーなしを確認した。\par
+\section{14.2 \texttt{test\_drone\_precision.py}}
+\subsection{停止距離}
+\begin{itemize}
+\item 物理制動距離にセンサ遅延と余裕距離が含まれる。
+\item 静止時は余裕距離だけになる。
+\end{itemize}
+\subsection{状態推定}
+\begin{itemize}
+\item 速度計算が制御周期ではなく、新鮮な位置パケット間隔を使う。
+\end{itemize}
+\subsection{座標変換}
+\begin{itemize}
+\item yaw 0で軸が保存。
+\item yaw 90度で世界xが機体横方向へ回転。
+\item world→body→worldが元へ戻る。
+\end{itemize}
+\subsection{固定符号}
+\begin{itemize}
+\item yaw符号が実機観測値\texttt{-1}と一致。
+\end{itemize}
+\subsection{PID}
+\begin{itemize}
+\item 近傍で最小出力を強制しない。
+\item 出力飽和中に積分が増えない。
+\end{itemize}
+\subsection{settle指令}
+\begin{itemize}
+\item 遠く低速なら目標方向へ。
+\item 近く高速ならブレーキ。
+\item D/速度項が早すぎる逆指令を出しても、目標方向へ修正。
+\end{itemize}
+\subsection{高速状態}
+\begin{itemize}
+\item 長距離xで最大pitch加速と最大制動。
+\item 長距離yで最大roll加速と最大制動。
+\item zでもthrottle高速フェーズ。
+\end{itemize}
+\subsection{ドリフトガード}
+\begin{itemize}
+\item 振幅が増える符号反転系列で水平出力縮小。
+\end{itemize}
+\section{14.3 \texttt{test\_accel\_position\_control.py}}
+\begin{itemize}
+\item 校正がraw加速度平均を使う。
+\item raw単位換算。
+\item 一定加速度の位置積分。
+\item deadbandによる小ノイズ除去。
+\item x軸符号反転。
+\item 正x目標が正pitch。
+\item 正y（左）が負roll。
+\item 出力上限。
+\item 現場確認用の指令符号反転。
+\item CLI既定で、実機ログに合わせx加速度を反転。
+\item 高度0でもflight/movement stateが飛行中なら離陸成功。
+\item state errorがあれば失敗。
+\end{itemize}
+\section{14.4 \texttt{test\_time\_calibrated\_xy.py}}
+\begin{itemize}
+\item 方向別の正しい符号。
+\item 長い移動をセグメント分割。
+\item 実測距離/時間から速度更新。
+\item trim更新で移動較正を壊さない。
+\item 着陸設定更新でtakeoff trimを壊さない。
+\item 正の着陸throttleを拒否。
+\end{itemize}
+\section{14.5 テストが保証しないこと}
+\begin{itemize}
+\item 実際に30cm進むこと。
+\item 扇風機の風に勝てること。
+\item optical flowが正しいこと。
+\item カラーセンサがフリーズしないこと。
+\item 加速度積分が長時間正しいこと。
+\item 上昇と下降の実機応答。
+\item バッテリー、床、照明、個体差。
+\end{itemize}
+自動テストは、実機失敗から得た「数式上・コード上、二度と壊したくない条件」を固定するものと位置づけるべきである。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{15. 実験方法上の工夫}
+\section{15.1 短距離で符号を確認}
+2,000mmで符号を間違えると大きく離脱する。そこで300mm、さらに100mmへ縮小し、初動1秒の向きを確認した。\par
+\section{15.2 一次原因を先に直す}
+ログでは複数の問題が同時に見える。優先順位は概ね次だった。\par
+\begin{enumerate}
+\item 符号が正しいか。
+\item 基準位置が新鮮か。
+\item センサが更新しているか。
+\item 高度・yawが安全か。
+\item その後にゲイン・最速化。
+\end{enumerate}
+符号が逆なのにPIDゲインを調整しても意味がない。\par
+\section{15.3 仮説を撤回する}
+100mmの一回から「符号ではなくstale」と判断したが、次の低stale逆走ログで撤回した。一回の都合のよい結果に固執せず、反証ログを優先した。\par
+\section{15.4 回数ではなく実時間}
+stale 18 cyclesという閾値は制御周期依存だった。0.06秒周期でも位置更新はそれより遅い。そこで0.30秒で出力抑制、0.65秒で停止など、実時間へ変更した。\par
+\section{15.5 異常ログを自動学習から除外}
+runawayやセンサ異常を学習すると、壊れた飛行に合わせてゲインが変わる。正常終了または一定条件のtimeoutだけを調整対象とした。\par
+\section{15.6 全周期ログ}
+位置だけでなく、速度、誤差、指令、積分、fresh/stale、制御フェーズ、予測残距離、停止距離、終了理由を保存した。これにより「最終誤差が悪い」から一歩進み、「いつ、何を根拠に、どの指令を出したか」を追える。\par
+\section{15.7 一度に一変数}
+球風実験では、時間、pitch、回数、距離を同時に変えない。同一条件を最低3回試し、再現性を見てから次へ進む。\par
+\section{15.8 人間の実測を正式なデータとして扱う}
+球位置はセンサだけでは測れないため、手動測定値を後からJSONLとCSVへ追記し、その値から次設定を提案する設計にした。\par
+\section{15.9 安全処理を通常ロジックと同格に扱う}
+\begin{itemize}
+\item battery check
+\item timeout
+\item 出力制限
+\item zero commands
+\item hover
+\item land
+\item close
+\item exception/finally
+\item runaway
+\item sensor timeout
+\item altitude fault
+\item attitude fault
+\end{itemize}
+これらは付加機能ではなく、最大出力・急制動実験を可能にする前提である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{16. ファイル別の役割}
+\section{16.1 現在の中核}
+\begin{itemize}
+\item \texttt{drone\_precision.py}: optical flow位置を使う多軸ハイブリッド制御。
+\item \texttt{main.py}: 共通CLI入口。
+\item \texttt{pid\_test1.py}: 同じ共通CLIへの互換入口。
+\item \texttt{test\_drone\_precision.py}: 回帰テスト。
+\end{itemize}
+\section{16.2 optical flow代替}
+\begin{itemize}
+\item \texttt{simple\_accel\_xy.py}: IMU/姿勢由来加速度とZUPT。
+\item \texttt{accel\_position\_control.py}: 構造化した加速度専用推定・制御。
+\item \texttt{time\_calibrated\_xy.py}: 方向別実測速度×時間。
+\item \texttt{command\_dead\_reckoning.py}: 指令積算、壁・色補正、統計停止。
+\end{itemize}
+\section{16.3 診断・個別実験}
+\begin{itemize}
+\item \texttt{codrone\_takeoff\_diagnose.py}: 離陸失敗診断。
+\item \texttt{ball\_wind\_experiment.py}: 球への風パルス。
+\item \texttt{sensor\_1.py}: カラーセンサ連続取得。
+\item \texttt{front\_range.py}: 前方ToF。
+\item \texttt{height.py}: 下方距離・高度。
+\item \texttt{barometer.py}: 気圧。
+\item \texttt{Gyro\_sensor.py}: 姿勢角。
+\item \texttt{battery.py}: バッテリー。
+\item \texttt{temperature.py}: 温度。
+\end{itemize}
+\section{16.4 初期飛行・手動操作}
+\begin{itemize}
+\item \texttt{xy-axis.py}: 固定時間の前後左右。
+\item \texttt{z-axis.py}: 強い上下指令の試作。
+\item \texttt{keyboard\_input.py}: 文字入力による手動飛行。
+\item \texttt{move.py}: キーボードで目標座標を動かす初期x/y PID。
+\item \texttt{z-pid.py}: 初期高度PID。
+\item \texttt{time-based\_flight.py}: 指定秒飛行。
+\item \texttt{30sec.py}: 30秒飛行と時間誤差観察。
+\item \texttt{flight\_time.py}: 離着陸時間。
+\item \texttt{function.py}: 正方形飛行。
+\item \texttt{pentagon.py}: 五角形飛行。
+\item \texttt{3\_1\_sine.py}: 上下交互運動。
+\item \texttt{brake.py}: 着陸指令確認の小スクリプト。
+\item \texttt{user\_input.py}: 入力回数に応じた回転。
+\end{itemize}
+\section{16.5 非飛行・周辺API}
+\begin{itemize}
+\item \texttt{Westminster\_Chimes.py}
+\item \texttt{buzzer.py}
+\item \texttt{doremifasollasido.py}
+\item \texttt{random\_noise.py}
+\item \texttt{shine.py}
+\item \texttt{practice\_random.py}
+\item \texttt{function.py}
+\end{itemize}
+これらは最終制御に直接使われないが、通信、ブザー、LED、ループ、関数化、random、入力といった初期学習の痕跡である。\par
+\section{16.6 文書}
+\begin{itemize}
+\item \texttt{memo/tech\_spec.md}: 機体仕様と最終目標。
+\item \texttt{memo/requirements.md}: できること・できないこと・完成条件。
+\item \texttt{memo/control\_spec.md}: ハイブリッド制御方式。
+\item \texttt{memo/implementation\_guide.md}: 実行・実験・テスト手順。
+\item \texttt{experiment\_logs/解析方法.md}: 毎回同じ観点でログを見る手順。
+\item \texttt{experiment\_logs/実験履歴サマリー.md}: 生ログからの数値評価。
+\item 日付別実験記録: 変更理由、結果、次回項目。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{17. 当時の思想・考え方の変遷}
+\section{17.1 「動けばよい」から「説明できなければならない」へ}
+初期コードはAPIを呼んで機体が動くことが目的だった。後期コードでは、各出力がなぜ出たかをログから説明できることが要件になった。\par
+\section{17.2 「同じ命令」から「同じ結果」へ}
+固定時間制御は同じ命令を再生できる。しかし求めているのは同じ最終位置である。外乱がある以上、命令の再現ではなく結果のフィードバックが必要になった。\par
+\section{17.3 「PIDなら解ける」から「観測できるものしか制御できない」へ}
+PIDは誤差が正しく観測できることを前提とする。optical flowが滑り、カラーがフリーズし、加速度が量子化されるなら、ゲインを上げても真値には近づかない。要件文書の「観測できない絶対位置は制御できない」は、このプロジェクトで最も重要な思想的到達点である。\par
+\section{17.4 「平均性能」から「失敗時の安全」へ}
+最速化を目指しながら、runawayを早期終了し、高度急落時に水平移動を捨てる。これは成功時の速さより、失敗が大事故にならないことを前提にした設計である。\par
+\section{17.5 「単一正解」から「複数モデルの使い分け」へ}
+\begin{itemize}
+\item optical flow: 位置を直接出すが破綻し得る。
+\item IMU積分: 高周波補間できるがドリフトする。
+\item 時間較正: 簡単だが外乱を見ない。
+\item コマンド積算: 滑らかだがモデル誤差を見ない。
+\item front ToF: 壁があるときだけ絶対補正。
+\item color: 低高度・既知マーカー時だけ絶対補正。
+\end{itemize}
+後期の方向性は、どれか一つを万能とせず、使える場面だけ使うことである。\par
+\section{17.6 「最速」の意味の具体化}
+単に出力100を出すことではない。\par
+\begin{itemize}
+\item 遠方: 安全に最大加速。
+\item 停止距離: 最大制動。
+\item 近傍: 速度サーボ。
+\item yawずれ: 先に向きを直す。
+\item 高度低下: 先に高度を戻す。
+\item センサ停止: 速さを捨てて止まる。
+\end{itemize}
+総所要時間を最小化するには、暴走・やり直し・振動を減らす必要がある。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{18. 未解決事項}
+\section{18.1 optical flow}
+\begin{itemize}
+\item staleの根本原因。
+\item 床材・照明・高度・傾斜別の定量評価。
+\item 高速時にどの条件で破綻するか。
+\item 同じ値が本当に静止なのか、更新停止なのかの識別。
+\end{itemize}
+\section{18.2 カラーセンサ}
+\begin{itemize}
+\item 3秒焼き付きの原因。
+\item 左右2センサが同時に止まるか。
+\item raw RGBと色名変換のどちらで止まるか。
+\item 高さごとの判定精度曲線。
+\item 照明、床反射、色面積の影響。
+\end{itemize}
+\section{18.3 上下制御}
+\begin{itemize}
+\item 上昇・下降別の独立ゲイン。
+\item 下降時の最小推力、地面効果、センサ遅延。
+\item throttle 0が「高度維持」なのか「内部制御任せ」なのか。
+\item 下向き速度の実測。
+\end{itemize}
+\section{18.4 加速度推定}
+\begin{itemize}
+\item raw単位換算の実機精度。
+\item 軸符号と機体姿勢。
+\item センサ量子化。
+\item 温度・振動によるバイアス変化。
+\item ZUPT誤発動。
+\item 姿勢角由来加速度の妥当性。
+\item 短時間補間へ限定したsensor fusion。
+\end{itemize}
+\section{18.5 時間較正・dead reckoning}
+\begin{itemize}
+\item 実測位置との比較が不足。
+\item バッテリー別速度。
+\item 前後左右非対称性。
+\item 風を受けたときのモデル誤差。
+\item wall/color補正の実機検証。
+\end{itemize}
+\section{18.6 球風実験}
+\begin{itemize}
+\item 実測移動量未入力。
+\item 30cm達成条件不明。
+\item 横ずれ、接触、バッテリー差の記録不足。
+\end{itemize}
+\section{18.7 ソフトウェア}
+\begin{itemize}
+\item 未コミットの大規模コードとログの整理。
+\item \texttt{brake.py}の別インスタンス問題。
+\item \texttt{z-axis.py}の\texttt{for i in 10}。
+\item 初期ファイルの文字化けコメント。
+\item hardware-in-the-loopテスト。
+\item 実験条件メタデータの統一。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{19. 現在地点の正確な評価}
+\section{達成したこと}
+\begin{itemize}
+\item 基本APIと各センサの個別確認。
+\item 時間制御、手動制御、単軸PID、多軸PID。
+\item ログ、summary、履歴解析、距離別プロファイル。
+\item 世界/機体座標変換。
+\item yaw優先。
+\item 最大加速・最大制動・近傍速度サーボ。
+\item stale実時間判定。
+\item runaway、高度、姿勢、センサ安全停止。
+\item optical flow非依存の4系統の試作。
+\item 35件の回帰テスト。
+\item 実験記録と仕様書。
+\item カラーセンサの実用高度と焼き付き問題の発見。
+\end{itemize}
+\section{未達成}
+\begin{itemize}
+\item x/y/zの指定量を、実機で毎回、高速かつ高精度に再現。
+\item 風・物理妨害後の厳密な復帰。
+\item optical flow破綻後の真位置復元。
+\item 上昇・下降の非対称性を完全にモデル化。
+\item カラーセンサのフリーズ原因解明。
+\item 球30cm移動の定量的成功。
+\end{itemize}
+\section{現実的な結論}
+内蔵センサだけで、センサが健全な短時間・適切な床・照明・高度の範囲なら、相対移動を改善できる可能性はある。しかし、センサが真位置を失った後も「厳密な絶対位置」を保証することはできない。これは制御ロジックの努力不足ではなく、観測可能性の限界である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{20. 次に行うべき実験}
+\section{20.1 センサを同時記録する}
+同一飛行で以下を同時に記録する。\par
+\begin{itemize}
+\item optical flow x/y
+\item raw accel x/y/z
+\item roll/pitch/yaw
+\item gyro
+\item bottom ToF
+\item barometer
+\item color左右raw RGB
+\item 指令pitch/roll/throttle/yaw
+\item バッテリー
+\item monotonic timestamp
+\end{itemize}
+目的は、どのセンサが先に破綻するかを比較すること。\par
+\section{20.2 外部測定は評価専用に使う}
+最終制御に外部測位を使わない制約を維持しても、性能評価だけは床のメジャー、動画、上方カメラなどで真値を取るべきである。内部推定値だけで内部推定器を評価すると、dead reckoningのように自己整合的だが真値からずれた結果を成功と誤認する。\par
+\section{20.3 上昇・下降を別実験にする}
+\begin{itemize}
+\item 同じ高度差。
+\item 同じバッテリー。
+\item 上昇と下降を別々に10回。
+\item 指令、速度、停止距離、オーバーシュート。
+\item ゲインを共有しない。
+\end{itemize}
+\section{20.4 カラー焼き付きの切り分け}
+\begin{itemize}
+\item 左右raw RGBを個別取得。
+\item API戻り全体と個別チャンネルを比較。
+\item 10Hz、5Hz、2Hz、1Hz。
+\item 静止色と色切替を一定周期で行う。
+\item 同値継続時間と、実際の色変更時刻を記録。
+\item 再pair、センサreset、API再呼出しで復帰するか。
+\end{itemize}
+\section{20.5 代替推定の役割分担}
+\begin{itemize}
+\item optical flow: 通常位置。
+\item IMU: 0.2〜0.5秒程度の短時間補間。
+\item command model: stale中の予測。
+\item bottom ToF/barometer: z。
+\item wall ToF: 機会的な絶対補正。
+\item color marker: 着地直前の位置スナップ。
+\end{itemize}
+加速度積分を単独で長時間使わず、staleギャップを埋める補助へ限定するのが合理的である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{21. 最終総括}
+このプロジェクトで行われたことは、PIDゲインを何度か変えた、という一言では表せない。\par
+最初は離陸、着陸、音、LED、前後左右を一つずつ確認した。次に、時間で動かすだけでは再現しないことに直面し、座標誤差を戻すPIDへ進んだ。PIDでは、積分飽和、整定、出力上限、バッテリー、例外着陸を考えた。実機ログを取り始めると、yの大発散、古い基準位置、高度0誤認、pitch符号逆転、stale、上下振動、yawずれが別々の問題として現れた。\par
+そこで、短距離化による符号確認、仮説の撤回、stale回数から実時間への変更、異常ログの学習除外、世界座標から機体座標への変換、yaw優先、runaway、高度回復を導入した。さらに、最速を本気で求めるなら純PIDだけでは足りないと判断し、最大加速、物理停止距離、最大制動、近傍速度サーボへ移った。\par
+しかし、その制御が依存するoptical flow自体が不安定だった。そのため加速度積分、姿勢由来加速度、ZUPT、時間較正、コマンド積算、壁補正、カラーマーカー補正という別の手法を考えた。これらのログから、加速度はゼロ張り付きとドリフト、時間制御は外乱非観測、dead reckoningは真値非保証、カラーは2cm制約と3秒焼き付きという、それぞれ別の限界が見えた。\par
+この過程を貫くモチベーションは一貫している。\par
+\reportquote{見た目にたまたま成功する飛行ではなく、なぜその指令を出し、なぜ成功または失敗し、外乱があってもどこまで戻れ、戻れない場合はなぜ戻れないかを説明できる制御を作りたい。}
+現在、ソフトウェア構造、ログ、テスト、安全ガード、実験方法はかなり成熟した。一方、実機の最終精度と再現性はまだ完成していない。最大の障壁はゲイン調整そのものではなく、内蔵センサから真の位置をどこまで観測できるかである。\par
+したがって今後の中心課題は、「さらに複雑なPID」を作ることではない。各センサの有効範囲と故障モードを定量化し、短時間IMU補間、通常時optical flow、機会的な壁・色補正を組み合わせ、それでも観測不能になったときは安全に不確実性を認めて停止することである。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{22. 結論・事実・原因・対応策を対応づけた総合判定}
+この節は、報告書全体の内容を「結論だけ読んだ後、何を根拠にその結論へ至ったか」を逆引きできるようにしたものである。各項目について、確認できた事実、原因、原因の確度、すでに行った対応、今後必要な対応を分離する。\par
+\section{22.1 同じプログラムでも飛行結果の再現性が低い}
+\reportlabel{結論}
+CoDrone EDUへ同一の指令列を与えるだけでは、同一の移動結果を再現できない。最終目標を「命令の再生」ではなく「観測された誤差への継続補正」とした判断は妥当である。\par
+\reportlabel{確認事実}
+\begin{itemize}
+\item 2026-06-23の同系統PIDログで、x最終誤差は\texttt{-86.7mm}から\texttt{+87.0mm}まで変化した。
+\item y最終誤差は\texttt{+106.3mm}程度の回だけでなく、\texttt{-1008.8mm}、\texttt{-3274.7mm}まで崩れた回がある。
+\item 初期群の最良回はx\texttt{-3.9mm}、y\texttt{-18.0mm}、z\texttt{-2.9mm}だったが、同程度の成功が継続しなかった。
+\item 利用者は、飛行中にあらゆる方向へのぶれが激しく、同じプログラムでも結果の再現性が低いと明示している。
+\end{itemize}
+\reportlabel{原因}
+複数原因が重なっている。\par
+\begin{itemize}
+\item 風や空調などの外乱。
+\item バッテリー電圧・残量による推力差。
+\item 離陸直後の姿勢差。
+\item pitch/roll/yaw/throttleの機体応答の非線形性。
+\item optical flowの更新遅延・停止・誤差。
+\item yawずれによる制御座標の回転。
+\item 高度と床画像条件の変化。
+\item 出力符号、ゲイン、最小出力、制動開始時刻の不整合。
+\end{itemize}
+これらのうち、ログで直接確認できたのは位置更新停止、yawずれ、符号逆転、高度変動、速度・誤差の発散である。風、床、バッテリー差の寄与率は現存ログだけでは分離できない。\par
+\reportlabel{行った対応}
+\begin{itemize}
+\item 時間制御から位置閉ループ制御へ移行。
+\item x/y/z/yawを同時監視。
+\item yaw座標変換。
+\item stale監視。
+\item 最大加速・制動・近傍速度サーボ。
+\item 直近誤差の増幅を監視するドリフトガード。
+\item 実験条件と全周期ログの保存。
+\end{itemize}
+\reportlabel{今後必要な対応}
+\begin{itemize}
+\item 同条件反復回数を最低5〜10回へ。
+\item バッテリー、床、照度、風速、離陸位置、機体向きをメタデータ化。
+\item 内部推定とは独立した外部真値で評価。
+\item 平均誤差だけでなく標準偏差、最大誤差、失敗率を評価。
+\end{itemize}
+\section{22.2 純粋なPIDだけでは最速・精密・堅牢を同時達成しにくい}
+\reportlabel{結論}
+純PIDは最終位置の微調整には使えるが、遠距離の最高速加速、センサ遅延を考慮した制動、異常状態の処理を単独で表現するには不十分である。状態機械と速度・停止距離モデルを主とし、PIDを補助にする設計へ移ったことは、ログに基づく合理的な変更である。\par
+\reportlabel{確認事実}
+\begin{itemize}
+\item 旧PIDログは多くが約20秒、後期ログは約35秒のtimeoutまで使った。
+\item 目標近傍でも高い速度が残り、オーバーシュートや符号反転が起きた。
+\item 最小出力が目標近傍でも指令を強制し、上下振動を増やした。
+\item PIDのD項・速度項が、まだ十分遠い段階で逆向き指令を出す場合があった。
+\item 高速移動中の停止には、現在誤差だけでなく現在速度とセンサ遅延が必要だった。
+\end{itemize}
+\reportlabel{原因}
+PIDは基本的に現在・過去の誤差から出力を作る。物理的に必要な停止距離、センサパケットが次に来るまでの進行量、加速・巡航・制動という明示的な飛行フェーズを直接表現しない。ゲインだけでそれらを暗黙に実現しようとすると、短距離では強すぎ、長距離では遅すぎるという矛盾が生じる。\par
+\reportlabel{行った対応}
+\begin{itemize}
+\item x/yは500mm以上、zは300mm以上で高速フェーズを許可。
+\item \texttt{acquire → accelerate → brake → settle}を導入。
+\item \texttt{v²/(2a) + v×latency + margin}で停止距離を計算。
+\item 近傍では残距離から到達可能速度を求め、速度サーボ。
+\item 制動条件ではPID出力より逆向きブレーキを優先。
+\item 最小出力を近傍では無効化。
+\end{itemize}
+\reportlabel{今後必要な対応}
+\begin{itemize}
+\item 実機から軸別・方向別の実減速度を測定。
+\item 上昇・下降、前進・後退、左右で別の停止モデルを持つ。
+\item 距離別に状態遷移の成功率を測る。
+\item 最大出力を使う前にセンサ有効条件を判定する。
+\end{itemize}
+\section{22.3 optical flowは最終目標に対する単独の信頼源にならない}
+\reportlabel{結論}
+optical flow sensorは、条件が良いときの短時間相対位置には利用価値があるが、外乱下で厳密な位置保証を行う単独センサとしては不十分である。利用者の「カス」という評価は、絶対的に無価値という意味ではなく、要求水準に対して支配的な弱点になったという意味で理解すべきである。\par
+\reportlabel{確認事実}
+\begin{itemize}
+\item stale比率0.70〜0.81のログが複数ある。
+\item 古い位置・高度0を開始基準として採用した失敗がある。
+\item 更新再開後の位置差を短い制御周期で割り、異常に大きい速度を作った。
+\item 高速・傾斜・yaw変化を伴うログで位置誤差が大きく崩れた。
+\item 仕様書にも床、照明、高度、傾斜への依存と、滑った後の絶対位置復元不能が明記されている。
+\end{itemize}
+\reportlabel{原因}
+\begin{itemize}
+\item 下向きカメラが床画像の移動を追うため、特徴の少ない床や照明変化に弱い。
+\item 機体が傾くと画像の見え方と高度が変わる。
+\item 高速移動ではフレーム間変位が大きくなる。
+\item センサ更新周期とPython制御周期が一致しない。
+\item 内部APIが同じキャッシュ値を返しても、それだけでは静止とstaleを区別できない。
+\end{itemize}
+床画像や内部ファームウェアの詳細ログがないため、各ログのstaleが画像認識失敗、通信遅延、APIキャッシュのどれに由来するかは確定できない。\par
+\reportlabel{行った対応}
+\begin{itemize}
+\item fresh判定。
+\item stale cycleからstale実時間へ。
+\item stale中の出力制限。
+\item 新鮮な位置パケット間隔による速度計算。
+\item 基準位置を複数サンプルで取得。
+\item 加速度、時間較正、command dead reckoningを代替案として実装。
+\end{itemize}
+\reportlabel{今後必要な対応}
+\begin{itemize}
+\item flow error flagと位置更新を同じ時刻で保存。
+\item 床材・照度・高度・傾斜を変えたベンチ試験。
+\item stale中はIMUで短時間補間し、不確実性を時間とともに増やす。
+\item 一定時間を越えたら推定を信用せず停止。
+\end{itemize}
+\section{22.4 加速度二重積分だけでは長時間位置を維持できない}
+\reportlabel{結論}
+加速度だけの位置推定は、optical flowの短い欠落を埋める補助にはなり得るが、現状のCoDrone EDU raw加速度を二重積分して長時間のx/y絶対位置を作る方式は実用精度に達していない。\par
+\reportlabel{確認事実}
+\begin{itemize}
+\item 30cmまたは60cm目標に対し、推定位置0cmのままtimeoutしたログがある。
+\item 別ログでは30cm目標に対し推定位置\texttt{-150.3cm}、最終誤差\texttt{180.3cm}。
+\item raw x/yが0に張り付く区間がある。
+\item 小さなバイアス差が速度・位置へ累積した。
+\item 既存4summaryはすべてtimeout。
+\end{itemize}
+\reportlabel{原因}
+\begin{itemize}
+\item 加速度の量子化。
+\item 静止校正後にも残るバイアス。
+\item モータ振動。
+\item 機体座標と世界座標の回転。
+\item 重力成分の混入。
+\item deadbandが大きいと実信号を消し、小さいとノイズを積分。
+\item 速度リークはドリフトを抑える一方、実速度も失わせる。
+\item ZUPTは停止判定を誤ると移動中速度まで0にする。
+\end{itemize}
+\reportlabel{行った対応}
+\begin{itemize}
+\item バイアス平均。
+\item LPF。
+\item deadband。
+\item \texttt{dt}上限。
+\item 速度リーク。
+\item 台形積分。
+\item yaw座標変換。
+\item gyro・加速度・小指令を使うZUPT。
+\item raw IMUが0になる問題に対し、姿勢角由来加速度とblendを追加。
+\item 位置直接P制御から、位置→目標速度→速度制御へ変更。
+\end{itemize}
+\reportlabel{今後必要な対応}
+\begin{itemize}
+\item 単独航法ではなく、0.2〜0.5秒程度の短いstale補間へ限定。
+\item 推定共分散・信頼度を持つ。
+\item optical flow更新時に緩やかに再同期。
+\item 外部真値と比較して補間時間ごとの誤差を定量化。
+\end{itemize}
+\section{22.5 カラーセンサは通常飛行高度の連続位置観測に適さない}
+\reportlabel{結論}
+底面カラーセンサは、通常飛行中の床色追跡ではなく、着地直前または着地後の色判定、あるいは既知マーカー上での疎な位置補正へ用途を限定すべきである。\par
+\reportlabel{確認事実}
+\begin{itemize}
+\item 約2cm程度の高さでなければ色を判定しにくかった。
+\item 約3秒、同じ値を返し続ける焼き付きが頻発した。
+\item sleepで取得頻度を落としても体感頻度は同程度。
+\item 2つのRGBセンサを取得するコードへ変更された。
+\end{itemize}
+\reportlabel{原因}
+\begin{itemize}
+\item 高度が上がると検出対象の反射光が弱くなる。
+\item センサ視野へ複数色・床反射が混ざる可能性。
+\item APIまたはファームウェア側のキャッシュ。
+\item センサ更新・通信・色変換処理のいずれかの停止。
+\end{itemize}
+最後の3点は仮説であり、現存コードは時刻付きraw左右値をファイルへ保存していないため確定できない。\par
+\reportlabel{行った対応}
+\begin{itemize}
+\item 取得周期をsleepで変更してポーリング過多説を確認。
+\item command dead reckoningでは、色補正を高度18cm以下の既知マーカー時だけ適用する設計にした。
+\end{itemize}
+\reportlabel{今後必要な対応}
+\begin{itemize}
+\item 左右別raw RGB、色名、時刻、連続同値時間をログ。
+\item 実際に色を切り替える既知時刻と応答を比較。
+\item 1Hz〜20Hzで更新率比較。
+\item reset、再pair、API再生成で復帰するか確認。
+\end{itemize}
+\section{22.6 上昇と下降は対称ではない}
+\reportlabel{結論}
+z軸を一つの対称なPIDと一つの加速度定数で扱うべきではない。上昇と下降は別のゲイン、出力下限、速度限界、停止距離を持つべきである。\par
+\reportlabel{確認事実}
+\begin{itemize}
+\item 利用者は上昇は得意、下降は苦手と観察している。
+\item 171035では目標近傍でthrottleが正負反転し、上下運動を繰り返した。
+\item 172317ではz最終誤差が約798mm、z速度ピーク約741mm/s。
+\item 高度回復ガードが後に追加された。
+\end{itemize}
+\reportlabel{原因仮説}
+\begin{itemize}
+\item 上昇は推力増加で直接作れるが、下降は重力と残留推力の差で決まり応答が遅い。
+\item 飛行制御器が内部で高度・姿勢を補償している可能性。
+\item 下方ToF・barometerの遅延。
+\item 地面付近のダウンウォッシュ・地面効果。
+\item 水平傾斜による鉛直推力減少。
+\end{itemize}
+\reportlabel{行った対応}
+\begin{itemize}
+\item throttle最小出力を0。
+\item 近傍ゲインと出力上限を段階低下。
+\item z速度ブレーキ。
+\item 小誤差・低速時にthrottle 0。
+\item 水平出力に応じたtilt compensation。
+\item 高度急落時に水平制御を捨てthrottle 80。
+\end{itemize}
+\reportlabel{今後必要な対応}
+\begin{itemize}
+\item 上昇・下降を分けて実減速度を測定。
+\item \texttt{brake\_accel\_up}と\texttt{brake\_accel\_down}を分離。
+\item 高度センサごとの遅延を比較。
+\item 地面から十分離れた条件と低高度条件を分ける。
+\end{itemize}
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{23. PID飛行ログ全42件の完全一覧}
+\section{23.1 表の読み方}
+この一覧は現存する\texttt{flight\_logs/pid\_flight\_*.jsonl}全42件を対象とする。\par
+\begin{itemize}
+\item \texttt{samples}: \texttt{sample}レコード数。
+\item \texttt{reason}: summaryに保存された終了理由。
+\item \texttt{—}: 値が0という意味ではない。古いログ形式に項目が存在しない、またはsummary自体がない。
+\item \texttt{ex/ey/ez}: 最終位置誤差。正負は目標のどちら側に残ったかを示す。絶対値が精度を示す。
+\item \texttt{stale}: 位置サンプルがfreshでなかった比率。
+\item \texttt{peak x/y/z}: 推定された軸速度の最大絶対値。
+\item \texttt{osc x/y/z}: 誤差符号反転回数を中心にした振動指標。センサ飛びも含む可能性があるため、純粋な物理振動回数とは限らない。
+\end{itemize}
+古い2026-06-23ログには\texttt{termination\_reason}、\texttt{stale\_ratio}、軸別peak、軸別oscillationが保存されていない。これは当時それらを評価していなかったという意味ではなく、ログ形式が後から拡張されたという意味である。\par
+\begin{landscape}
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\renewcommand{\arraystretch}{1.28}
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.130\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth} >{\RaggedRight\arraybackslash}p{0.052\linewidth}}
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries ログ & \color{white}\bfseries samples & \color{white}\bfseries reason & \color{white}\bfseries duration[s] & \color{white}\bfseries ex[mm] & \color{white}\bfseries ey[mm] & \color{white}\bfseries ez[mm] & \color{white}\bfseries stale & \color{white}\bfseries peak x & \color{white}\bfseries peak y & \color{white}\bfseries peak z & \color{white}\bfseries osc x & \color{white}\bfseries osc y & \color{white}\bfseries osc z \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries ログ & \color{white}\bfseries samples & \color{white}\bfseries reason & \color{white}\bfseries duration[s] & \color{white}\bfseries ex[mm] & \color{white}\bfseries ey[mm] & \color{white}\bfseries ez[mm] & \color{white}\bfseries stale & \color{white}\bfseries peak x & \color{white}\bfseries peak y & \color{white}\bfseries peak z & \color{white}\bfseries osc x & \color{white}\bfseries osc y & \color{white}\bfseries osc z \\
+\midrule
+\endhead
+\midrule
+\multicolumn{14}{r}{\color{ReportMuted}\footnotesize 次ページへ続く} \\
+\endfoot
+\bottomrule
+\endlastfoot
+20260623\_164713 & 316 & — & 19.98 & 72.30 & 27.84 & 22.27 & — & — & — & — & — & — & — \\
+\rowcolor{ReportLight}
+20260623\_165545 & 208 & summaryなし & — & — & — & — & — & — & — & — & — & — & — \\
+20260623\_170224 & 321 & — & 19.95 & 81.32 & -99.63 & 26.27 & — & — & — & — & — & — & — \\
+\rowcolor{ReportLight}
+20260623\_170643 & 319 & — & 19.99 & -13.84 & -3274.68 & 10.59 & — & — & — & — & — & — & — \\
+20260623\_171101 & 321 & — & 20.00 & 87.02 & -1008.81 & 13.22 & — & — & — & — & — & — & — \\
+\rowcolor{ReportLight}
+20260623\_171450 & 240 & — & 14.96 & 50.08 & 106.28 & -17.75 & — & — & — & — & — & — & — \\
+20260623\_172036 & 307 & — & 19.95 & 31.67 & 89.42 & -12.42 & — & — & — & — & — & — & — \\
+\rowcolor{ReportLight}
+20260623\_173526 & 321 & — & 19.99 & -86.74 & 3.09 & -20.67 & — & — & — & — & — & — & — \\
+20260623\_173618 & 318 & — & 19.96 & 26.65 & -41.75 & -26.34 & — & — & — & — & — & — & — \\
+\rowcolor{ReportLight}
+20260623\_174318 & 212 & — & 13.29 & -3.94 & -17.97 & -2.92 & — & — & — & — & — & — & — \\
+20260630\_163702 & 31 & — & 1.88 & 1967.11 & -35.74 & -759.72 & 0.677 & 98.87 & 657.75 & 5307.76 & 0 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260630\_164659 & 168 & — & 10.46 & 2424.35 & -47.38 & 63.01 & 0.702 & 513.77 & 127.34 & 195.62 & 0 & 3 & 0 \\
+20260630\_165510 & 239 & — & 15.00 & 1370.06 & -67.31 & 82.86 & 0.762 & 574.70 & 335.33 & 198.53 & 0 & 3 & 1 \\
+\rowcolor{ReportLight}
+20260630\_165714 & 0 & summaryなし & — & — & — & — & — & — & — & — & — & — & — \\
+20260630\_165807 & 152 & — & 9.47 & 659.41 & 69.23 & 10.79 & 0.724 & 320.03 & 143.30 & 224.78 & 0 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260630\_170026 & 72 & — & 4.48 & 45.47 & 1.15 & 26.05 & 0.806 & 174.64 & 64.40 & 85.91 & 0 & 2 & 0 \\
+20260630\_170651 & 243 & — & 19.96 & 2415.33 & -51.50 & 63.94 & 0.037 & 951.47 & 115.03 & 104.04 & 0 & 0 & 2 \\
+\rowcolor{ReportLight}
+20260630\_171035 & 243 & — & 19.99 & 64.16 & -44.60 & 26.56 & 0.128 & 62.75 & 62.70 & 78.95 & 0 & 3 & 0 \\
+20260630\_172047 & 244 & — & 20.00 & 27.11 & -7.92 & 51.88 & 0.066 & 509.23 & 112.72 & 103.35 & 0 & 1 & 0 \\
+\rowcolor{ReportLight}
+20260630\_172711 & 242 & — & 19.96 & 1065.89 & 16.27 & 34.81 & 0.727 & 311.96 & 84.83 & 79.87 & 0 & 4 & 0 \\
+20260630\_174211 & 220 & runaway & 18.13 & 72.84 & 35.76 & 0.57 & 0.727 & 74.82 & 45.05 & 23.36 & 0 & 2 & 8 \\
+\rowcolor{ReportLight}
+20260707\_164639 & 53 & runaway & 4.27 & -27.90 & -13.20 & 70.26 & 0.358 & 345.84 & 114.14 & 60.58 & 1 & 4 & 0 \\
+20260707\_164950 & 26 & runaway & 2.07 & 301.85 & -83.14 & 38.19 & 0.346 & 652.28 & 68.69 & 127.23 & 2 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260707\_165019 & 21 & runaway & 1.67 & 76.19 & 232.50 & 83.90 & 0.381 & 88.15 & 366.67 & 113.12 & 0 & 0 & 0 \\
+20260707\_165327 & 13 & runaway & 0.99 & 168.20 & 46.80 & 47.02 & 0.385 & 395.30 & 54.98 & 73.23 & 0 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260707\_165345 & 9 & runaway & 0.66 & -63.84 & 527.21 & 43.24 & 0.333 & 117.91 & 623.77 & 77.30 & 0 & 0 & 0 \\
+20260707\_165911 & 22 & runaway & 1.73 & 185.47 & -66.93 & 60.10 & 0.364 & 382.30 & 67.52 & 76.11 & 0 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260707\_165932 & 23 & runaway & 1.84 & 159.41 & 117.08 & 28.73 & 0.348 & 165.58 & 496.02 & 71.94 & 0 & 0 & 0 \\
+20260707\_170225 & 22 & runaway & 1.91 & 223.72 & -85.78 & 82.57 & 0.273 & 336.57 & 156.95 & 101.26 & 0 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260707\_170244 & 39 & runaway & 3.15 & 132.40 & 350.24 & 85.39 & 0.359 & 247.58 & 198.12 & 230.88 & 0 & 0 & 0 \\
+20260707\_170506 & 26 & runaway & 2.13 & 405.99 & -7.89 & 76.29 & 0.385 & 273.35 & 46.41 & 151.38 & 0 & 2 & 0 \\
+\rowcolor{ReportLight}
+20260707\_170526 & 31 & runaway & 2.47 & -45.09 & 382.74 & 125.75 & 0.355 & 146.79 & 470.18 & 80.06 & 0 & 0 & 0 \\
+20260707\_170935 & 242 & timeout & 19.95 & -33.63 & 60.96 & 62.78 & 0.326 & 327.29 & 124.46 & 77.36 & 5 & 0 & 0 \\
+\rowcolor{ReportLight}
+20260707\_171019 & 229 & timeout & 19.97 & -16.73 & 47.19 & 46.39 & 0.323 & 87.72 & 250.01 & 90.40 & 6 & 2 & 2 \\
+20260707\_171632 & 410 & timeout & 34.95 & -57.51 & -60.68 & 62.13 & 0.332 & 253.83 & 149.45 & 98.52 & 9 & 11 & 0 \\
+\rowcolor{ReportLight}
+20260707\_171724 & 424 & timeout & 34.99 & 66.72 & -71.17 & 53.99 & 0.344 & 71.01 & 472.48 & 101.18 & 9 & 3 & 0 \\
+20260707\_172317 & 425 & timeout & 34.94 & 43.42 & -75.96 & 798.35 & 0.376 & 328.80 & 69.41 & 741.09 & 12 & 6 & 0 \\
+\rowcolor{ReportLight}
+20260707\_172418 & 401 & timeout & 34.93 & -4.65 & 69.45 & 29.96 & 0.359 & 58.54 & 257.71 & 61.09 & 1 & 4 & 0 \\
+20260707\_173145 & 422 & timeout & 34.94 & 18.33 & -81.41 & -20.37 & 0.329 & 411.57 & 336.80 & 55.53 & 26 & 26 & 5 \\
+\rowcolor{ReportLight}
+20260707\_173239 & 410 & timeout & 34.97 & 127.85 & -1.17 & 7.53 & 0.332 & 529.70 & 421.60 & 126.72 & 12 & 25 & 30 \\
+20260707\_173920 & 14 & attitude\_fault & 1.08 & 191.20 & 98.23 & 35.08 & 0.286 & 157.59 & 144.08 & 35.90 & 0 & 2 & 0 \\
+\rowcolor{ReportLight}
+20260707\_173949 & 418 & timeout & 34.93 & 109.01 & -82.57 & -3.12 & 0.335 & 138.61 & 242.31 & 77.59 & 4 & 27 & 27 \\
+\end{longtable}
+\end{center}
+\end{landscape}
+\section{23.2 全ログを一件ずつ言語化した評価}
+\subsection{20260623\_164713}
+約20秒制御してもxに72mm、yに28mm、zに22mm残った。三軸とも数cm級の偏差があり、到達精度不足である。ただし後の数m級発散と比較すれば、初期基準としては大崩れしていない。\par
+\subsection{20260623\_165545}
+208サンプルは存在するがsummaryがない。プログラムの途中中断、例外、summary実装前の終了などが考えられるが、ログだけでは理由を確定できない。最終結果の比較対象から除外すべきである。\par
+\subsection{20260623\_170224}
+x81mm、y約-100mm、z26mm。xだけを主目標とした制御でも横流れが約10cmに達している。副軸を監視する必要性を示す。\par
+\subsection{20260623\_170643}
+x誤差は-14mmと一見良いが、yが-3275mmである。xだけを成功判定に使うと危険な誤評価になる代表例である。主軸の精度と機体全体の安全は別である。\par
+\subsection{20260623\_171101}
+yが約-1009mm。前ログより小さいが、依然として1m級の横発散。roll符号、横位置センサ、yaw、軸間干渉のいずれか、または複数が支配的だった。\par
+\subsection{20260623\_171450}
+約15秒で終了し、x50mm、y106mm、z-18mm。時間は短いが、横誤差が大きい。速く終わることと正しく到達することは同義ではない。\par
+\subsection{20260623\_172036}
+x32mm、y89mm、z-12mm。高度は比較的良いが、yが約9cm残った。初期群でy制御が継続的弱点だったことを補強する。\par
+\subsection{20260623\_173526}
+y3mmと非常に良い一方、xは-87mm、z-21mm。ある軸を改善すると別軸が悪化する軸間トレードオフが見える。\par
+\subsection{20260623\_173618}
+x27mm、y-42mm、z-26mm。突出した発散はないが、全軸許容内には入っていない。\par
+\subsection{20260623\_174318}
+x-3.9mm、y-18.0mm、z-2.9mm、13.29秒。初期群の最良。単発性能としては高いが、前後ログとのばらつきが大きいため、制御方式の再現成功とは判断できない。\par
+\subsection{20260630\_163702}
+1.88秒で終了し、x約1967mm、z約-760mm。z速度ピーク5308mm/sは物理的な真速度というより、古い0高度から実高度へ値が飛んだことを短時間差分した推定異常を強く示す。基準位置取得失敗とstale停止の問題を発見したログである。\par
+\subsection{20260630\_164659}
+基準高度は正常化したがx誤差2424mm。stale 70\%に加え、主進行方向が逆。センサ問題だけでなく符号問題を疑う契機になった。\par
+\subsection{20260630\_165510}
+固定符号後もx誤差1370mm。300mm級の短距離へ縮小しても逆方向へ進んだため、「長距離だから難しい」のではなく、初動方向自体が誤っている可能性が高まった。\par
+\subsection{20260630\_165714}
+サンプル0、summaryなし。実験記録ではバッテリー0\%表示による飛行前中断相当として扱われる。制御性能データではなく、飛行前安全判定の記録である。\par
+\subsection{20260630\_165807}
+x誤差659mm。前回より逆走量は減ったが、方向問題は残った。z誤差11mmは良好で、この時点では主問題がxに集中していた。\par
+\subsection{20260630\_170026}
+100mm級の短距離試験。x誤差45mm、y1mm、stale 81\%。途中までは目標方向へ進んだため、一時的に「符号ではなくstale判定が厳しすぎる」と解釈された。後のログで撤回された仮説である。\par
+\subsection{20260630\_170651}
+staleは3.7\%と低いのにx誤差2415mm、x速度ピーク951mm/s。センサ更新停止では説明できず、固定\texttt{pitch\_sign=-1}が実機に対して逆であることを決定づけた。前ログの解釈を反証した。\par
+\subsection{20260630\_171035}
+逆走は止まったが、z誤差27mm、y振動3回。目標高度近傍でthrottleの正負反転が観測され、高度軸の最小出力とゲインが強すぎる問題へ焦点が移った。\par
+\subsection{20260630\_172047}
+x27mm、y-8mmと改善したがz52mm。x速度ピーク509mm/sで、目標付近の制動と高度保持の両立が未完成。\par
+\subsection{20260630\_172711}
+stale73\%、x誤差1066mm。位置更新の粗さが再び支配的になり、stale中に即ブレーキする方式が早すぎる停止を生むことが分かった。\par
+\subsection{20260630\_174211}
+18.13秒でrunaway。最終誤差だけならx73mm、y36mm、z0.6mmだが、最良到達点から再び離れ続けたため安全停止した。最終瞬間の値だけでなく、途中経過を終了理由へ使う思想を示す。\par
+\subsection{20260707\_164639}
+4.27秒でrunaway。x/yは数cmだがz70mm。速度ピークx346mm/s。多軸高速化直後で、初動の強さに対してrunawayガードが早期作動した。\par
+\subsection{20260707\_164950}
+2.07秒、x誤差302mm、x速度653mm/s。主軸xが高速で悪化し、ガードが停止。最大加速と方向・制動条件がまだ整合していない。\par
+\subsection{20260707\_165019}
+1.67秒、y誤差233mm、y速度367mm/s。xより横軸が支配的に崩れた。多軸化でroll側の符号・座標・ゲインも独立検証が必要になった。\par
+\subsection{20260707\_165327}
+0.99秒、x誤差168mm、x速度395mm/s。極短時間で停止しており、runawayガードが安全側に敏感すぎる可能性と、初動方向の問題の両方がある。\par
+\subsection{20260707\_165345}
+0.66秒、y誤差527mm、y速度624mm/s。わずか9サンプルで横方向が大きく悪化。y軸の不安定性が最も明確なrunaway例の一つ。\par
+\subsection{20260707\_165911}
+1.73秒、x誤差185mm、x速度382mm/s。x軸高速初動で停止。ガードは事故回避には有効だが、目標到達には至っていない。\par
+\subsection{20260707\_165932}
+1.84秒、x159mm、y117mm、y速度496mm/s。複数軸が同時に悪化し、単軸別チューニングだけでは足りない。\par
+\subsection{20260707\_170225}
+1.91秒、x224mm、z83mm。水平だけでなく高度も同時に外れた。高速水平移動時の鉛直推力不足を疑う根拠になる。\par
+\subsection{20260707\_170244}
+3.15秒、y350mm、z85mm、z速度231mm/s。横流れと高度変動の組合せ。水平傾斜時のthrottle補償へつながる種類の失敗。\par
+\subsection{20260707\_170506}
+2.13秒、x406mm。yは-8mmと良い。主軸だけが離脱しており、軸間問題よりxの高速フェーズ条件が支配的。\par
+\subsection{20260707\_170526}
+2.47秒、y383mm、z126mm。xは-45mm。y高速移動と高度維持の両方が失敗。\par
+\subsection{20260707\_170935}
+runaway即停止を避け、19.95秒制御継続できたがtimeout。x-34mm、y61mm、z63mm。安全停止過敏性は改善した一方、整定速度が不足。\par
+\subsection{20260707\_171019}
+約20秒timeout。x-17mmは良いが、y47mm、z46mm。x単独なら近いが、多軸完成条件には未達。\par
+\subsection{20260707\_171632}
+timeoutを35秒へ延長してもx-58mm、y-61mm、z62mm。振動x9、y11。時間を延ばすだけでは収束せず、制御則の変更が必要。\par
+\subsection{20260707\_171724}
+35秒timeout。y速度ピーク472mm/s、x/y振動。横軸の高速度・制動不足が目立つ。\par
+\subsection{20260707\_172317}
+z誤差798mm、z速度741mm/s。高度が重大に崩れた。高度回復ガードとaltitude faultの必要性を強く示す。\par
+\subsection{20260707\_172418}
+x-4.65mmと非常に良いがy69mm、z30mm。再び「主軸成功だけでは全体成功でない」例。\par
+\subsection{20260707\_173145}
+x/yそれぞれ26回の振動。最終誤差はx18mm、y-81mm、z-20mmだが、途中で大きな往復があった。ドリフト・振動ガードの対象。\par
+\subsection{20260707\_173239}
+y最終誤差-1.17mm、z7.53mmは良いがx128mm。振動はx12、y25、z30。最終値だけなら2軸成功に見えるが、経路は非常に不安定。\par
+\subsection{20260707\_173920}
+1.08秒で\texttt{attitude\_fault}。yaw/姿勢が55度超へ崩れたため、水平位置より方位安全を優先して停止した。新しい安全ガードが実機で作動した証拠。\par
+\subsection{20260707\_173949}
+35秒timeout。x109mm、y-83mm、z-3mm。z最終値は良いが、y/z振動27回。高度の最終一致は安定した飛行を意味しない。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{24. 全25コミットの変更量と、その意味}
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\renewcommand{\arraystretch}{1.28}
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.180\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth} >{\RaggedRight\arraybackslash}p{0.163\linewidth}}
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 日時 & \color{white}\bfseries hash & \color{white}\bfseries 件名 & \color{white}\bfseries 変更量 & \color{white}\bfseries 意味 \\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{ReportNavy}
+\color{white}\bfseries 日時 & \color{white}\bfseries hash & \color{white}\bfseries 件名 & \color{white}\bfseries 変更量 & \color{white}\bfseries 意味 \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{\color{ReportMuted}\footnotesize 次ページへ続く} \\
+\endfoot
+\bottomrule
+\endlastfoot
+05-19 16:41 & \texttt{90ddb8b} & initial & 7 files, +103 & PyCharmプロジェクト開始 \\
+\rowcolor{ReportLight}
+05-19 17:05 & \texttt{1378ff4} & チャイム、離着陸 & 3 files, +86/-18 & 初実機通信・基本動作 \\
+05-19 17:15 & \texttt{c10d4d8} & ホバリング & 2 files, +27/-5 & 安定待ちの導入 \\
+\rowcolor{ReportLight}
+05-19 18:24 & \texttt{4ba456e} & 前後左右・yaw・上下 & 4 files, +79/-7 & 基本運動軸の確認 \\
+06-02 16:23 & \texttt{09a1ad5} & 課題4.1 & 20 files, +378/-40 & センサ・周辺APIの分離試験 \\
+\rowcolor{ReportLight}
+06-02 16:29 & \texttt{b60bb33} & 課題4.2 & 1 file, +14 & ユーザ入力による回転 \\
+06-23 16:23 & \texttt{9114c3c} & PIDでいろいろ & 7 files, +777/-99 & 開ループからPIDへ \\
+\rowcolor{ReportLight}
+06-23 17:02 & \texttt{d697110} & 共通制御基盤 & 3 files, +660/-406 & 重複排除、ログ、自動調整 \\
+06-23 17:51 & \texttt{76274be} & 場面別ゲイン & 1 file, +420/-94 & 軸・状況別の非対称化 \\
+\rowcolor{ReportLight}
+07-07 17:12:07 & \texttt{75df208} & 実験仕様・記録 & 6 files, +1795 & 実験知識を文書化 \\
+07-07 17:12:13 & \texttt{c13d663} & 多軸PID & 3 files, +1360/-554 & x/y/z/yaw同時制御 \\
+\rowcolor{ReportLight}
+07-07 17:12:19 & \texttt{c144e34} & ブレーキ確認 & 1 file, +11 & 着陸・停止の小試作 \\
+07-07 17:12:27 & \texttt{bf0d1ff} & 実機ログ・プロファイル & 41 files, +11706 & 実験データを成果物化 \\
+\rowcolor{ReportLight}
+07-07 17:12:36 & \texttt{700c91f} & workspace & 1 file, +60/-56 & IDE状態更新 \\
+07-07 17:12:58 & \texttt{b01dfef} & 回帰テスト & 1 file, +278 & 実機バグをテストへ固定 \\
+\rowcolor{ReportLight}
+07-07 17:13:36 & \texttt{a506470} & timeout・ゲイン & 1 file, +33/-21 & 実機周期へ適応 \\
+07-07 17:47 & \texttt{c001264} & 追加ログ & 7 files, +2924 & runaway群の保存 \\
+\rowcolor{ReportLight}
+07-07 18:21 & \texttt{f6232eb} & PID限界・仕様再設計 & 4 files, +443 & ハイブリッド制御へ思想転換 \\
+07-07 18:29:58 & \texttt{2314db9} & 制御・テスト更新 & 2 files, +499/-38 & 座標変換・速度サーボ・安全強化 \\
+\rowcolor{ReportLight}
+07-07 18:30:03 & \texttt{2f57132} & 実験記録追記 & 1 file, +330 & 結果と仮説を同期 \\
+07-07 18:30:09 & \texttt{a7e88bb} & ログ・解析更新 & 2 files, +3017/-5 & 変更直後結果を保存 \\
+\rowcolor{ReportLight}
+07-07 18:38 & \texttt{10fc6f3} & 漏洩経路遮断 & 56 files, +68/-17916 & IDE・ログ・秘密情報を除外 \\
+07-14 18:26 & \texttt{693f019} & 加速度位置推定 & 1 file, +257 & optical flow代替案 \\
+\rowcolor{ReportLight}
+07-14 18:49 & \texttt{996a5c3} & 姿勢制御堅牢化 & 1 file, +251/-66 & yaw、ZUPT、座標変換強化 \\
+07-21 17:09 & \texttt{011b1d1} & カラーセンサ & 1 file, +10/-3 & 2cm制約・3秒焼き付き発見 \\
+\end{longtable}
+\end{center}
+変更量の意味を読む際には注意が必要である。行数が多いコミットほど優れているわけではない。たとえば\texttt{bf0d1ff}の11,706行は主に実機ログであり、\texttt{f6232eb}の443行は制御思想を変えた仕様書である。また\texttt{10fc6f3}の17,916行削除は機能削除ではなく、生成ログをGit追跡から外した結果である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{25. 全35テストを一件ずつ説明する}
+\section{25.1 加速度位置制御12件}
+\begin{enumerate}
+\item \texttt{test\_calibration\_uses\_mean\_raw\_acceleration}  
+校正が最後の一値や中央値ではなく、収集したraw値の平均をバイアスとして使うことを確認する。静止ノイズを平均化する目的である。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_cli\_default\_inverts\_codrone\_x\_acceleration\_seen\_in\_logs}  
+実機ログで観測したx加速度の向きに合わせ、CLI既定符号が反転になっていることを固定する。符号退行による逆走を防ぐ。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_command\_signs\_can\_be\_inverted\_for\_field\_validation}  
+現場で機体個体・API解釈が違った場合、推定符号と指令符号を設定で反転できることを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_output\_is\_limited\_by\_configured\_power}  
+大誤差でもpitch/rollが安全上限を越えないことを確認する。数式が正しくても出力飽和処理がなければ危険である。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_positive\_x\_target\_commands\_positive\_pitch}  
+正x目標が正pitchを作るという最も基本的な方向対応を固定する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_positive\_y\_target\_commands\_left\_roll\_negative}  
+このコードの+yを左と定義し、実機APIでは左移動が負rollであることを固定する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_acceleration\_axis\_sign\_can\_be\_inverted}  
+rawセンサ軸の符号補正が推定加速度へ正しく反映されることを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_bias\_corrected\_constant\_acceleration\_integrates\_position}  
+バイアス除去後の一定加速度が速度・位置へ積分される基本数式を検証する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_deadband\_suppresses\_small\_bias\_noise}  
+小さい残留ノイズが速度・位置へ無限累積しないよう0へ落とすことを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_raw\_acceleration\_unit\_conversion\_matches\_codrone\_documented\_scale}  
+raw単位から物理加速度単位への換算が想定どおりであることを固定する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_flight\_and\_hovering\_state\_is\_success\_even\_when\_height\_sensor\_is\_zero}  
+高度センサが0でも、flight stateとmovement stateが飛行中でエラーがなければ離陸成功とする。壊れた高度一値だけで誤停止しないためである。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_state\_error\_keeps\_takeoff\_check\_failed}  
+飛行状態らしく見えてもstate errorがあれば成功扱いしない。複数情報のうち安全エラーを優先する。\par
+\end{enumerate}
+\section{25.2 \texttt{drone\_precision} 17件}
+\begin{enumerate}
+\item \texttt{test\_yaw\_command\_sign\_matches\_observed\_codrone\_direction}  
+実機で確認したyaw符号\texttt{-1}を固定し、プロファイル学習で変わらないようにする。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_body\_to\_world\_inverts\_world\_to\_body}  
+座標変換を往復したとき元の値へ戻ることを確認する。変換式の符号・sin/cos配置ミスを防ぐ。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_world\_to\_body\_keeps\_axes\_when\_yaw\_is\_zero}  
+yaw 0では世界x/yと機体前後/左右が一致するという基準例。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_world\_to\_body\_rotates\_error\_by\_current\_yaw}  
+yaw 90度のとき世界前方誤差が機体横方向になることを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_horizontal\_drift\_guard\_limits\_growing\_oscillation}  
+誤差符号が反転しながら振幅増大する系列で、ガードscaleが1未満になることを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_integral\_does\_not\_grow\_while\_output\_is\_saturated}  
+出力上限へ張り付いている間にI項だけが蓄積し、後で大オーバーシュートを起こさないようにする。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_minimum\_output\_is\_disabled\_near\_target}  
+小誤差でも強制最小出力を出し続ける振動を防ぐ。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_lateral\_move\_uses\_full\_roll\_acceleration\_and\_braking}  
+長距離y移動でroll最大加速から最大制動へ遷移することを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_long\_move\_uses\_full\_acceleration\_and\_full\_braking}  
+長距離x移動でpitch最大加速と最大制動を使うことを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_vertical\_move\_uses\_throttle\_rapid\_phase}  
+z長距離でも高速フェーズが適用されることを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_close\_fast\_motion\_is\_braked}  
+目標に近く、目標方向速度が高い場合、通常PIDが前進を要求しても逆向きブレーキになることを確認する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_premature\_reverse\_command\_is\_forced\_back\_toward\_target}  
+D項や速度項が遠方で早すぎる逆指令を作った場合、最小駆動力で目標方向へ戻す。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_velocity\_servo\_brakes\_when\_close\_and\_fast}  
+近傍速度サーボが到達可能速度を越えた進入を検知して制動する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_velocity\_servo\_drives\_back\_when\_far\_and\_slow}  
+遠方で低速なら、符号を含め正しい目標方向へ十分な出力を作る。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_velocity\_uses\_time\_between\_fresh\_position\_packets}  
+同じ位置キャッシュを何回読んだかではなく、新しい位置パケット間の実時間で速度を計算する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_includes\_physical\_braking\_latency\_and\_margin}  
+停止距離が純粋な\texttt{v²/2a}だけでなく、センサ遅延中の進行距離と余裕を含む。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_stationary\_distance\_is\_margin\_only}  
+速度0なら運動制動距離は0で、残るのは安全余裕だけであることを確認する。\par
+\end{enumerate}
+\section{25.3 時間較正6件}
+\begin{enumerate}
+\item \texttt{test\_plan\_move\_splits\_long\_segments}  
+長時間連続指令を最大2秒以下の区間へ分割し、途中で停止・補正機会を作る。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_plan\_move\_uses\_direction\_specific\_signs}  
+forward/back/left/rightで別々の正負指令を使う。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_update\_direction\_uses\_measured\_speed}  
+人間が測った距離を実行時間で割り、方向別速度較正を更新する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_update\_landing\_keeps\_takeoff\_trim}  
+着陸時の補正を変えても通常飛行trimが失われない。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_update\_landing\_rejects\_positive\_throttle}  
+手動下降設定へ正のthrottleを入れて上昇させる設定ミスを拒否する。\par
+\end{enumerate}
+\begin{enumerate}
+\item \texttt{test\_update\_trim\_keeps\_motion\_calibration}  
+trim変更時に前後左右の速度較正を消さない。\par
+\end{enumerate}
+\section{25.4 テスト結果の正しい解釈}
+35件全成功という事実は、「実装された数式と安全条件が、用意した入力例に対して期待どおり」という意味である。以下は意味しない。\par
+\begin{itemize}
+\item センサ換算値が実機で常に正しい。
+\item fake droneが実機の内部制御を完全再現する。
+\item 風がある部屋で目標へ到達する。
+\item 実際の制動加速度が設定値90mm/s²である。
+\item 30cm移動の誤差が許容内になる。
+\item カラーセンサのフリーズが直った。
+\item 高度回復指令が必ず墜落を防ぐ。
+\end{itemize}
+テストは必要条件であり、実機成功の十分条件ではない。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{26. 用語と数式を省略せず説明する}
+\section{26.1 PID}
+PIDは、目標と現在値の差を\texttt{error}として、次の三成分を組み合わせる。\par
+\begin{itemize}
+\item P（比例）: 今の誤差が大きいほど強く動かす。
+\item I（積分）: 過去から残り続ける誤差を蓄積し、風などの定常外乱へ勝つ。
+\item D（微分）: 誤差の変化速度を見て、目標へ高速接近中なら出力を弱める。
+\end{itemize}
+このプロジェクトではさらに\texttt{kv × measurement\_rate}を引き、実測速度へ直接減衰をかける。Dと速度減衰は似ているが、Dは誤差変化、kvは状態速度を明示的に使う。\par
+\section{26.2 アンチワインドアップ}
+モータ指令は最大100である。計算上200が必要でも実機は100しか出せない。この間I項を蓄積すると、誤差が小さくなった後も大きな積分が残り、逆側へ飛び越える。出力飽和中は積分を増やさない、または積分を上限へ制限する処理がアンチワインドアップである。\par
+\section{26.3 stale}
+制御ループが新しい位置値を得られず、前と同じ位置パケットを読んでいる状態。機体が本当に静止して同じ位置なのか、センサ更新が止まったのかは値だけでは区別しにくい。そのためセンサ側時刻、位置変化、wall timeを組み合わせる。\par
+\section{26.4 runaway}
+単に誤差が大きい状態ではない。一度近づいた最良点から、複数の新鮮な更新にわたって再び離れ続ける状態を指す。目標が遠い初期状態をrunawayと誤認しないよう、最良誤差と初期誤差を基準にする。\par
+\section{26.5 ZUPT}
+Zero Velocity Update。加速度、gyro、指令がすべて小さく「停止している可能性が高い」と判定したとき、積分速度を明示的に0へ戻す。IMU積分のドリフトを止めるが、移動中に誤判定すると実速度を消す。\par
+\section{26.6 dead reckoning}
+外部位置を直接見ず、既知の速度モデルと経過時間から移動量を積み上げる推測航法。コマンドどおり動いた前提なので、風で押された移動を観測できない。\par
+\section{26.7 世界座標と機体座標}
+\begin{itemize}
+\item 世界座標: 離陸時の前方をx、左をyと固定する座標。
+\item 機体座標: 現在の機首前方と左右を基準にする座標。
+\end{itemize}
+yawが変わると二つは回転してずれる。世界xへ進みたいとき、機首が90度回っていればpitchではなくroll相当の動きが必要になる。座標変換なしの制御が円運動し得る理由である。\par
+\section{26.8 停止距離}
+現在速度\texttt{v}、制動加速度\texttt{a}なら、理想的な停止距離は\texttt{v²/(2a)}。しかしセンサ値を読み、Pythonが計算し、次指令が届くまで遅延する。その間にも\texttt{v × latency}進む。さらにモデル誤差用marginを加える。\par
+\section{26.9 timeout}
+指定時間内にsettledにならなかった終了。必ずしも暴走ではない。安全に飛び続けたが誤差・速度条件を満たせなかった場合もtimeoutである。したがってtimeoutログは、runawayより穏やかでも成功ではない。\par
+\section{26.10 settled}
+一瞬位置許容内へ入るだけではない。位置誤差と速度が許容内に入り、その状態が一定時間連続した場合の完了。勢いよく通過しただけのオーバーシュートを成功にしない。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{27. 事実・推定・解釈の証拠台帳}
+\section{27.1 直接確認できる事実}
+\begin{itemize}
+\item Gitコミット日時、hash、変更量。
+\item 現在のコードと設定値。
+\item JSONL/CSV/summaryに保存された数値。
+\item 35テストが成功したこと。
+\item 利用者が述べた再現性、上下非対称、カラー2cm、3秒焼き付き、optical flow評価。
+\item コミットメッセージに「PID制御に限界を感じた」とあること。
+\end{itemize}
+\section{27.2 強い推定}
+\begin{itemize}
+\item 低stale逆走ログの直後に符号固定とrunawayが入ったため、逆走が変更動機。
+\item 高度大崩れログと高度回復ガードの対応。
+\item raw加速度0ログの後に姿勢角由来加速度が追加されたため、量子化回避が動機。
+\item 大量の重複コード削除と共通入口化から、保守性・修正一貫性が動機。
+\end{itemize}
+\section{27.3 断定できない解釈}
+\begin{itemize}
+\item 開発者がその瞬間に感じた感情。
+\item 個々のrunawayが風、センサ、符号、姿勢のどれ一つだけで起きたか。
+\item カラー焼き付きがハードウェア、ファームウェア、APIキャッシュのどこで起きたか。
+\item optical flow staleの内部原因。
+\item 加速度換算定数が全個体・全姿勢で正しいか。
+\end{itemize}
+本報告書で思想を述べる場合、コミット順と文書に繰り返し現れる優先順位から復元している。内面そのものをGitが記録しているわけではない。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{28. 完全版としての最終結論}
+この研究で最も大きかった変更は、PIDゲインの数値ではない。問題の捉え方が変わったことである。\par
+初期には、機体へ命令を出せば、その命令に対応する動きが得られると考えられる段階だった。前進、後退、左右、上下、yaw、図形飛行、時間飛行、手動操作を行い、APIと機体の対応を学んだ。しかし実機では、同じ時間・同じ出力でも同じ距離にならなかった。そこで位置を読み、誤差が残る限り戻すPIDへ進んだ。\par
+PIDを実装すると、次は制御器ではなく観測と座標の問題が表面化した。古い高度0を基準にすれば、正しいPIDでも急下降する。pitch符号が逆なら、ゲインをどれだけ調整しても逆走する。yawがずれれば、世界座標のx誤差をpitchへ入れても方向が合わない。位置パケットが止まれば、D項と速度推定が壊れる。上昇と下降の物理応答が違えば、一つの対称ゲインは振動を作る。\par
+それらを一つずつ切り分けるため、試験距離を2mから300mm、100mmへ下げた。stale回数を実時間へ変えた。一回のログから作った仮説を、次の反証ログで撤回した。異常ログを自動学習へ使わないようにした。xだけの最終誤差ではなく、y、z、yaw、速度、振動、センサ鮮度、終了理由を保存した。\par
+その結果、「PIDをさらに強くする」方向から、状態機械、速度サーボ、停止距離、yaw優先、高度回復、runaway停止というハイブリッド方式へ進んだ。速くするために最大加速を使い、速く止まるために最大制動を使い、正確に止まるために近傍だけ低速化した。安全性は速さの反対ではなく、最大性能を試すための条件として扱われた。\par
+しかし、最終的に最も大きな限界はoptical flowによる位置観測だった。そこで加速度二重積分、姿勢角由来加速度、ZUPT、時間較正、コマンド積算、壁ToF補正、色マーカー補正を考えた。各方式には明確な長所と限界がある。加速度は短時間変化を捉えるがドリフトする。時間較正は単純だが風を見ない。コマンド積算は滑らかだがモデル外の移動を見ない。壁ToFは壁がある時だけ使える。カラーは約2cmまで近づく必要があり、約3秒焼き付く。\par
+したがって、現時点で科学的に正しい結論は次である。\par
+\begin{enumerate}
+\item 内蔵センサが健全な条件では、相対移動精度を改善する制御は構築できる。
+\item どの単一センサも、すべての飛行条件で真位置を保証しない。
+\item センサが真位置を失った後、観測なしに厳密な絶対位置を復元することはできない。
+\item 最速・精密・堅牢を目指すなら、複数情報を有効範囲ごとに使い分け、不確実性が限界を越えたら停止する必要がある。
+\item 現在の35テスト成功はソフトウェアの重要な進歩だが、実機完成の証明ではない。
+\item 次の研究中心はゲインの微調整ではなく、センサ故障モードの定量化、外部真値による評価、短時間sensor fusion、方向別・軸別の物理モデル化である。
+\end{enumerate}
+以上が、Git、コード、全飛行ログ、加速度ログ、dead reckoningログ、球風ログ、仕様書、テスト、および利用者から提示された実機観察を統合して得られる、現時点の完全な結論である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{29. PID以外の現存実験ログを一件ずつ確認した台帳}
+\section{29.1 球風実験7件}
+\subsection{\texttt{ball\_wind\_20260714\_173950.jsonl}}
+\begin{itemize}
+\item レコードはmetadata 1件だけ。
+\item 実験設定の保存までは行われたが、preflight、離陸、風パルス、summaryはない。
+\item 初期起動直後に中断した、または処理が実験本体へ進まなかったログと考えられる。
+\item 実測性能評価には使えない。
+\end{itemize}
+\subsection{\texttt{ball\_wind\_20260714\_174007.jsonl}}
+\begin{itemize}
+\item 全19レコード。
+\item metadata、preflight、before\_blow、sample 15、error 1。
+\item エラーは「球が遠すぎます: 999.9cm。18.0cm以下にしてください」。
+\item 999.9cmは実距離999.9cmを高精度に測ったというより、前方対象を検出できない場合の上限・無効値と解釈するのが自然。
+\item この失敗により、離陸後のfront rangeで床上pickleballを監視する方式が不適切と分かった。
+\item 後の設計では球の距離確認を離陸前だけに限定し、離陸後のfront rangeは参考値へ格下げした。
+\end{itemize}
+\subsection{\texttt{ball\_wind\_20260714\_175404.jsonl}}
+\begin{itemize}
+\item 全4レコード。
+\item metadata、preflight、sample 1、error 1。
+\item エラーは「高度が低すぎます: 0.0cm。25.0cm以上を安全条件にしています」。
+\item 実際に高度0で飛んでいたと断定できない。高度センサ未更新、離陸状態不成立、センサ0値の可能性がある。
+\item 安全ロジックは接触リスクを避けるため中止した。
+\item これは安全側として正しいが、高度0の意味を別途離陸状態と組み合わせる必要性を示し、離陸診断コードの背景と整合する。
+\end{itemize}
+\subsection{\texttt{ball\_wind\_20260714\_175438.jsonl}}
+\begin{itemize}
+\item 全33レコード。
+\item metadata、preflight、before\_blow、sample 27、wind burst start/end、summaryが揃う。
+\item pitch 10、0.5秒、1パルスの試験。
+\item 実測球移動量は未入力。
+\item 飛行手順が最後まで通ったことは確認できるが、30cm目標の成否は判定不能。
+\end{itemize}
+\subsection{\texttt{ball\_wind\_20260714\_175507.jsonl}}
+\begin{itemize}
+\item 全33レコードで構造は175438と同じ。
+\item 同条件反復に相当する。
+\item 実測値未入力のため、再現性の数値比較はできない。
+\end{itemize}
+\subsection{\texttt{ball\_wind\_20260714\_175824.jsonl}}
+\begin{itemize}
+\item 全33レコード。
+\item 同じく風パルスとsummaryまで完了。
+\item 実測値未入力。
+\item 3回同条件で試す実験思想に沿うログ群だが、目的変数が欠けている。
+\end{itemize}
+\subsection{\texttt{ball\_wind\_20260714\_180329.jsonl}}
+\begin{itemize}
+\item 全33レコード。
+\item 後期設定では\texttt{preflight\_ball\_check\_enabled}、前方距離最小・最大が明示され、設定名称が整理された。
+\item 実測値未入力。
+\item コード改善後の手順完走は確認できるが、球移動性能は未評価。
+\end{itemize}
+\reportlabel{球風ログ全体の結論}
+安全手順とログ機構は段階的に改善した。最初は離陸後front rangeを球の安全距離に使おうとして999.9cmで失敗し、次に高度0で安全停止し、その後4回は風パルスまで完走した。しかし最重要の\texttt{actual\_ball\_move\_cm}が全て欠けるため、制御変数と球移動量の関係は一切確定できない。\par
+\section{29.2 初期加速度位置CSV 10件}
+\subsection{\texttt{accel\_position\_20260714\_174347.csv}}
+\begin{itemize}
+\item 65サンプル。
+\item 30cm目標。
+\item 最終推定x\texttt{-15.68cm}、y\texttt{4.43cm}。
+\item x誤差\texttt{45.68cm}。
+\item 推定方向が目標と逆。符号、バイアス、加速度積分のいずれかが不整合。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_174436.csv}}
+\begin{itemize}
+\item 43サンプル。
+\item 最終推定x/yとも0。
+\item 30cm目標に対し誤差30cm。
+\item raw水平加速度がdeadband内または0に量子化され、推定器が移動を認識しなかった。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_174455.csv}}
+\begin{itemize}
+\item 64サンプル。
+\item 推定x/yとも0、x誤差30cm。
+\item 前ログと同じゼロ張り付きが再現。偶発的一回ではない。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_174527.csv}}
+\begin{itemize}
+\item 129サンプル。
+\item 目標を60cmへ伸ばしても推定x/yは0。
+\item 実験時間や目標を増やしてもraw水平信号が観測されなければ推定は動かない。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_174918.csv}}
+\begin{itemize}
+\item 53サンプル。
+\item 30cm目標、推定0。
+\item 出力を変えた後も位置推定は反応しておらず、制御ゲインより観測側が一次問題。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_175055.csv}}
+\begin{itemize}
+\item ヘッダ相当の1行だけで、有効サンプルなし。
+\item 起動直後中断またはログ初期化のみ。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_175224.csv}}
+\begin{itemize}
+\item 有効サンプルなし。
+\item 制御性能評価対象外。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_175559.csv}}
+\begin{itemize}
+\item 有効サンプルなし。
+\item 制御性能評価対象外。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_175852.csv}}
+\begin{itemize}
+\item 49サンプル。
+\item 30cm目標。
+\item 最終推定x\texttt{-150.29cm}、y\texttt{9.73cm}。
+\item x誤差\texttt{180.29cm}。
+\item ゼロ張り付きとは逆に、残留加速度が二重積分され大発散した。
+\item 同じ推定器が「全く動かない」と「大きく動きすぎる」の両極端を示し、deadband・バイアス設定の難しさを示す。
+\end{itemize}
+\subsection{\texttt{accel\_position\_20260714\_180130.csv}}
+\begin{itemize}
+\item 有効サンプルなし。
+\item 制御性能評価対象外。
+\end{itemize}
+\reportlabel{初期加速度ログ全体の結論}
+有効データ6件のうち、4件は推定0、2件は逆方向ドリフト。summaryがある4件はすべてtimeout。raw加速度単独の長時間二重積分は成立していない。\par
+\section{29.3 改良inertial XYログ8件}
+\subsection{\texttt{inertial\_xy\_20260721\_162442.csv}}
+\begin{itemize}
+\item 160サンプル。
+\item 30cm目標。
+\item 最終推定x\texttt{5.19cm}、y\texttt{35.40cm}。
+\item x誤差\texttt{24.81cm}、y誤差\texttt{-35.40cm}。
+\item 主方向へほとんど進まず、横方向推定が大きく増えた。軸符号、姿勢、roll指令、加速度変換の混在が疑われる。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_162534.csv}}
+\begin{itemize}
+\item 36サンプル。
+\item 推定x\texttt{22.43cm}、y\texttt{-0.18cm}。
+\item x誤差\texttt{7.57cm}。
+\item ログ上は比較的目標へ近い短時間例。ただし外部真値がないため、推定が正しいかは不明。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_162638.csv}}
+\begin{itemize}
+\item 46サンプル。
+\item 推定x\texttt{22.88cm}、y\texttt{1.12cm}。
+\item x誤差\texttt{7.12cm}。
+\item 前ログと似た内部推定結果で、短時間の再現性は見える。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_162737.csv}}
+\begin{itemize}
+\item 106サンプル。
+\item 推定x\texttt{45.75cm}、y\texttt{-24.76cm}。
+\item xは目標を15.75cm越え、横にも24.76cmずれた。
+\item 長時間化すると積分誤差が増える傾向と整合する。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_170652.csv}}
+\begin{itemize}
+\item 81サンプル。
+\item IMU、姿勢由来、使用加速度を分けて記録する新形式。
+\item 推定x\texttt{8.38cm}、x誤差\texttt{21.62cm}。
+\item 姿勢由来加速度を導入しても十分進んだと認識できなかった。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_171307.csv}}
+\begin{itemize}
+\item 161サンプル。
+\item 推定x/yとも0、x誤差30cm。
+\item 目標速度は出続けるが採用加速度が0になり、推定位置が変わらない。
+\item 姿勢角の粗さまたは機体内部姿勢保持により、\texttt{sin(angle difference)}が移動を表現しなかった可能性。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_171423.csv}}
+\begin{itemize}
+\item 267サンプル。
+\item 推定x\texttt{14.73cm}、y\texttt{-40.07cm}。
+\item 最終yaw表示160度。
+\item 大きなyawずれに対して機体/世界座標変換とyaw保持が追いつかず、横推定が崩れた。
+\end{itemize}
+\subsection{\texttt{inertial\_xy\_20260721\_171507.csv}}
+\begin{itemize}
+\item 265サンプル。
+\item 推定x/yとも0、x誤差30cm。
+\item 最終yaw差は約4.14度で極端ではないが位置0。
+\item yawだけが原因ではなく、加速度観測自体が不足している。
+\end{itemize}
+\reportlabel{改良inertialログ全体の結論}
+短時間2件では内部推定上約22〜23cmまで進んだが、別条件ではゼロ張り付き、横ドリフト、オーバーシュート、大yawずれが起きた。IMU・姿勢・blendのいずれも、外部真値なしに信頼できる長時間位置へはなっていない。\par
+\section{29.4 command dead reckoningログ3件}
+\subsection{\texttt{command\_dead\_reckoning\_20260721\_172153.csv}}
+\begin{itemize}
+\item 70サンプル。
+\item \texttt{default\_mission}系の方向動作ログ。
+\item 最終stepは\texttt{right}。
+\item 推定x\texttt{-1.21cm}、y\texttt{-0.26cm}、高度\texttt{79.3cm}、色\texttt{light blue}。
+\item 複数方向移動後、モデル上はほぼ原点へ戻った。
+\item これはコマンドモデルの閉路整合性を示すが、実機が本当に原点へ戻った証明ではない。
+\end{itemize}
+\subsection{\texttt{command\_dead\_reckoning\_20260721\_172837.csv}}
+\begin{itemize}
+\item 90サンプル。
+\item 80cm目標相当。
+\item 推定x\texttt{75.15cm}、y\texttt{0.44cm}、高度\texttt{73.7cm}。
+\item 最終誤差\texttt{4.87cm}。
+\item 直近平均\texttt{4.92cm}、標準偏差\texttt{0.16cm}、95\%相当上側\texttt{4.98cm}。
+\item 統計停止条件に対し十分安定。
+\end{itemize}
+\subsection{\texttt{command\_dead\_reckoning\_20260721\_172907.csv}}
+\begin{itemize}
+\item 90サンプル。
+\item 推定x\texttt{75.16cm}、y\texttt{-0.39cm}、高度\texttt{78.1cm}。
+\item 最終誤差\texttt{4.85cm}。
+\item 平均\texttt{4.90cm}、標準偏差\texttt{0.16cm}、上側\texttt{4.97cm}。
+\item 直前ログとほぼ同一の内部推定結果。
+\end{itemize}
+\reportlabel{dead reckoningログ全体の結論}
+内部モデルの再現性は高い。特に2回の80cm試験がほぼ同じ推定値で停止した。しかし推定値は「出した指令をモデルへ積分した結果」なので、実機が風で押された、推力が弱かった、滑ったという誤差は観測しない。成功判定には外部実測が必要である。\par
+\vspace{0.3em}{\noindent\color{ReportLight}\rule{\linewidth}{0.8pt}}\vspace{0.3em}
+\chapter{30. 作業ツリーに残る未コミット状態の意味}
+報告書拡張時点で、\texttt{master}は\texttt{origin/master}より1コミット先行している。先行コミットはカラーセンサ実験である。\par
+追跡済み変更:\par
+\begin{itemize}
+\item \texttt{experiment\_logs/README.md}: 球風実験文書への索引追加。
+\item \texttt{simple\_accel\_xy.py}: raw IMU中心から、姿勢由来加速度、blend、速度サーボ、yaw保持へ大幅変更。
+\end{itemize}
+未追跡:\par
+\begin{itemize}
+\item \texttt{accel\_position\_control.py}
+\item \texttt{ball\_wind\_experiment.py}
+\item \texttt{codrone\_takeoff\_diagnose.py}
+\item \texttt{command\_dead\_reckoning.py}
+\item \texttt{time\_calibrated\_xy.py}
+\item \texttt{test\_accel\_position\_control.py}
+\item \texttt{test\_time\_calibrated\_xy.py}
+\item 加速度・球風ログ
+\item 球風実験文書
+\item 本報告書
+\end{itemize}
+この状態は、これらの方式がまだ正式な一つの制御方針へ統合されていないことを示す。未追跡だから価値がないわけではない。むしろ、optical flowの限界を受けて複数代替案を急速に比較している研究途中の状態である。ただし、Gitから見れば変更理由・対応ログ・テストが一つのコミットへ固定されておらず、後から因果関係を追いにくい。\par
+今後コミットする場合は、少なくとも次を分けるべきである。\par
+\begin{enumerate}
+\item 加速度推定本体とテスト。
+\item 時間較正方式とテスト。
+\item command dead reckoningと実験ログ要約。
+\item 離陸診断。
+\item 球風実験ツールと実験記録。
+\item 生ログは\texttt{.gitignore}方針に従い、要約だけをGitへ残す。
+\end{enumerate}
+これは見た目の履歴整理ではなく、「どの仮説を、どのコードで、どのデータを使って検証したか」を保存するためである。\par
+
+\backmatter
+\cleardoublepage
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[ReportNavy] (current page.south west) rectangle (current page.north east);
+  \fill[ReportTeal] (current page.south west) rectangle ($(current page.south east)+(0,0.18)$);
+\end{tikzpicture}
+\vspace*{0.31\textheight}
+\begin{center}
+{\sffamily\color{white}\fontsize{25}{31}\selectfont\bfseries
+Evidence before assumption.\\
+Safety before speed.\\
+Observability before control.\par}
+\vspace{1.2cm}
+{\sffamily\color{ReportTeal!35}\large
+CoDrone EDU Control Research / PythonProject\par}
+\end{center}
+\end{document}
